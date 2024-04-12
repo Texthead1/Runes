@@ -166,7 +166,7 @@ Sum of all experience values
 |  0004  | Miner Hat
 |  0005  | General's Hat
 |  0006  | Pirate Hat
-|  0007  | Propellor Cap
+|  0007  | Propeller Cap
 |  0008  | Coonskin Cap
 |  0009  | Straw Hat
 |  0010  | Fancy Hat
