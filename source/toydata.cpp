@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cstring>
 #include <assert.h>
+#include <sys/stat.h>
 #include <yaml-cpp/yaml.h>
 
 #define parseBool(str) (strcmp(str, "True") == 0)

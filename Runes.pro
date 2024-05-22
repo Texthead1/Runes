@@ -7,6 +7,7 @@ TARGET = Runes
 INCLUDEPATH += ./include
 QT += widgets gui
 LIBS += -l:libyaml-cpp.a
+DEFINES += YAML_CPP_STATIC_DEFINE
 
 CONFIG(debug, debug|release) {
     DEFINES += DEBUG
@@ -18,8 +19,8 @@ CONFIG(debug, debug|release) {
 }
 
 
-QMAKE_EXTRA_TARGETS += copyfiles echotest
-POST_TARGETDEPS += copyfiles echotest
+#QMAKE_EXTRA_TARGETS += copyfiles echotest
+#POST_TARGETDEPS += copyfiles echotest
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
