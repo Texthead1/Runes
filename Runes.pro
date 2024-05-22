@@ -12,15 +12,15 @@ DEFINES += YAML_CPP_STATIC_DEFINE
 CONFIG(debug, debug|release) {
     DEFINES += DEBUG
     CONFIG += console
-    copyfiles.commands = $$quote(xcopy ".\Resources" ".\release\Resources" /y /s /i)
+    copyfiles.commands = xcopy ".\Resources" ".\debug\Resources" //y //s //i
 }
-CONFIG(debug, debug|release) {
-    copyfiles.commands = $$quote(xcopy ".\Resources" ".\release\Resources" /y /s /i)
+CONFIG(release, debug|release) {
+    copyfiles.commands = xcopy ".\Resources" ".\release\Resources" //y //s //i
 }
 
 
-#QMAKE_EXTRA_TARGETS += copyfiles echotest
-#POST_TARGETDEPS += copyfiles echotest
+QMAKE_EXTRA_TARGETS += copyfiles
+POST_TARGETDEPS += copyfiles
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

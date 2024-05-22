@@ -8,11 +8,15 @@ It is not yet ready for public use.
 
 ## Windows
 
-Requires MSYS2.
+Requires MSYS2, use MINGW64 and not UCRT64.
 
-Dependencies: Install Qt and run the following `pacman -S mingw-w64-x86_64-yaml-cpp`
+Dependencies:
+* Qt 6.7.0
+* yaml-cpp, can be installed with `pacman -S mingw-w64-x86_64-yaml-cpp`
 
-Compiling: Run `make` to compile
+Compiling:
+* Run `qmake "CONFIG+=debug"` (`qmake` for release) and `make` to compile
+* Run `windeployqt debug` (`windeployqt release` for release) to include the Qt binaries
 
 ## Usage
 
