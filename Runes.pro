@@ -10,12 +10,12 @@ LIBS += -l:libyaml-cpp.a
 DEFINES += YAML_CPP_STATIC_DEFINE
 
 CONFIG(debug, debug|release) {
-    DEFINES += DEBUG
-    CONFIG += console
-    copyfiles.commands = xcopy ".\Resources" ".\debug\Resources" //y //s //i
+	DEFINES += DEBUG
+	CONFIG += console
+	copyfiles.commands = xcopy ".\Resources" ".\debug\Resources" //y //s //i
 }
 CONFIG(release, debug|release) {
-    copyfiles.commands = xcopy ".\Resources" ".\release\Resources" //y //s //i
+	copyfiles.commands = xcopy ".\Resources" ".\release\Resources" //y //s //i
 }
 
 
@@ -31,37 +31,37 @@ POST_TARGETDEPS += copyfiles
 
 # Input
 HEADERS += include/Constants.hpp \
-           include/debug.hpp \
-           include/ESkylandersGame.hpp \
-           include/kTfbSpyroTag_DecoID.hpp \
-           include/kTfbSpyroTag_HatType.hpp \
-           include/kTfbSpyroTag_ToyType.hpp \
-           include/kTfbSpyroTag_VillainType.hpp \
-           include/PortalAlgos.hpp \
-           include/PortalTag.hpp \
-           include/RfidTag.hpp \
-           include/toydata.hpp \
-           include/3rd_party/crc.h \
-           include/3rd_party/md5.h \
-           include/3rd_party/rijndael.h \
-           include/PortalAlgos.hpp \
-           include/3rd_party/md5.h \
-           include/3rd_party/rijndael.h \
-           include/PortalTag.hpp \
-           include/toydata.hpp \
-           include/Constants.hpp \
-           include/3rd_party/crc.h \
-           include/RfidTag.hpp \
-           include/RunesWidget.hpp
+		   include/debug.hpp \
+		   include/ESkylandersGame.hpp \
+		   include/kTfbSpyroTag_DecoID.hpp \
+		   include/kTfbSpyroTag_HatType.hpp \
+		   include/kTfbSpyroTag_ToyType.hpp \
+		   include/kTfbSpyroTag_VillainType.hpp \
+		   include/PortalAlgos.hpp \
+		   include/PortalTag.hpp \
+		   include/RfidTag.hpp \
+		   include/toydata.hpp \
+		   include/3rd_party/crc.h \
+		   include/3rd_party/md5.h \
+		   include/3rd_party/rijndael.h \
+		   include/PortalAlgos.hpp \
+		   include/3rd_party/md5.h \
+		   include/3rd_party/rijndael.h \
+		   include/PortalTag.hpp \
+		   include/toydata.hpp \
+		   include/Constants.hpp \
+		   include/3rd_party/crc.h \
+		   include/RfidTag.hpp \
+		   include/RunesWidget.hpp
 SOURCES += source/Constants.cpp \
-           source/debug.cpp \
-           source/kTfbSpyroTag_HatType.cpp \
-           source/main.cpp \
-           source/PortalAlgos.cpp \
-           source/PortalTag.cpp \
-           source/RfidTag.cpp \
-           source/toydata.cpp \
-           source/3rd_party/crc.cpp \
-           source/3rd_party/md5.cpp \
-           source/3rd_party/rijndael.cpp \
-           source/RunesWidget.cpp
+		   source/debug.cpp \
+		   source/kTfbSpyroTag_HatType.cpp \
+		   source/main.cpp \
+		   source/PortalAlgos.cpp \
+		   source/PortalTag.cpp \
+		   source/RfidTag.cpp \
+		   source/toydata.cpp \
+		   source/3rd_party/crc.cpp \
+		   source/3rd_party/md5.cpp \
+		   source/3rd_party/rijndael.cpp \
+		   source/RunesWidget.cpp
