@@ -6,6 +6,10 @@
 
 class QSpinBox;
 class QComboBox;
+class QCheckBox;
+class QLabel;
+class QFormLayout;
+class QTextEdit;
 
 class RunesWidget : public QWidget
 {
@@ -19,9 +23,46 @@ private:
     QString _sourceFile;
 
     void updateFields();
+    void initGiantsQuests();
+    void initSwapForceQuests();
 
+    QFormLayout* _subBasic;
     QSpinBox* _spinExp;
     QSpinBox* _spinMoney;
     QSpinBox* _spinHeroPoints;
     QComboBox* _cmbHat;
+    QTextEdit* _txtNickname;
+
+    QLabel* _lblToyName;
+    QLabel* _lblTimePlayed;
+    QLabel* _lblLevel;
+    QLabel* _lblFirstTouched;
+    QLabel* _lblRecentlyTouched;
+
+    QLabel* _sgInvalidElement1;
+    QLabel* _sgInvalidElement2;
+    QLabel* _ssfInvalidElement1;
+    QLabel* _ssfInvalidElement2;
+
+    QFormLayout* _subGiantsQuests;
+    QSpinBox* _spinGiantsMonsterMasher;
+    QSpinBox* _spinGiantsBattleChamp;
+    QSpinBox* _spinGiantsChowHound;
+    QCheckBox* _chkGiantsHeroicChallenger;
+    QCheckBox* _chkGiantsArenaArtist;
+    QSpinBox* _spinGiantsElementalist;
+    QWidget* _wdGiantsElementalQuest1;
+    QWidget* _wdGiantsElementalQuest2;
+    QSpinBox* _spinGiantsIndividualQuest;
+
+    QFormLayout* _subSwapForceQuests;
+    QSpinBox* _spinSwapForceBadguyBasher;
+    QSpinBox* _spinSwapForceFruitFrontiersman;
+    QCheckBox* _chkSwapForceFlawlessChallenger;
+    QSpinBox* _spinSwapForceTrueGladiator;
+    QCheckBox* _chkSwapForceTotallyMaxedOut;
+    QSpinBox* _spinSwapForceElementalist;
+    QWidget* _wdSwapForceElementalQuest1;
+    QWidget* _wdSwapForceElementalQuest2;
+    QSpinBox* _spinSwapForceIndividual;
 };

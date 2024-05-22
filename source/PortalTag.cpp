@@ -105,6 +105,7 @@ void Runes::PortalTag::StoreMagicMoment()
 	else if(this->_tagData._hat2012 > 0) this->_hatType = (kTfbSpyroTag_HatType)this->_tagData._hat2012;
 	else if(this->_tagData._hat2013 > 0) this->_hatType = (kTfbSpyroTag_HatType)this->_tagData._hat2013;
 	else if(this->_tagData._hat2015 > 0) this->_hatType = (kTfbSpyroTag_HatType)(this->_tagData._hat2015 + kTfbSpyroTag_Hat_OFFSET_2015);
+	else                                 this->_hatType = kTfbSpyroTag_Hat_NONE;
 
 	uint32_t flags1 = to24(this->_tagData._flags1_low, this->_tagData._flags1_high);
 	this->_upgrades = ((this->_tagData._flags2 & 0xF) << 10) | (flags1 & 0x3FF);
@@ -279,8 +280,31 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	//Set owner count
 	tagData->_ownerCount = this->_ownerCount;
 
+	//Set hat type
+	this->_tagData._hat2011 = kTfbSpyroTag_Hat_NONE;
+	this->_tagData._hat2012 = kTfbSpyroTag_Hat_NONE;
+	this->_tagData._hat2013 = kTfbSpyroTag_Hat_NONE;
+	this->_tagData._hat2015 = kTfbSpyroTag_Hat_NONE;
+	     if(this->_hatType >= kTfbSpyroTag_Hat_OFFSET_2015) this->_tagData._hat2015 = this->_hatType - kTfbSpyroTag_Hat_OFFSET_2015;
+	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2013)    this->_tagData._hat2013 = this->_hatType;
+	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2012)    this->_tagData._hat2012 = this->_hatType;
+	else                                                    this->_tagData._hat2011 = this->_hatType;
+
+	memcpy(this->_tagData._nickname, "&COLOR(10,255,255)", 18);
+	this->_tagData._nickname[9] = 'h';
+	this->_tagData._nickname[10] = 'i';
+	this->_tagData._nickname[11] = 0;
+
 	this->FillQuestsGiants();
 	this->FillQuestsSwapForce();
+}
+uint8_t Runes::PortalTag::ComputeLevel()
+{
+	for(uint8_t l = kExperienceLevelCount - 1; l >= 0; l--)
+	{
+		if(_exp >= experienceForLevelMap[l]) return l+1;
+	}
+	return 1;
 }
 void Runes::PortalTag::ReadFromFile(const char* fileName)
 {
@@ -297,12 +321,13 @@ void Runes::PortalTag::ReadFromFile(const char* fileName)
 }
 void Runes::PortalTag::SaveToFile(const char* fileName)
 {
-	//this->_tagData._areaSequence0++;
-	//this->_tagData._areaSequence1++;
+	this->_tagData._areaSequence0++;
+	this->_tagData._areaSequence1++;
 	this->FillOutputFromStoredData();
 	this->RecalculateTagDataChecksums();
-	_rfidTag->SaveBlocks(((uint8_t*)&this->_tagData) + 0x00, this->_rfidTag->DetermineActiveDataRegion0() ? 0x24 : 0x08, 0x7);
-	_rfidTag->SaveBlocks(((uint8_t*)&this->_tagData) + 0x70, this->_rfidTag->DetermineActiveDataRegion1() ? 0x2D : 0x11, 0x4);
+	//We're writing to the other region hence the ternary operator looks like that
+	_rfidTag->SaveBlocks(((uint8_t*)&this->_tagData) + 0x00, this->_rfidTag->DetermineActiveDataRegion0() ? 0x08 : 0x24, 0x7);
+	_rfidTag->SaveBlocks(((uint8_t*)&this->_tagData) + 0x70, this->_rfidTag->DetermineActiveDataRegion1() ? 0x11 : 0x2D, 0x4);
 	//this->DebugSaveTagData();
 	_rfidTag->SaveToFile(fileName);
 }
@@ -332,7 +357,7 @@ void Runes::PortalTag::RecalculateTagDataChecksums()
 }
 uint32_t Runes::PortalTagData::getExperience()
 {
-	printf("%d + %d + %d = %d\n", to24(this->_experience2011_low, this->_experience2011_high), this->_experience2012, this->_experience2013, to24(this->_experience2011_low, this->_experience2011_high) + (uint32_t)this->_experience2012 + this->_experience2013);
+	//printf("%d + %d + %d = %d\n", to24(this->_experience2011_low, this->_experience2011_high), this->_experience2012, this->_experience2013, to24(this->_experience2011_low, this->_experience2011_high) + (uint32_t)this->_experience2012 + this->_experience2013);
 	return to24(this->_experience2011_low, this->_experience2011_high) + (uint32_t)this->_experience2012 + this->_experience2013;
 }
 void Runes::PortalTagData::setExperience(uint32_t experience)

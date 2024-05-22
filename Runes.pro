@@ -53,7 +53,8 @@ HEADERS += include/Constants.hpp \
            include/3rd_party/crc.h \
            include/RfidTag.hpp \
            include/RunesWidget.hpp
-SOURCES += source/debug.cpp \
+SOURCES += source/Constants.cpp \
+           source/debug.cpp \
            source/kTfbSpyroTag_HatType.cpp \
            source/main.cpp \
            source/PortalAlgos.cpp \

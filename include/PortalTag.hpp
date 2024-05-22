@@ -150,6 +150,7 @@ namespace Runes
 			char _webCode[12];
 			uint16_t _nickname[16];
 
+			uint8_t ComputeLevel();
 			void StoreHeader();
 			void StoreTagData();
 			void StoreMagicMoment();
