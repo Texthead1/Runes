@@ -48,8 +48,8 @@ namespace Runes
 		/* 0x03 */ uint16_t _coinCount;
 		/* 0x05 */ uint32_t _cumulativeTime;
 		/* 0x09 */ uint8_t _areaSequence0;
-		/* 0x0C */ uint16_t _crcType3;
-		/* 0x0A */ uint16_t _crcType2;
+		/* 0x0A */ uint16_t _crcType3;
+		/* 0x0C */ uint16_t _crcType2;
 		/* 0x0E */ uint16_t _crcType1;
 
 		/* 0x10 */ uint16_t _flags1_low;

@@ -77,8 +77,8 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x03  | 08/24  |  0x03  | `uint16_t`             | Money
 |  0x05  | 08/24  |  0x05  | `uint32_t`             | Cumulative time in seconds
 |  0x09  | 08/24  |  0x09  | `uint8_t`              | [area sequence](#area-sequence)
-|  0x0A  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
-|  0x0C  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
+|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccit/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Flags1](#flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
