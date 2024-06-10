@@ -11,15 +11,15 @@ class QLabel;
 class QFormLayout;
 class QTextEdit;
 
-class RunesWidget : public QWidget
+class FigureTabWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent = nullptr);
+	explicit FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent = nullptr);
+	Runes::PortalTag* _tag;
 
 private:
-	Runes::PortalTag* _tag;
 	QString _sourceFile;
 
 	void updateFields();

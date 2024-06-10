@@ -1,4 +1,4 @@
-#include "RunesWidget.hpp"
+#include "FigureTabWidget.hpp"
 
 #include <QFormLayout>
 #include <QSpinBox>
@@ -17,7 +17,7 @@
 
 #define intToChecked(value) ((value) == 1 ? Qt::Checked : Qt::Unchecked)
 
-RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent) : QWidget(parent)
+FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent) : QWidget(parent)
 {
 	this->_tag = tag;
 	this->_sourceFile = QString(fileName);
@@ -95,35 +95,7 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2);
 	root->addLayout(_subSwapForceQuests, questStart + 1, 2);
 
-	QMenuBar* menubar = new QMenuBar(this);
-	QMenu* menuFile = new QMenu(tr("&File"), this);
-	QAction* actOpen = new QAction(tr("&Open"), this);
-	actOpen->setShortcut(QKeySequence::Open);
-	actOpen->setStatusTip(tr("Open a Dump"));
-	connect(actOpen, &QAction::triggered, [=]()
-	{
-		this->_sourceFile = QFileDialog::getOpenFileName(this, tr("Open Dump File"), "", tr("All Files (*.*)"));
-
-		this->_tag->ReadFromFile(_sourceFile.toLocal8Bit());
-
-		this->updateFields();
-	});
-	menuFile->addAction(actOpen);
-	QAction* actSave = new QAction(tr("&Save"), this);
-	actSave->setShortcut(QKeySequence::Save);
-	actSave->setStatusTip(tr("Save a Dump"));
-	connect(actSave, &QAction::triggered, [=]()
-	{
-		this->_tag->SaveToFile(QFileDialog::getSaveFileName(this, tr("Save Dump File"), "", tr("All Files (*.*)")).toLocal8Bit());
-
-		this->updateFields();
-	});
-	menuFile->addAction(actSave);
-	menubar->addMenu(menuFile);
-
 	setLayout(root);
-
-	this->layout()->setMenuBar(menubar);
 	
 	setWindowTitle(tr("Runes"));
 
@@ -148,7 +120,7 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	}); \
 	this->form->insertRow(index, tr(name), this->generic);
-void RunesWidget::updateFields()
+void FigureTabWidget::updateFields()
 {
 	Runes::FigureToyData* figure = Runes::ToyDataManager::getInstance()->LookupCharacter(this->_tag->_toyType);
 	if(figure != nullptr)
@@ -310,7 +282,7 @@ void RunesWidget::updateFields()
 	{ \
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	});
-void RunesWidget::initGiantsQuests()
+void FigureTabWidget::initGiantsQuests()
 {
 	_subGiantsQuests = new QFormLayout();
 	defineSpinQuest(_giantsQuests, _spinGiantsMonsterMasher, 0, 1000);
@@ -331,7 +303,7 @@ void RunesWidget::initGiantsQuests()
 	_subGiantsQuests->addRow(tr("Elemental Quest 2"), this->_sgInvalidElement2);
 	_subGiantsQuests->addRow(tr("Individual Quest"), this->_spinGiantsIndividualQuest);
 }
-void RunesWidget::initSwapForceQuests()
+void FigureTabWidget::initSwapForceQuests()
 {
 	_subSwapForceQuests = new QFormLayout();
 	defineSpinQuest(_swapforceQuests, _spinSwapForceBadguyBasher, 0, 1000);
