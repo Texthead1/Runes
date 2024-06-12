@@ -35,7 +35,7 @@ RunesMainWidget::RunesMainWidget(Runes::PortalTag* tag, const char* fileName, QW
 	actSave->setStatusTip(tr("Save a Dump"));
 	connect(actSave, &QAction::triggered, [=]()
 	{
-		FigureTabWidget* figureWidget = (FigureTabWidget*)this->_tabs->currentIndex();
+		FigureTabWidget* figureWidget = (FigureTabWidget*)this->_tabs->currentWidget();
 		figureWidget->_tag->SaveToFile(QFileDialog::getSaveFileName(this, tr("Save Dump File"), "", tr("All Files (*.*)")).toLocal8Bit());
 	});
 	menuFile->addAction(actSave);
