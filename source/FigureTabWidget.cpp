@@ -25,9 +25,10 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	QGridLayout* root = new QGridLayout(this);
 
 	this->_lblToyName = new QLabel(this);
+	this->_lblToyName->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 	root->addWidget(_lblToyName, 0, 0, 1, 3);
 
-	_subBasic = new QFormLayout();
+	uint32_t basicRow = root->rowCount();
 
 	this->_spinMoney = new QSpinBox(this);
 	this->_spinMoney->setRange(0, kMoneyCap);
@@ -35,7 +36,8 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	{
 		this->_tag->_coins = newMoney;
 	});
-	_subBasic->addRow(tr("Money"), this->_spinMoney);
+	root->addWidget(new QLabel(tr("Money"), this), basicRow + 0, 0);
+	root->addWidget(this->_spinMoney, basicRow + 0, 1);
 
 	this->_spinExp = new QSpinBox(this);
 	this->_spinExp->setRange(0, 197500);
@@ -44,8 +46,8 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 		this->_tag->_exp = newExp;
 		//TODO: update level number
 	});
-	_subBasic->addRow(tr("Experience"), this->_spinExp);
-
+	root->addWidget(new QLabel(tr("Experience"), this), basicRow + 1, 0);
+	root->addWidget(this->_spinExp, basicRow + 1, 1);
 
 	this->_cmbHat = new QComboBox(this);
 	for(int i = 0; i <= kTfbSpyroTag_Hat_MAX; i++)
@@ -56,18 +58,19 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	{
 		this->_tag->_hatType = (kTfbSpyroTag_HatType)newIndex;
 	});
-	_subBasic->addRow(tr("Hat"), this->_cmbHat);
+	root->addWidget(new QLabel(tr("Hat"), this), basicRow + 2, 0);
+	root->addWidget(this->_cmbHat, basicRow + 2, 1);
 
 	this->_spinHeroPoints = new QSpinBox(this);
 	this->_spinHeroPoints->setRange(0, 100);
 	connect(this->_spinHeroPoints, &QSpinBox::valueChanged, [=](int newHeroPoints)
 	{
 		this->_tag->_heroPoints = newHeroPoints;
-	});
-	_subBasic->addRow(tr("Hero Points"), this->_spinHeroPoints);
 
-	uint32_t basicRow = root->rowCount();
-	root->addLayout(_subBasic, basicRow, 0, _subBasic->rowCount(), 2);
+		printf("%d, %d\n", this->size().width(), this->size().height());
+	});
+	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 3, 0);
+	root->addWidget(this->_spinHeroPoints, basicRow + 3, 1);
 
 	this->_lblTimePlayed = new QLabel(tr("Time Played: N/A"), this);
 	this->_lblLevel = new QLabel(tr("Level: N/A"), this);
@@ -82,17 +85,17 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 
 	this->_wdGiantsElementalQuest1 = this->_sgInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
 	this->_wdGiantsElementalQuest2 = this->_sgInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
-	this->_ssfInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
-	this->_ssfInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
+	this->_wdSwapForceElementalQuest1 = this->_ssfInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
+	this->_wdSwapForceElementalQuest2 = this->_ssfInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
 
 	//TODO: Center the quest headers
 	uint32_t questStart = root->rowCount();
 	initGiantsQuests();
-	root->addWidget(new QLabel(tr("<h3>Giants Quests</h3>")), questStart, 0);
+	root->addWidget(new QLabel(tr("<h3>Giants Quests</h3>")), questStart, 0, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subGiantsQuests, questStart + 1, 0);
 
 	initSwapForceQuests();
-	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2);
+	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subSwapForceQuests, questStart + 1, 2);
 
 	setLayout(root);

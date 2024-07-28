@@ -26,7 +26,6 @@ private:
 	void initGiantsQuests();
 	void initSwapForceQuests();
 
-	QFormLayout* _subBasic;
 	QSpinBox* _spinExp;
 	QSpinBox* _spinMoney;
 	QSpinBox* _spinHeroPoints;
