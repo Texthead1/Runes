@@ -86,7 +86,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x20  | 0A/26  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
-|  0x30  | 0C/28  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
+|  0x30  | 0C/28  |  0x00  | `wchar_t[8]`           | Last 16 bytes of nickname
 |  0x40  | 0D/29  |  0x00  | `uint8_t`              | Minute value of the last time this figure was placed on the portal
 |  0x41  | 0D/29  |  0x01  | `uint8_t`              | Hour value of the last time this figure was placed on the portal
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
