@@ -52,7 +52,8 @@ HEADERS += include/Constants.hpp \
 		   include/Constants.hpp \
 		   include/3rd_party/crc.h \
 		   include/RfidTag.hpp \
-		   include/RunesWidget.hpp
+		   include/FigureTabWidget.hpp \
+		   include/RunesMainWidget.hpp
 SOURCES += source/Constants.cpp \
 		   source/debug.cpp \
 		   source/kTfbSpyroTag_HatType.cpp \
@@ -64,4 +65,5 @@ SOURCES += source/Constants.cpp \
 		   source/3rd_party/crc.cpp \
 		   source/3rd_party/md5.cpp \
 		   source/3rd_party/rijndael.cpp \
-		   source/RunesWidget.cpp
+		   source/FigureTabWidget.cpp \
+		   source/RunesMainWidget.cpp

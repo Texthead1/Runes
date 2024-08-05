@@ -1,4 +1,4 @@
-#include "RunesWidget.hpp"
+#include "FigureTabWidget.hpp"
 
 #include <QFormLayout>
 #include <QSpinBox>
@@ -17,7 +17,7 @@
 
 #define intToChecked(value) ((value) == 1 ? Qt::Checked : Qt::Unchecked)
 
-RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent) : QWidget(parent)
+FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent) : QWidget(parent)
 {
 	this->_tag = tag;
 	this->_sourceFile = QString(fileName);
@@ -25,9 +25,10 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 	QGridLayout* root = new QGridLayout(this);
 
 	this->_lblToyName = new QLabel(this);
+	this->_lblToyName->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 	root->addWidget(_lblToyName, 0, 0, 1, 3);
 
-	_subBasic = new QFormLayout();
+	uint32_t basicRow = root->rowCount();
 
 	this->_spinMoney = new QSpinBox(this);
 	this->_spinMoney->setRange(0, kMoneyCap);
@@ -35,7 +36,8 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 	{
 		this->_tag->_coins = newMoney;
 	});
-	_subBasic->addRow(tr("Money"), this->_spinMoney);
+	root->addWidget(new QLabel(tr("Money"), this), basicRow + 0, 0);
+	root->addWidget(this->_spinMoney, basicRow + 0, 1);
 
 	this->_spinExp = new QSpinBox(this);
 	this->_spinExp->setRange(0, 197500);
@@ -44,8 +46,8 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 		this->_tag->_exp = newExp;
 		//TODO: update level number
 	});
-	_subBasic->addRow(tr("Experience"), this->_spinExp);
-
+	root->addWidget(new QLabel(tr("Experience"), this), basicRow + 1, 0);
+	root->addWidget(this->_spinExp, basicRow + 1, 1);
 
 	this->_cmbHat = new QComboBox(this);
 	for(int i = 0; i <= kTfbSpyroTag_Hat_MAX; i++)
@@ -56,18 +58,19 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 	{
 		this->_tag->_hatType = (kTfbSpyroTag_HatType)newIndex;
 	});
-	_subBasic->addRow(tr("Hat"), this->_cmbHat);
+	root->addWidget(new QLabel(tr("Hat"), this), basicRow + 2, 0);
+	root->addWidget(this->_cmbHat, basicRow + 2, 1);
 
 	this->_spinHeroPoints = new QSpinBox(this);
 	this->_spinHeroPoints->setRange(0, 100);
 	connect(this->_spinHeroPoints, &QSpinBox::valueChanged, [=](int newHeroPoints)
 	{
 		this->_tag->_heroPoints = newHeroPoints;
-	});
-	_subBasic->addRow(tr("Hero Points"), this->_spinHeroPoints);
 
-	uint32_t basicRow = root->rowCount();
-	root->addLayout(_subBasic, basicRow, 0, _subBasic->rowCount(), 2);
+		printf("%d, %d\n", this->size().width(), this->size().height());
+	});
+	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 3, 0);
+	root->addWidget(this->_spinHeroPoints, basicRow + 3, 1);
 
 	this->_lblTimePlayed = new QLabel(tr("Time Played: N/A"), this);
 	this->_lblLevel = new QLabel(tr("Level: N/A"), this);
@@ -82,48 +85,20 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 
 	this->_wdGiantsElementalQuest1 = this->_sgInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
 	this->_wdGiantsElementalQuest2 = this->_sgInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
-	this->_ssfInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
-	this->_ssfInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
+	this->_wdSwapForceElementalQuest1 = this->_ssfInvalidElement1 = new QLabel(tr("Unknown Elemental 1"));
+	this->_wdSwapForceElementalQuest2 = this->_ssfInvalidElement2 = new QLabel(tr("Unknown Elemental 2"));
 
 	//TODO: Center the quest headers
 	uint32_t questStart = root->rowCount();
 	initGiantsQuests();
-	root->addWidget(new QLabel(tr("<h3>Giants Quests</h3>")), questStart, 0);
+	root->addWidget(new QLabel(tr("<h3>Giants Quests</h3>")), questStart, 0, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subGiantsQuests, questStart + 1, 0);
 
 	initSwapForceQuests();
-	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2);
+	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subSwapForceQuests, questStart + 1, 2);
 
-	QMenuBar* menubar = new QMenuBar(this);
-	QMenu* menuFile = new QMenu(tr("&File"), this);
-	QAction* actOpen = new QAction(tr("&Open"), this);
-	actOpen->setShortcut(QKeySequence::Open);
-	actOpen->setStatusTip(tr("Open a Dump"));
-	connect(actOpen, &QAction::triggered, [=]()
-	{
-		this->_sourceFile = QFileDialog::getOpenFileName(this, tr("Open Dump File"), "", tr("All Files (*.*)"));
-
-		this->_tag->ReadFromFile(_sourceFile.toLocal8Bit());
-
-		this->updateFields();
-	});
-	menuFile->addAction(actOpen);
-	QAction* actSave = new QAction(tr("&Save"), this);
-	actSave->setShortcut(QKeySequence::Save);
-	actSave->setStatusTip(tr("Save a Dump"));
-	connect(actSave, &QAction::triggered, [=]()
-	{
-		this->_tag->SaveToFile(QFileDialog::getSaveFileName(this, tr("Save Dump File"), "", tr("All Files (*.*)")).toLocal8Bit());
-
-		this->updateFields();
-	});
-	menuFile->addAction(actSave);
-	menubar->addMenu(menuFile);
-
 	setLayout(root);
-
-	this->layout()->setMenuBar(menubar);
 	
 	setWindowTitle(tr("Runes"));
 
@@ -148,7 +123,7 @@ RunesWidget::RunesWidget(Runes::PortalTag* tag, char* fileName, QWidget* parent)
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	}); \
 	this->form->insertRow(index, tr(name), this->generic);
-void RunesWidget::updateFields()
+void FigureTabWidget::updateFields()
 {
 	Runes::FigureToyData* figure = Runes::ToyDataManager::getInstance()->LookupCharacter(this->_tag->_toyType);
 	if(figure != nullptr)
@@ -310,7 +285,7 @@ void RunesWidget::updateFields()
 	{ \
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	});
-void RunesWidget::initGiantsQuests()
+void FigureTabWidget::initGiantsQuests()
 {
 	_subGiantsQuests = new QFormLayout();
 	defineSpinQuest(_giantsQuests, _spinGiantsMonsterMasher, 0, 1000);
@@ -331,7 +306,7 @@ void RunesWidget::initGiantsQuests()
 	_subGiantsQuests->addRow(tr("Elemental Quest 2"), this->_sgInvalidElement2);
 	_subGiantsQuests->addRow(tr("Individual Quest"), this->_spinGiantsIndividualQuest);
 }
-void RunesWidget::initSwapForceQuests()
+void FigureTabWidget::initSwapForceQuests()
 {
 	_subSwapForceQuests = new QFormLayout();
 	defineSpinQuest(_swapforceQuests, _spinSwapForceBadguyBasher, 0, 1000);

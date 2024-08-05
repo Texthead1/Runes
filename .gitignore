@@ -12,3 +12,7 @@ Makefile.Release
 .qmake.stash
 debug
 release
+
+# figure dumps
+*.dmp
+*.sky
