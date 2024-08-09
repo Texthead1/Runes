@@ -70,5 +70,39 @@ void Runes::readSalt()
 		return;
 	}
 
+	uint8_t keyCheck[0x56];
+	uint8_t keyHash[0x10];
+	uint8_t cData[0x10] { 88, 244, 167, 65, 134, 93, 251, 162, 116, 243, 62, 228, 82, 19, 212, 57 };
+	keyCheck[0x20] = 8;
+	memcpy(keyCheck + 0x21, salt, 0x35);
+
+	MD5* md5 = new MD5();
+	MD5Open(md5);
+	MD5Digest(md5, keyCheck, 0x56);
+	MD5Close(md5, keyHash);
+
+	uint8_t pData[0x10];
+
+	unsigned long rk[RKLENGTH(128)];
+	uint32_t rounds = rijndaelSetupDecrypt(rk, keyHash, 128);
+	rijndaelDecrypt(rk, rounds, cData, pData);
+
+	bool zeroOut = true;
+    for (size_t i = 0; i < sizeof(pData); ++i)
+	{
+        if (pData[i] != 0)
+		{
+            zeroOut = false;
+            break;
+        }
+    }
+
+	if (!zeroOut)
+	{
+		printf("Invalid salt.txt file provided");
+		exit(-1);
+		return;
+	}
+
 	saltReady = true;
 }

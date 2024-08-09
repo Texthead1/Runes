@@ -11,3 +11,8 @@ uint16_t crc16(char* pData, int length)
 	}
 	return wCrc & 0xffff;
 }
+
+uint8_t calculateBCC(uint32_t serial)
+{
+	return ((serial >> 24) & 0xff) ^ ((serial >> 16) & 0xff) ^ ((serial >> 8) & 0xff) ^ (serial & 0xff);
+}
