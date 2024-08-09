@@ -197,6 +197,7 @@ namespace Runes
 			void DebugSaveTagData();
 			bool isTrap();
 			bool isVehicle();
+
 		private:
 			bool _tagHeaderStored;
 			bool _tagDataStored;

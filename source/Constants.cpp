@@ -1,6 +1,6 @@
 #include "Constants.hpp"
 
-const int experienceForLevelMap[kExperienceLevelCount] = {
+const uint32_t experienceForLevelMap[kExperienceLevelCount] = {
 	kExperienceLevel01,
 	kExperienceLevel02,
 	kExperienceLevel03,
