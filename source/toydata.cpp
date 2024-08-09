@@ -100,8 +100,6 @@ Runes::VariantIdentifier* Runes::FigureToyData::LookupVariant(uint16_t varId)
 	Runes::VariantIdentifier* bestMatch = NULL;
 	for(int i = 0; i < (int)_variants.size(); i++)
 	{
-		//Repose == true? Nout just Repose
-		//- Texthead
 		if(_variants[i]->_repose == repose && repose == true)
 		{
 			if(!bestMatch || (yearCode >= _variants[i]->_yearCode && _variants[i]->_yearCode >= bestMatch->_yearCode && decoId != bestMatch->_decoId))

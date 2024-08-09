@@ -70,10 +70,6 @@ void Runes::readSalt()
 		return;
 	}
 
-	//This is probably shit but don't hate me it's my first time writing C++ and my IDE isn't set up :)
-	//What this "attempts" to do is decrypt some example cipher data. If the salt provided is correct, then the outputted plain data will be full zero'd
-	//Just to prevent correct-length-incorrect-salt files without the salt being possible to derive from the source code
-	//- Texthead
 	uint8_t keyCheck[0x56];
 	uint8_t keyHash[0x10];
 	uint8_t cData[0x10] { 88, 244, 167, 65, 134, 93, 251, 162, 116, 243, 62, 228, 82, 19, 212, 57 };

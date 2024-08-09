@@ -1,7 +1,5 @@
 #include "kTfbSpyroTag_TrinketType.hpp"
 
-//Added Trinket values/name to source
-//- Texthead
 const char* trinketNames_en[kTfbSpyroTag_Trinket_MAX + 1] = {
     "None",
     "T-Bone's Lucky Tie",

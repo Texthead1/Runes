@@ -10,8 +10,6 @@
 #define to24(low, high) ((uint32_t)(low) + ((uint32_t)(high) << 16))
 #define bitsToMask(bits) (0xFFFFFFFFFFFFFFFF >> (64 - (bits)))
 
-//Renamed `wowPowFlag` to `reposeFlag`, as not all figures with it actually have Wow Pows, but all are reposed
-//- Texthead
 void Runes::PortalTag::DecodeSubtype(uint16_t varId, ESkylandersGame* esg, bool* fullAltDeco, bool* reposeFlag, bool* lightcore, kTfbSpyroTag_DecoID* decoId)
 {
 	*esg = (ESkylandersGame)((varId >> 12) & 0xF);
@@ -59,9 +57,6 @@ void Runes::PortalTag::StoreHeader()
 	this->_subType = this->_tagHeader._subType;
 
 	//Web code
-
-	//Slightly optmised algo, only one array used
-	//- Texthead
 
 	//basically 0->9, A->Z except not 0, 1, or any vowels
 	const char* webCodeTable = "23456789BCDFGHJKLMNPQRSTVWXYZ";
@@ -289,16 +284,6 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2013)    this->_tagData._hat2013 = this->_hatType;
 	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2012)    this->_tagData._hat2012 = this->_hatType;
 	else                                                    this->_tagData._hat2011 = this->_hatType;
-
-	//hi
-	//but we don't need you anymore
-	//-Texthead
-	/*
-	memcpy(this->_tagData._nickname, "&COLOR(10,255,255)", 18);
-	this->_tagData._nickname[9] = 'h';
-	this->_tagData._nickname[10] = 'i';
-	this->_tagData._nickname[11] = 0;
-	*/
 
 	this->FillQuestsGiants();
 	this->FillQuestsSwapForce();
