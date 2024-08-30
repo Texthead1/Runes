@@ -221,13 +221,7 @@ Sum of all experience values
 | 19    | 174300     |
 | 20    | 197500     |
 
-Skylanders SuperChargers Racing vehicle experience
-
-| Level | Experience |
-|-------|------------|
-| 1     | 0          |
-| 2     | 1000       |
-| 3     | 2000 (?)   |
+Note that vehicle experience in SuperChargers Racing uses the exact same experience amounts for levels, but instead of having different bytes for the 2012/13 experience etc... it's all self contained within the initial "2011" `uint24_t` - unlike regular figures, as all of the experience is stored in just one struct, the maximum value is the level 20 experience amount, 197500, not the "2011" level 10 experience amount, 33000.
 
 ### Area sequence
 
