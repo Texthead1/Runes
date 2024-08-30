@@ -17,14 +17,14 @@ The header is 0x20 bytes long.
 
 The Variant ID is a 16 bit long bit field. Note that with the way some tags were programmed, some do not fit with the criteria perfectly. Additionally, the flag that determines if the Skylander is a SuperCharger is never acted upon by the games and is essentially meaningless.
 
-| Shift | Mask | Type                | Description
-|-------|------|---------------------|-------------
-| 0x00  | 00FF | kTfbSpyroTag_DecoID | The [Deco ID](../include/kTfbSpyroTag_DecoID.hpp)
-| 0x08  | 0001 | bool                | Whether or not this Skylander is a SuperCharger
-| 0x09  | 0001 | bool                | Whether or not this Skylander possesses LightCore technology; includes LightCores, Giants, Battle Pieces, certain TT expansions, and Creation Crystals
-| 0x0A  | 0001 | bool                | Whether or not this Skylander is an in-game variant
-| 0x0B  | 0001 | bool                | Whether or not this Skylander is reposed, normally meaning it has a Wow Pow (decided from the year code)
-| 0x0C  | 000F | ESkylandersGame     | [Year code](../include/ESkylandersGame.hpp)
+| Shift | Mask | Type                  | Description
+|-------|------|-----------------------|-------------
+| 0x00  | 00FF | `kTfbSpyroTag_DecoID` | The [Deco ID](../include/kTfbSpyroTag_DecoID.hpp)
+| 0x08  | 0001 | `bool`                | Whether or not this Skylander is a SuperCharger
+| 0x09  | 0001 | `bool`                | Whether or not this Skylander possesses LightCore technology; includes LightCores, Giants, Battle Pieces, certain TT expansions, and Creation Crystals
+| 0x0A  | 0001 | `bool`                | Whether or not this Skylander is an in-game variant
+| 0x0B  | 0001 | `bool`                | Whether or not this Skylander is reposed, normally meaning it has a Wow Pow (decided from the year code)
+| 0x0C  | 000F | `ESkylandersGame`     | [Year code](../include/ESkylandersGame.hpp)
 
 ### Web Code
 
