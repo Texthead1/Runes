@@ -108,7 +108,7 @@ The full purpose of "Last platform identifier" bytes are quite unknown. When the
 
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
-|  0x00  | 08/24  |  0x00  | `uint16_t`             | SSCR [Vehicle Experience](#experience)
+|  0x00  | 08/24  |  0x00  | `uint24_t`             | SSCR [Vehicle Experience](#experience)
 |  0x05  | 08/24  |  0x05  | `uint32_t`             | Cumulative time in seconds
 |  0x09  | 08/24  |  0x09  | `uint8_t`              | [Area Sequence](#area-sequence)
 |  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
