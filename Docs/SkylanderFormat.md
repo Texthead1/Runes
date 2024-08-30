@@ -94,7 +94,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 | 0x0104   | 1D/39  | 0x04   | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
 |  0x0110  | 1E/3A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of sixth villain nickname
 |  0x0120  | 1F/3B  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of sixth villain nickname
-|  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | Something related to time spent on what platforms
+|  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | [Owner usage info](#owner-usage-info)
 
 ### Racing Pack
 
@@ -135,7 +135,7 @@ The full purpose of "Last platform identifier" bytes are quite unknown. When the
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | Something related to time spent on what platforms
+|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Owner usage info](#owner-usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
