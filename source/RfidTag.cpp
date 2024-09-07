@@ -1,10 +1,11 @@
 /*
 	File:
-		PortalTag.cpp
+		RfidTag.cpp
 
 	Description:
-		Data structures for the figures and a class for interfacing with figures.
+		Class for interacting with figure data.
 */
+
 
 #include "RfidTag.hpp"
 

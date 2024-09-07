@@ -1,4 +1,14 @@
-#pragma once
+/*
+	File:
+		RfidTag.cpp
+
+	Description:
+		Class for interacting with figure data.
+*/
+
+
+#ifndef RUNES_RFID_TAG_H
+#define RUNES_RFID_TAG_H
 
 #include <cstdint>
 
@@ -28,3 +38,5 @@ namespace Runes
 			uint8_t _tag[1024];
 	};
 }
+
+#endif // RUNES_RFID_TAG_H
