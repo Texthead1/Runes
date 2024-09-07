@@ -38,60 +38,60 @@ Moreover, you can look at `Runes::PortalTag::StoreHeader()` [here](../source/Por
 
 ### Trap
 
-* The 0x40 bytes from offset 0x00 is the Magic Moment Data (encompasses the actual trapped villain)
-* The 0x110 bytes from 0x40 is the Remaining Data (contains caches of previously trapped villains)
+* The 0x40 bytes from offset 0x00 is the Magic Moment Data (encompasses the actual trapped villain).
+* The 0x110 bytes from 0x40 is the Remaining Data (contains caches of previously trapped villains).
 
 NOTE: Some of this information may be incorrect and is actively being worked on.
 
 |  St_Off  | Block  | Bl_Off | Type                       | Description
 |----------|--------|--------|----------------------------|---------------
-|  0x0000  | 08/24  |  0x00  | `uint8_t`                  | Set to 1 if this Trap contains a pre-trapped variant Villain (?)
-|  0x0001  | 08/24  | 0x01   | `uint8_t`                  | Number of villains captured (?)
-|  0x0007  | 08/24  |  0x07  | `kTfbSpyroTag_VillainType` | Variant Villain ID, used if the primary villain ID is 0 (is 0x00 used to determine if to do?) (locked to element)
+|  0x0000  | 08/24  |  0x00  | `uint8_t`                  | Set to 1 if this Trap contains a pre-trapped variant villain, but not required for it to load
+|  0x0001  | 08/24  |  0x01  | `uint8_t`                  | Number of unique villains captured/stored
+|  0x0007  | 08/24  |  0x07  | `kTfbSpyroTag_VillainType` | Which villain to load as its variant. In SSC, used if the primary villain is 0x00, and only in SSC must be element locked
 |  0x0009  | 08/24  |  0x09  | `uint8_t`                  | [Area Sequence](#area-sequence)
 |  0x000A  | 08/24  |  0x0C  | `uint16_t`                 | crc16-ccit/false checksum of 0x110 bytes from 0x40 (so blocks 0D/29 -> 23/3F excluding access control blocks)
 |  0x000C  | 08/24  |  0x0A  | `uint16_t`                 | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
 |  0x000E  | 08/24  |  0x0E  | `uint16_t`                 | crc16-ccit/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
-|  0x0010  | 09/25  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the currently trapped villain, always checked first (not locked to element) (See [kTfbSpyroTag_VillainType.hpp](../include//kTfbSpyroTag_VillainType.hpp))
-| 0x0011   | 09/25  |  0x01  | `uint8_t`                  | Whether or not the villain is evolved (set to 1 if so)
-| 0x0012   | 09/25  | 0x02   | `uint8_t`                  | Villain Hat value
-| 0x0013   | 09/25  | 0x03   | `uint8_t`                  | [Villain Trinket value](#trinket-value)
-| 0x0014   | 09/25  | 0x04   | `wchar_t[6]`               | First 12 bytes of villain nickname
+|  0x0010  | 09/25  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the currently trapped villain (See [kTfbSpyroTag_VillainType.hpp](../include//kTfbSpyroTag_VillainType.hpp)). Note that any villain can be put in any trap
+|  0x0011  | 09/25  |  0x01  | `uint8_t`                  | Whether or not the villain is evolved (set to 1 if so)
+|  0x0012  | 09/25  |  0x02  | `uint8_t`                  | Villain Hat value
+|  0x0013  | 09/25  |  0x03  | `uint8_t`                  | [Villain Trinket value](#trinket-value)
+|  0x0014  | 09/25  |  0x04  | `wchar_t[6]`               | First 12 bytes of villain nickname
 |  0x0020  | 0A/26  |  0x00  | `wchar_t[8]`               | Next 16 bytes of villain nickname
 |  0x0030  | 0C/28  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of villain nickname
 |  0x0040  | 0D/29  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the second trapped villain (villain data is "cached" after being replaced, this is the first one of these)
-| 0x0041   | 0D/29  |  0x01  | `uint8_t`                  | Whether or not the second villain is evolved (set to 1 if so)
-| 0x0042   | 0D/29  | 0x02   | `uint8_t`                  | Second Villain Hat value
-| 0x0043   | 0D/29  | 0x03   | `uint8_t`                  | [Second Villain Trinket value](#trinket-value)
-| 0x0044   | 0D/29  | 0x04   | `wchar_t[6]`               | First 12 bytes of second villain nickname
+|  0x0041  | 0D/29  |  0x01  | `uint8_t`                  | Whether or not the second villain is evolved (set to 1 if so)
+|  0x0042  | 0D/29  |  0x02  | `uint8_t`                  | Second villain Hat value
+|  0x0043  | 0D/29  |  0x03  | `uint8_t`                  | [Second villain Trinket value](#trinket-value)
+|  0x0044  | 0D/29  |  0x04  | `wchar_t[6]`               | First 12 bytes of second villain nickname
 |  0x0050  | 0E/2A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of second villain nickname
 |  0x0060  | 10/2C  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of second villain nickname
 |  0x0070  | 11/2D  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the third trapped villain (villain data is "cached" after being replaced, this is the second one of these)
-| 0x0071   | 11/2D  |  0x01  | `uint8_t`                  | Whether or not the third villain is evolved (set to 1 if so)
-| 0x0072   | 11/2D  | 0x02   | `uint8_t`                  | Third Villain Hat value
-| 0x0073   | 11/2D  | 0x03   | `uint8_t`                  | [Third Villain Trinket value](#trinket-value)
-| 0x0074   | 11/2D  | 0x04   | `wchar_t[6]`               | First 12 bytes of third villain nickname
+|  0x0071  | 11/2D  |  0x01  | `uint8_t`                  | Whether or not the third villain is evolved (set to 1 if so)
+|  0x0072  | 11/2D  |  0x02  | `uint8_t`                  | Third villain Hat value
+|  0x0073  | 11/2D  |  0x03  | `uint8_t`                  | [Third villain Trinket value](#trinket-value)
+|  0x0074  | 11/2D  |  0x04  | `wchar_t[6]`               | First 12 bytes of third villain nickname
 |  0x0080  | 12/2E  |  0x00  | `wchar_t[8]`               | Next 16 bytes of third villain nickname
 |  0x0090  | 14/31  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of third villain nickname
 |  0x00A0  | 15/32  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the fourth trapped villain (villain data is "cached" after being replaced, this is the third one of these)
-| 0x00A1   | 15/32  |  0x01  | `uint8_t`                  | Whether or not the fourth villain is evolved (set to 1 if so)
-| 0x00A2   | 15/32  | 0x02   | `uint8_t`                  | Fourth Villain Hat value
-| 0x00A3   | 15/32  | 0x03   | `uint8_t`                  | [Fourth Villain Trinket value](#trinket-value)
-| 0x00A4   | 15/32  | 0x04   | `wchar_t[6]`               | First 12 bytes of fourth villain nickname
+|  0x00A1  | 15/32  |  0x01  | `uint8_t`                  | Whether or not the fourth villain is evolved (set to 1 if so)
+|  0x00A2  | 15/32  |  0x02  | `uint8_t`                  | Fourth villain Hat value
+|  0x00A3  | 15/32  |  0x03  | `uint8_t`                  | [Fourth villain Trinket value](#trinket-value)
+|  0x00A4  | 15/32  |  0x04  | `wchar_t[6]`               | First 12 bytes of fourth villain nickname
 |  0x00B0  | 16/33  |  0x00  | `wchar_t[8]`               | Next 16 bytes of fourth villain nickname
 |  0x00C0  | 18/35  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of fourth villain nickname
 |  0x00D0  | 19/35  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the fifth trapped villain (villain data is "cached" after being replaced, this is the fourth one of these)
-| 0x00D1   | 19/35  |  0x01  | `uint8_t`                  | Whether or not the fifth villain is evolved (set to 1 if so)
-| 0x00D2   | 19/35  | 0x02   | `uint8_t`                  | Fifth Villain Hat value
-| 0x00D3   | 19/35  | 0x03   | `uint8_t`                  | [Fifth Villain Trinket value](#trinket-value)
-| 0x00D4   | 19/35  | 0x04   | `wchar_t[6]`               | First 12 bytes of fifth villain nickname
+|  0x00D1  | 19/35  |  0x01  | `uint8_t`                  | Whether or not the fifth villain is evolved (set to 1 if so)
+|  0x00D2  | 19/35  |  0x02  | `uint8_t`                  | Fifth villain Hat value
+|  0x00D3  | 19/35  |  0x03  | `uint8_t`                  | [Fifth villain Trinket value](#trinket-value)
+|  0x00D4  | 19/35  |  0x04  | `wchar_t[6]`               | First 12 bytes of fifth villain nickname
 |  0x00E0  | 1A/36  |  0x00  | `wchar_t[8]`               | Next 16 bytes of fifth villain nickname
 |  0x00F0  | 1C/38  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of fifth villain nickname
 |  0x0100  | 1D/39  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the sixth trapped villain (villain data is "cached" after being replaced, this is the fifth one of these)
-| 0x0101   | 1D/39  |  0x01  | `uint8_t`                  | Whether or not the sixth villain is evolved (set to 1 if so)
-| 0x0102   | 1D/39  | 0x02   | `uint8_t`                  | Sixth Villain Hat value
-| 0x0103   | 1D/39  | 0x03   | `uint8_t`                  | [Sixth Villain Trinket value](#trinket-value)
-| 0x0104   | 1D/39  | 0x04   | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
+|  0x0101  | 1D/39  |  0x01  | `uint8_t`                  | Whether or not the sixth villain is evolved (set to 1 if so)
+|  0x0102  | 1D/39  |  0x02  | `uint8_t`                  | Sixth villain Hat value
+|  0x0103  | 1D/39  |  0x03  | `uint8_t`                  | [Sixth villain Trinket value](#trinket-value)
+|  0x0104  | 1D/39  |  0x04  | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
 |  0x0110  | 1E/3A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of sixth villain nickname
 |  0x0120  | 1F/3B  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of sixth villain nickname
 |  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | [Owner usage info](#owner-usage-info)
@@ -144,11 +144,11 @@ The full purpose of "Last platform identifier" bytes are quite unknown. When the
 
 ### Not a Trap or Vehicle
 
-Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used by the game internally
-* The 0x40 bytes from offset 0x00 are the first 0x40 bytes of tfbSpyroTag_MagicMomentAll
-* The 0x30 bytes from offset 0x40 are the first 0x30 bytes of tfbSpyroTag_RemainingDataAll
-* The 0x10 bytes from offset 0x70 are the remaining 0x10 bytes of tfbSpyroTag_MagicMomentAll
-* The 0x30 bytes from offset 0x80 are the remaining 0x30 bytes of tfbSpyroTag_RemainingDataAll
+Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used by the game internally.
+* The 0x40 bytes from offset 0x00 are the first 0x40 bytes of tfbSpyroTag_MagicMomentAll.
+* The 0x30 bytes from offset 0x40 are the first 0x30 bytes of tfbSpyroTag_RemainingDataAll.
+* The 0x10 bytes from offset 0x70 are the remaining 0x10 bytes of tfbSpyroTag_MagicMomentAll.
+* The 0x30 bytes from offset 0x80 are the remaining 0x30 bytes of tfbSpyroTag_RemainingDataAll.
 
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
@@ -180,6 +180,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Owner usage info](#owner-usage-info)
+|  0x6C  | 10/2C  |  0x0C  | `uint32_t`             | "Challenge Level". Purpose unknown
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (Max is 63500 for ssf characters onwards, for ssa and giants it's 65535)
@@ -221,19 +222,19 @@ Sum of all experience values
 | 19    | 174300     |
 | 20    | 197500     |
 
-Note that vehicle experience in SuperChargers Racing uses the exact same experience amounts for levels, but instead of having different bytes for the 2012/13 experience etc... it's all self contained within the initial "2011" `uint24_t` - unlike regular figures, as all of the experience is stored in just one struct, the maximum value is the level 20 experience amount, 197500, not the "2011" level 10 experience amount, 33000.
+Note that vehicle experience in SuperChargers Racing uses the exact same experience amounts for levels, but instead of having different bytes for the 2012/13 experience etc... it is all self contained within the initial "2011" `uint24_t` - so unlike regular figures, the maximum value is the level 20 experience amount, 197500, not the "2011" level 10 experience amount, 33000.
 
 ### Area sequence
 
 * The core skylanders at least store the tfbSpyroTagData struct twice, once from block 0x08/0x24 and again from block 0x11/0x2D, these are called data regions or data areas.
 * The recently written to area is the one with the area sequence value that is one higher than the other, remember to take overflows into accounts (e.g., an area sequence of 0 is considered higher than one of 255).
 * When writing to a figure, the game will switch to the lower area sequence value and increment it by 2 (so that it becomes higher than the other one).
-* Note that there are two area sequences, one for blocks 0x08/0x24->0x10/0x2C and another for blocks 0x11/0x2D->0x15/0x31 (inclusive)
+* Note that there are two area sequences, one for blocks 0x08/0x24->0x10/0x2C and another for blocks 0x11/0x2D->0x15/0x31 (inclusive).
 
 ### Hat value
 
-* Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat
-* [hat enum](../include/kTfbSpyroTag_HatType.hpp)
+* Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
+* [hat enum](../include/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
 * The unused hat ids are unused.
 * The padding hat ids were never meant to be used in the first place.
@@ -597,7 +598,7 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 
 ### Owner usage info
 
-Still quite unknown, but seems to have a pattern. Although I've seen it take up 16 bytes, not just the 9 bytes mentioned beforehand.
+Still quite unknown, but seems to have a pattern. Although I've seen more than just the 9 bytes stated in this block to be changed, which could be irrelevant.
 
 How it is laid of as a whole doesn't seem clear, but somewhere it'd presumably store an identifier for a specific instance of a game that has used the toy (doesn't seem to be ownership however, just placed down). Following this is some sort of `uint16_t` (?) value to indicate how much times the figure's data regions have been modified - appearing to to increment whenever the [Area Sequence](#area-sequence) bytes are updated (which dictates that the region was written to/modified). If both data area sequences are updated in one write, it'll increment by two instead. As I said, the layout of this is quite unknown.
 
@@ -606,8 +607,8 @@ How it is laid of as a whole doesn't seem clear, but somewhere it'd presumably s
 * Heroic Challenges are sprawled out over 2 different areas. One `uint32_t` at block 0x0d/0x29, offset 0x06, and another `uint24_t` at block 0x12/0x2e, offset 0x04.
 * The first one of these accords to the Heroic Challenges in Spyro's Adventure, and the second one the Heroic Challenges introduced in Giants.
 * Each bit corresponds to a boolean whether or not the heroic challenge has been complete by the Skylander.
-* Their offset into the bit field is the same as their internally stored identifier. For Giants Heroics, add 32 to their offset to reveal the true heroic ID. This essentially means that if you append the Giants heroic bytes to the start of the SSA heroic bytes, then using their ID would give you the corresponding bit
-* Assume `SSA` refers to the 4 bytes for SSA heroics, and `SG` for the other 3 bytes
+* Their offset into the bit field is the same as their internally stored identifier. For Giants Heroics, add 32 to their offset to reveal the true heroic ID. This essentially means that if you append the Giants heroic bytes to the start of the SSA heroic bytes, then using their ID would give you the corresponding bit.
+* Assume `SSA` refers to the 4 bytes for SSA heroics, and `SG` for the other 3 bytes.
 
 | Shift           | ID | Description
 |-----------------|----|---------------------------
@@ -713,7 +714,7 @@ Swap Force Quests
 
 ### Captured Trophy Villains
 
-16 bit long (?) bit field field that represents which villains has been unlocked within the cup. Note that none of this exists for the Kaos Trophy; he is unlocked just by reading the figure on the Portal.
+16 bit long bit field that represents which villains has been unlocked within the cup. Note that none of this exists for the Kaos Trophy; he is unlocked just by reading the figure on the Portal.
 
 Road Racers (Land villains)
 * Bit 0: Glumshanks in Steam Roller
@@ -774,172 +775,171 @@ Oddly, each level of the vehicle's shield and weapon occupies it's own bit, even
 
 ### Vehicle Topper
 
-| ID  | Topper Name
-|-----|----------------
-| 00  | None
-| 01  | The Darkness
-| 02  | Lucky Coin
-| 03  | King-Sized Bucket
-| 04  | Popcorn
-| 05  | Chicken Leg
-| 06  | Pinata
-| 07  | Bag of Gold
-| 08  | Chompy
-| 09  | Balloon
-| 0A  | Ripe Banana
-| 0B  | Beach Ball
-| 0C  | Teddy Hat
-| 0D  | Corn on the Cob
-| 0E  | Dragonfire Cannon
-| 0F  | Eon's Sock
-| 10  | Eon's Statue
-| 11  | Kaos Statue
-| 12  | Spitfire Doll
-| 13  | Golden Piggy Bank
-| 14  | Raccoon Tail
-| 15  | Rasta Hat
-| 16  | Party Sheep
-| 17  | Snap Shot Doll
-| 18  | Space Helmet
-| 19  | Squeeks Jr.
-| 1A  | Tiki Speaky
-| 1B  | Traffic Cone
-| 1C  | Tree Rex Doll
-| 1D  | Tricorn Hat
-| 1E  | Trigger Happy Doll
-| 1F  | Wash Buckler Doll
-| 20  | Weathervane
-| 21  | Eon's Helm
-| 22  | Pluck
-| 23  | Siren
-| 24  | Ghost Topper
-| 25  | Cartoon Doll
-| 26  | Kaos Punching Bag
-| 27  | Cup O' Cocoa
-| 28  | Hand of Fate
-| 29  | Like Clockwork
-| 2A  | Empire of Ice
-| 2B  | Pizza
-| 2C  | Yeti Doll
-| 2D  | Kaos Sigil
-| 2E  | Cowboy Hat
-| 2F  | Eyeball Ball
-| 30  | Asteroid
-| 31  | Hook Hand
-| 32  | The Mighty Atom
-| 33  | Holiday Tree
-| 34  | Shuriken
-| 35  | Mechanical Gear
-| 36  | Royal Crown
-| 37  | Fire Hydrant
-
+| ID | Topper Name
+|----|----------------
+| 00 | None
+| 01 | The Darkness
+| 02 | Lucky Coin
+| 03 | King-Sized Bucket
+| 04 | Popcorn
+| 05 | Chicken Leg
+| 06 | Pinata
+| 07 | Bag of Gold
+| 08 | Chompy
+| 09 | Balloon
+| 0A | Ripe Banana
+| 0B | Beach Ball
+| 0C | Teddy Hat
+| 0D | Corn on the Cob
+| 0E | Dragonfire Cannon
+| 0F | Eon's Sock
+| 10 | Eon's Statue
+| 11 | Kaos Statue
+| 12 | Spitfire Doll
+| 13 | Golden Piggy Bank
+| 14 | Raccoon Tail
+| 15 | Rasta Hat
+| 16 | Party Sheep
+| 17 | Snap Shot Doll
+| 18 | Space Helmet
+| 19 | Squeeks Jr.
+| 1A | Tiki Speaky
+| 1B | Traffic Cone
+| 1C | Tree Rex Doll
+| 1D | Tricorn Hat
+| 1E | Trigger Happy Doll
+| 1F | Wash Buckler Doll
+| 20 | Weathervane
+| 21 | Eon's Helm
+| 22 | Pluck
+| 23 | Siren
+| 24 | Ghost Topper
+| 25 | Cartoon Doll
+| 26 | Kaos Punching Bag
+| 27 | Cup O' Cocoa
+| 28 | Hand of Fate
+| 29 | Like Clockwork
+| 2A | Empire of Ice
+| 2B | Pizza
+| 2C | Yeti Doll
+| 2D | Kaos Sigil
+| 2E | Cowboy Hat
+| 2F | Eyeball Ball
+| 30 | Asteroid
+| 31 | Hook Hand
+| 32 | The Mighty Atom
+| 33 | Holiday Tree
+| 34 | Shuriken
+| 35 | Mechanical Gear
+| 36 | Royal Crown
+| 37 | Fire Hydrant
 
 ### Vehicle Shout
 
-| ID  | Name
-|-----|-------------------
-| 00  | None
-| 01  | Sneer: Cali
-| 02  | Jeer: Cali
-| 03  | Cheer: Cali
-| 04  | Back off Bear
-| 05  | Breakdown
-| 06  | Pull Over!
-| 07  | Evil Eye
-| 08  | Bird Brain
-| 09  | The Ultimate Evil!
-| 0A  | Leave Me Alone Lion
-| 0B  | Going Nuclear
-| 0C  | Sneer: Sharpfin
-| 0D  | The Darkness
-| 0E  | Why I Oughta
-| 0F  | Police Siren
-| 10  | Fire It Up
-| 11  | Sneer: Buzz
-| 12  | Call Me!
-| 13  | Car Trouble
-| 14  | Sneer: Pomfrey
-| 15  | Yield!
-| 16  | Hype Train
-| 17  | Doggin' After Ya
-| 18  | Crash and Burn
-| 19  | Earthquake
-| 1A  | Flat Tire
-| 1B  | Fly Trap
-| 1C  | Sneer: Glumshanks
-| 1D  | Sneer: Hugo
-| 1E  | Sneer: Queen Cumulus
-| 1F  | Ninja Stars
-| 20  | AAAAAA…
-| 21  | Jeer: Sharpfin
-| 22  | Red Means Go Right?
-| 23  | The Final Countdown
-| 24  | Rush Hour
-| 25  | Sneer: Tessa
-| 26  | Tidal Wave
-| 27  | Toasty!
-| 28  | All Spun Up
-| 29  | Under Construction
-| 2A  | Howlin' Good
-| 2B  | Cheer: Buzz
-| 2C  | Cheer: Pomfrey
-| 2D  | Checkered Flag
-| 2E  | Eon Impersonator
-| 2F  | Cheer: Flynn
-| 30  | Cheer: Glumshanks
-| 31  | Wink Wink Nudge Nudge
-| 32  | Silver Bells
-| 33  | Cheer: Queen Cumulus
-| 34  | Cheer: Persephone
-| 35  | Cheer: Sharpfin
-| 36  | Cheer: Hugo
-| 37  | :)
-| 38  | Cheer: Tessa
-| 39  | First Place Trophy
-| 3A  | Big Bell
-| 3B  | Rude Chompy
-| 3C  | Your Robot Son
-| 3D  | Cry Baby
-| 3E  | The Gulper
-| 3F  | Sweet Innocence
-| 40  | Diplomacy
-| 41  | The Prince of Pontification
-| 42  | Scandalous!
-| 43  | Like Clockwork
-| 44  | Ancient Energy
-| 45  | Banana Peel
-| 46  | Bashful Face
-| 47  | Boo
-| 48  | Boo Too
-| 49  | Jeer: Buzz
-| 4A  | Catchy Jingle
-| 4B  | Jeer: Pomfrey
-| 4C  | Laugh It Up
-| 4D  | Cow Crossing
-| 4E  | Cuckoo Cuckoo
-| 4F  | Rude Dolphin
-| 50  | Jack the Donkey
-| 51  | Quack!
-| 52  | Trumpet Trunk
-| 53  | Blub-Blub
-| 54  | Jeer: Flynn
-| 55  | Jeer: Glumshanks
-| 56  | Indignant Goose
-| 57  | Ham!
-| 58  | Horsin' Around
-| 59  | Jeer: Hugo
-| 5A  | Kissy Face
-| 5B  | Purrfect
-| 5C  | Lockpick Gremlin
-| 5D  | Nature Calls
-| 5E  | Jeer: Queen Cumulus
-| 5F  | Oop Oop Eek
-| 60  | Tauntalizing
-| 61  | Soda Pop
-| 62  | Wow!
-| 63  | Baa-Aaa!
-| 64  | Squeaky Toy
-| 65  | Jeer: Tessa
+| ID | Name
+|----|-------------------
+| 00 | None
+| 01 | Sneer: Cali
+| 02 | Jeer: Cali
+| 03 | Cheer: Cali
+| 04 | Back off Bear
+| 05 | Breakdown
+| 06 | Pull Over!
+| 07 | Evil Eye
+| 08 | Bird Brain
+| 09 | The Ultimate Evil!
+| 0A | Leave Me Alone Lion
+| 0B | Going Nuclear
+| 0C | Sneer: Sharpfin
+| 0D | The Darkness
+| 0E | Why I Oughta
+| 0F | Police Siren
+| 10 | Fire It Up
+| 11 | Sneer: Buzz
+| 12 | Call Me!
+| 13 | Car Trouble
+| 14 | Sneer: Pomfrey
+| 15 | Yield!
+| 16 | Hype Train
+| 17 | Doggin' After Ya
+| 18 | Crash and Burn
+| 19 | Earthquake
+| 1A | Flat Tire
+| 1B | Fly Trap
+| 1C | Sneer: Glumshanks
+| 1D | Sneer: Hugo
+| 1E | Sneer: Queen Cumulus
+| 1F | Ninja Stars
+| 20 | AAAAAA…
+| 21 | Jeer: Sharpfin
+| 22 | Red Means Go Right?
+| 23 | The Final Countdown
+| 24 | Rush Hour
+| 25 | Sneer: Tessa
+| 26 | Tidal Wave
+| 27 | Toasty!
+| 28 | All Spun Up
+| 29 | Under Construction
+| 2A | Howlin' Good
+| 2B | Cheer: Buzz
+| 2C | Cheer: Pomfrey
+| 2D | Checkered Flag
+| 2E | Eon Impersonator
+| 2F | Cheer: Flynn
+| 30 | Cheer: Glumshanks
+| 31 | Wink Wink Nudge Nudge
+| 32 | Silver Bells
+| 33 | Cheer: Queen Cumulus
+| 34 | Cheer: Persephone
+| 35 | Cheer: Sharpfin
+| 36 | Cheer: Hugo
+| 37 | :)
+| 38 | Cheer: Tessa
+| 39 | First Place Trophy
+| 3A | Big Bell
+| 3B | Rude Chompy
+| 3C | Your Robot Son
+| 3D | Cry Baby
+| 3E | The Gulper
+| 3F | Sweet Innocence
+| 40 | Diplomacy
+| 41 | The Prince of Pontification
+| 42 | Scandalous!
+| 43 | Like Clockwork
+| 44 | Ancient Energy
+| 45 | Banana Peel
+| 46 | Bashful Face
+| 47 | Boo
+| 48 | Boo Too
+| 49 | Jeer: Buzz
+| 4A | Catchy Jingle
+| 4B | Jeer: Pomfrey
+| 4C | Laugh It Up
+| 4D | Cow Crossing
+| 4E | Cuckoo Cuckoo
+| 4F | Rude Dolphin
+| 50 | Jack the Donkey
+| 51 | Quack!
+| 52 | Trumpet Trunk
+| 53 | Blub-Blub
+| 54 | Jeer: Flynn
+| 55 | Jeer: Glumshanks
+| 56 | Indignant Goose
+| 57 | Ham!
+| 58 | Horsin' Around
+| 59 | Jeer: Hugo
+| 5A | Kissy Face
+| 5B | Purrfect
+| 5C | Lockpick Gremlin
+| 5D | Nature Calls
+| 5E | Jeer: Queen Cumulus
+| 5F | Oop Oop Eek
+| 60 | Tauntalizing
+| 61 | Soda Pop
+| 62 | Wow!
+| 63 | Baa-Aaa!
+| 64 | Squeaky Toy
+| 65 | Jeer: Tessa
 
 ### Vehicle Mod Flags
 
