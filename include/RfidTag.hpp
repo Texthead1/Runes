@@ -8,6 +8,9 @@
 
 namespace Runes
 {
+	// This class represents a figure's raw data, and provides an interface for
+	// reading/writing to and from it, with support for different data regions
+	// and encryption/decryption
 	class RfidTag
 	{
 		public:
