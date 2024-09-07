@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <iostream>
+#include <cstring>
 
 uint8_t salt[0x35];
 bool saltReady = false;
@@ -70,9 +71,15 @@ void Runes::readSalt()
 		return;
 	}
 
+	// Attempt to use this key on a block of data, assume this data is 0 when decrypted
+
+	// compute the key..
+
 	uint8_t keyCheck[0x56];
+	memset(keyCheck, 0x00, sizeof(keyCheck));
+
 	uint8_t keyHash[0x10];
-	uint8_t cData[0x10] { 88, 244, 167, 65, 134, 93, 251, 162, 116, 243, 62, 228, 82, 19, 212, 57 };
+	uint8_t cData[0x10] {0x58, 0xF4, 0xA7, 0x41, 0x86, 0x5D, 0xFB, 0xA2, 0x74, 0xF3, 0x3E, 0xE4, 0x52, 0x13, 0xD4, 0x39};
 	keyCheck[0x20] = 8;
 	memcpy(keyCheck + 0x21, salt, 0x35);
 
@@ -81,21 +88,16 @@ void Runes::readSalt()
 	MD5Digest(md5, keyCheck, 0x56);
 	MD5Close(md5, keyHash);
 
+	// decrypt the data...
+
 	uint8_t pData[0x10];
 
 	unsigned long rk[RKLENGTH(128)];
 	uint32_t rounds = rijndaelSetupDecrypt(rk, keyHash, 128);
 	rijndaelDecrypt(rk, rounds, cData, pData);
 
-	bool zeroOut = true;
-    for (size_t i = 0; i < sizeof(pData); ++i)
-	{
-        if (pData[i] != 0)
-		{
-            zeroOut = false;
-            break;
-        }
-    }
+	// ensure the block is zeroed out
+	bool zeroOut = (*(uint64_t*)&pData == 0) && (*(uint64_t*)&pData[8] == 0);
 
 	if (!zeroOut)
 	{
