@@ -1,12 +1,33 @@
+/*
+	File:
+		RfidTag.cpp
+
+	Description:
+		Class for interacting with figure data.
+*/
+
+
 #include "RfidTag.hpp"
+
 #include <iostream>
 
 #include "PortalAlgos.hpp"
 
+
+
+//=============================================================================
+// isAccessControlBlock: Determines whether this block is an access control
+// block.
+//=============================================================================
 bool Runes::RfidTag::isAccessControlBlock(int blockId)
 {
 	return (blockId % 4) == 3;
 }
+
+
+//=============================================================================
+// ReadFromFile: reads a tag from a file.
+//=============================================================================
 bool Runes::RfidTag::ReadFromFile(const char* path)
 {
 	FILE* f = fopen(path, "rb");
@@ -26,6 +47,11 @@ bool Runes::RfidTag::ReadFromFile(const char* path)
 	fclose(f);
 	return false;
 }
+
+
+//=============================================================================
+// SaveToFile: Saves a tag to a file.
+//=============================================================================
 bool Runes::RfidTag::SaveToFile(const char* path)
 {
 	FILE* f = fopen(path, "wb");
@@ -46,10 +72,20 @@ bool Runes::RfidTag::SaveToFile(const char* path)
 	fclose(f);
 	return false;
 }
+
+
+//=============================================================================
+// shouldEncrypt: Determines whether a given block should be encrypted or not.
+//=============================================================================
 bool Runes::RfidTag::shouldEncrypt(uint8_t blockId)
 {
 	return blockId >= 8 && !Runes::RfidTag::isAccessControlBlock(blockId);
 }
+
+
+//=============================================================================
+// decrypt: Decrypts the figure data.
+//=============================================================================
 void Runes::RfidTag::decrypt()
 {
 	uint8_t blockData[BLOCK_SIZE];
@@ -63,6 +99,11 @@ void Runes::RfidTag::decrypt()
 		memcpy(dst, blockData, BLOCK_SIZE);
 	}
 }
+
+
+//=============================================================================
+// CopyBlocks: Copy the blocks from the tag to a destination buffer.
+//=============================================================================
 bool Runes::RfidTag::CopyBlocks(void* dst, uint8_t blockId, uint8_t numBlocks)
 {
 	uint8_t currentBlock = blockId;
@@ -88,10 +129,20 @@ bool Runes::RfidTag::CopyBlocks(void* dst, uint8_t blockId, uint8_t numBlocks)
 	}
 	return blocksRead == numBlocks;
 }
+
+
+//=============================================================================
+// AllZero: Determine whether a given block is entirely zeroed out .
+//=============================================================================
 bool Runes::RfidTag::AllZero(uint8_t* block)
 {
 	return (*(uint64_t*)block + *((uint64_t*)(block + 8))) == 0;
 }
+
+
+//=============================================================================
+// SaveBlocks: Saves data from a source buffer to the tag.
+//=============================================================================
 bool Runes::RfidTag::SaveBlocks(void* src, uint8_t blockId, uint8_t numBlocks)
 {
 	uint8_t currentBlock = blockId;
@@ -118,6 +169,11 @@ bool Runes::RfidTag::SaveBlocks(void* src, uint8_t blockId, uint8_t numBlocks)
 	}
 	return blocksWritten == numBlocks;
 }
+
+
+//=============================================================================
+// DetermineActiveDataRegion0: Get the active data area for region 0.
+//=============================================================================
 uint8_t Runes::RfidTag::DetermineActiveDataRegion0()
 {
 	uint8_t areaSequences[2];
@@ -130,6 +186,11 @@ uint8_t Runes::RfidTag::DetermineActiveDataRegion0()
 	if((areaSequences[1] + 1) == areaSequences[0]) return 0;	//Use area 0
 	return -1;
 }
+
+
+//=============================================================================
+// DetermineActiveDataRegion1: Get the active data area for region 1.
+//=============================================================================
 uint8_t Runes::RfidTag::DetermineActiveDataRegion1()
 {
 	uint8_t areaSequences[2];

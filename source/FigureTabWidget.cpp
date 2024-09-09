@@ -1,3 +1,12 @@
+/*
+	File:
+		FigureTabWidget.cpp
+
+	Description:
+		UI Widget for a figure.
+*/
+
+
 #include "FigureTabWidget.hpp"
 
 #include <QFormLayout>
@@ -17,6 +26,11 @@
 
 #define intToChecked(value) ((value) == 1 ? Qt::Checked : Qt::Unchecked)
 
+
+
+//=============================================================================
+// FigureTabWidget: Constructor for the FigureTabWidget.
+//=============================================================================
 FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent) : QWidget(parent)
 {
 	this->_tag = tag;
@@ -104,6 +118,11 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 
 	updateFields();
 }
+
+
+//=============================================================================
+// macros for defining elemental quest inputs easier.
+//=============================================================================
 #define defineElementalSpinQuest(form, generic, questGame, field, index, max, name) \
 	QSpinBox* field = new QSpinBox(); \
 	this->generic = field; \
@@ -123,8 +142,14 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	}); \
 	this->form->insertRow(index, tr(name), this->generic);
+
+
+//=============================================================================
+// updateFields: Update the input fields with data from the figure.
+//=============================================================================
 void FigureTabWidget::updateFields()
 {
+	// Update the title of the widget with the figure name
 	Runes::FigureToyData* figure = Runes::ToyDataManager::getInstance()->LookupCharacter(this->_tag->_toyType);
 	if(figure != nullptr)
 	{
@@ -144,15 +169,21 @@ void FigureTabWidget::updateFields()
 		}
 		this->_lblToyName->setText(tr(("<h2>" + toyName + "</h2>").c_str()));   //This is probably bad
 
+		// Update the time played
+
 		this->_lblTimePlayed->setText(QString("Time Played: %1h %2m %3s").arg(
 			QString::number(this->_tag->_cumulativeTime / 3600),
 			QString::number((this->_tag->_cumulativeTime % 3600) / 60),
 			QString::number(this->_tag->_cumulativeTime % 60)
 		));
 
+		// Update the level number
+
 		this->_lblLevel->setText(QString("Level: %1").arg(
 			QString::number(this->_tag->ComputeLevel()).rightJustified(2, '0')
 		));
+
+		// Update the first used time
 
 		this->_lblFirstTouched->setText(QString("First Touched: %1-%2-%3 %4:%5").arg(
 			QString::number(this->_tag->_firstUsed._year).rightJustified(4, '0'),
@@ -162,6 +193,8 @@ void FigureTabWidget::updateFields()
 			QString::number(this->_tag->_firstUsed._minute).rightJustified(2, '0')
 		));
 
+		// Update the last used time
+
 		this->_lblRecentlyTouched->setText(QString("Last Touched: %1-%2-%3 %4:%5").arg(
 			QString::number(this->_tag->_recentlyUsed._year).rightJustified(4, '0'),
 			QString::number(this->_tag->_recentlyUsed._month).rightJustified(2, '0'),
@@ -169,6 +202,8 @@ void FigureTabWidget::updateFields()
 			QString::number(this->_tag->_recentlyUsed._hour).rightJustified(2, '0'),
 			QString::number(this->_tag->_recentlyUsed._minute).rightJustified(2, '0')
 		));
+
+		// Update which elemental quest input to use
 
 		this->_subGiantsQuests->removeRow(this->_wdGiantsElementalQuest1);
 		this->_subGiantsQuests->removeRow(this->_wdGiantsElementalQuest2);
@@ -250,10 +285,15 @@ void FigureTabWidget::updateFields()
 		this->_wdGiantsElementalQuest1->setVisible(true);
 		this->_wdGiantsElementalQuest2->setVisible(true);
 	}
+
+	// Basic inputs
+
 	this->_spinExp->setValue(this->_tag->_exp);
 	this->_spinMoney->setValue(this->_tag->_coins);
 	this->_spinHeroPoints->setValue(this->_tag->_heroPoints);
 	this->_cmbHat->setCurrentIndex(this->_tag->_hatType);
+
+	// Update the quest fields for giants
 
 	this->_spinGiantsMonsterMasher->setValue(this->_tag->_giantsQuests[0]);
 	this->_spinGiantsBattleChamp->setValue(this->_tag->_giantsQuests[1]);
@@ -262,6 +302,8 @@ void FigureTabWidget::updateFields()
 	this->_chkGiantsArenaArtist->setCheckState(intToChecked(this->_tag->_giantsQuests[4]));
 	this->_spinGiantsElementalist->setValue(this->_tag->_giantsQuests[5]);
 	this->_spinGiantsIndividualQuest->setValue(this->_tag->_giantsQuests[8]);
+
+	// Update the quest fields for swap force
 
 	this->_spinSwapForceBadguyBasher->setValue(this->_tag->_swapforceQuests[0]);
 	this->_spinSwapForceFruitFrontiersman->setValue(this->_tag->_swapforceQuests[1]);
@@ -272,6 +314,10 @@ void FigureTabWidget::updateFields()
 	this->_spinSwapForceIndividual->setValue(this->_tag->_swapforceQuests[8]);
 }
 
+
+//=============================================================================
+// macros for defining base quest inputs easier.
+//=============================================================================
 #define defineSpinQuest(questGame, field, index, max) \
 	this->field = new QSpinBox(); \
 	this->field->setRange(0, max); \
@@ -285,6 +331,11 @@ void FigureTabWidget::updateFields()
 	{ \
 		this->_tag->questGame[index] = newState == Qt::Checked ? 1 : 0; \
 	});
+
+
+//=============================================================================
+// initGiantsQuests: Initialize the ui widgets for giants quests.
+//=============================================================================
 void FigureTabWidget::initGiantsQuests()
 {
 	_subGiantsQuests = new QFormLayout();
@@ -306,6 +357,11 @@ void FigureTabWidget::initGiantsQuests()
 	_subGiantsQuests->addRow(tr("Elemental Quest 2"), this->_sgInvalidElement2);
 	_subGiantsQuests->addRow(tr("Individual Quest"), this->_spinGiantsIndividualQuest);
 }
+
+
+//=============================================================================
+// initSwapForceQuests: Initialize the ui widgets for swap force quests.
+//=============================================================================
 void FigureTabWidget::initSwapForceQuests()
 {
 	_subSwapForceQuests = new QFormLayout();

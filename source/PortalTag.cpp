@@ -1,3 +1,11 @@
+/*
+	File:
+		PortalTag.cpp
+
+	Description:
+		Data structures for the figures and a class for interfacing with figures.
+*/
+
 #include "PortalTag.hpp"
 #include "toydata.hpp"
 #include "Constants.hpp"
@@ -7,9 +15,18 @@
 #include <cstring>
 #include "3rd_party/crc.h"
 
+// Helper macro for dealing with 24 bit ints
 #define to24(low, high) ((uint32_t)(low) + ((uint32_t)(high) << 16))
+
+// Helper macro for dealing with bitmasks
 #define bitsToMask(bits) (0xFFFFFFFFFFFFFFFF >> (64 - (bits)))
 
+
+
+//=============================================================================
+// DecodeSubtype: Takes an input variant ID and decomposes it into its
+// individual parts.
+//=============================================================================
 void Runes::PortalTag::DecodeSubtype(uint16_t varId, ESkylandersGame* esg, bool* fullAltDeco, bool* reposeFlag, bool* lightcore, kTfbSpyroTag_DecoID* decoId)
 {
 	*esg = (ESkylandersGame)((varId >> 12) & 0xF);
@@ -18,10 +35,23 @@ void Runes::PortalTag::DecodeSubtype(uint16_t varId, ESkylandersGame* esg, bool*
 	*lightcore = (varId >> 9) & 1;
 	*decoId = (kTfbSpyroTag_DecoID)(varId & 0xFF);
 }
+
+
+
+//=============================================================================
+// DecodeSubtype: Takes this instance's variant id and decomposes it into its
+// individual parts.
+//=============================================================================
 void Runes::PortalTag::DecodeSubtype(ESkylandersGame* esg, bool* fullAltDeco, bool* reposeFlag, bool* lightcore, kTfbSpyroTag_DecoID* decoId)
 {
 	DecodeSubtype(this->_tagHeader._subType, esg, fullAltDeco, reposeFlag, lightcore, decoId);
 }
+
+
+
+//=============================================================================
+// DebugPrintHeader: Prints information from the PortalTagHeader
+//=============================================================================
 void Runes::PortalTag::DebugPrintHeader()
 {
 	ESkylandersGame esg;
@@ -36,9 +66,15 @@ void Runes::PortalTag::DebugPrintHeader()
 	printf("_toyType: %04X\n", this->_tagHeader._toyType);
 	printf("_toyName: %s\n", toyData->_toyName.get().c_str());
 	printf("_subType:\n\t_yearCode: %d\n\t_fullAltDeco: %hhu\n\t_reposeFlag: %hhu\n\t_lightcore: %hhu\n\t_decoId: %02X\n\t_variantText: %s\n\t_toyName: %s\n", esg, fullAltDeco, reposeFlag, lightcore, decoId, (varData ? varData->_variantText.get().c_str() : "N/A"), (varData ? varData->_toyName.get().c_str() : "N/A"));
-	printf("_tradingCardId: %08X%08X\n", this->_tagHeader._tradingCardId2, this->_tagHeader._tradingCardId1);
+	printf("_tradingCardId: %016llX\n", this->_tagHeader._tradingCardId);
 	printf("_webCode: %s\n", this->_webCode);
 }
+
+
+
+//=============================================================================
+// DebugSaveTagData: Dumps the raw tagdata struct into a file
+//=============================================================================
 void Runes::PortalTag::DebugSaveTagData()
 {
 	std::string fileName(Runes::ToyDataManager::getInstance()->LookupCharacter(this->_toyType)->_toyName.get());
@@ -48,6 +84,13 @@ void Runes::PortalTag::DebugSaveTagData()
 	fflush(f);
 	fclose(f);
 }
+
+
+
+//=============================================================================
+// StoreHeader: Takes information from the figure tag header and reads it into
+// this instance
+//=============================================================================
 void Runes::PortalTag::StoreHeader()
 {
 	this->_rfidTag->CopyBlocks(&this->_tagHeader, 0, 2);
@@ -61,8 +104,7 @@ void Runes::PortalTag::StoreHeader()
 	//basically 0->9, A->Z except not 0, 1, or any vowels
 	const char* webCodeTable = "23456789BCDFGHJKLMNPQRSTVWXYZ";
 
-	//the original trading card id is split up into 2 uints because of alignment
-	uint64_t tradingCardId = ((uint64_t)this->_tagHeader._tradingCardId2 << 0x20) | this->_tagHeader._tradingCardId1;
+	uint64_t tradingCardId = this->_tagHeader._tradingCardId;
 
 	//420707233300200 is 29^10-1
 	if(tradingCardId < 420707233300200 && tradingCardId != 0)
@@ -77,6 +119,12 @@ void Runes::PortalTag::StoreHeader()
 		this->_webCode[11] = '\0';
 	}
 }
+
+
+
+//=============================================================================
+// StoreTagData: Determines which data regions are up to date and reads from them
+//=============================================================================
 void Runes::PortalTag::StoreTagData()
 {
 	if(!this->_tagDataStored)
@@ -86,6 +134,13 @@ void Runes::PortalTag::StoreTagData()
 		this->_tagDataStored = true;
 	}
 }
+
+
+
+//=============================================================================
+// StoreMagicMoment: Reads the magic moment data from the tag, i.e. the data
+// needed to show the character in the magic moment
+//=============================================================================
 void Runes::PortalTag::StoreMagicMoment()
 {
 	this->StoreTagData();
@@ -112,6 +167,13 @@ void Runes::PortalTag::StoreMagicMoment()
 
 	memcpy(&this->_nickname, &this->_tagData._nickname, 0x20);
 }
+
+
+
+//=============================================================================
+// StoreRemainingData: Reads the remaining data from the tag, i.e. stuff that
+// doesn't have a visual effect on the character, into this instance
+//=============================================================================
 void Runes::PortalTag::StoreRemainingData()
 {
 	this->_firstUsed = this->_tagData._firstUsed;
@@ -122,6 +184,12 @@ void Runes::PortalTag::StoreRemainingData()
 	StoreQuestsGiants();
 	StoreQuestsSwapForce();
 }
+
+
+
+//=============================================================================
+// StoreQuestsGiants: Store quest data from Giants into this instance
+//=============================================================================
 void Runes::PortalTag::StoreQuestsGiants()
 {
 	uint64_t questsLow = this->_tagData._sgQuestsLow;
@@ -141,6 +209,12 @@ void Runes::PortalTag::StoreQuestsGiants()
 	this->_giantsQuests[7] = questsLow & bitsToMask(elementQuests[1]); 	questsLow >>= elementQuests[1];
 	this->_giantsQuests[8] = (questsLow & bitsToMask(kQuestSwapForceIndividualBits)) | ((uint16_t)(questsHigh & 2) << 14);
 }
+
+
+
+//=============================================================================
+// FillQuestsGiants: Output quest data from Giants into the original data structure
+//=============================================================================
 void Runes::PortalTag::FillQuestsGiants()
 {
 	uint8_t accum = 0;
@@ -169,6 +243,13 @@ void Runes::PortalTag::FillQuestsGiants()
 		this->_tagData._sgQuestsLow |= ((uint64_t)this->_giantsQuests[8] & bitsToMask(16)) << accum;
 	}
 }
+
+
+
+//=============================================================================
+// getQuestsGiantsElementalBits: Gets the bit length of the quests based on the
+// character's element.
+//=============================================================================
 void Runes::PortalTag::getQuestsGiantsElementalBits(uint8_t* bits)
 {
 	FigureToyData* figure = ToyDataManager::getInstance()->LookupCharacter(this->_toyType);
@@ -210,6 +291,12 @@ void Runes::PortalTag::getQuestsGiantsElementalBits(uint8_t* bits)
 			return;
 	}
 }
+
+
+
+//=============================================================================
+// StoreQuestsSwapForce: Store quest data from Swap Force into this instance
+//=============================================================================
 void Runes::PortalTag::StoreQuestsSwapForce()
 {
 	uint64_t questsLow = this->_tagData._ssfQuestsLow;
@@ -224,6 +311,13 @@ void Runes::PortalTag::StoreQuestsSwapForce()
 	this->_swapforceQuests[7] = questsLow & bitsToMask(kQuestSwapForceElemental2Bits); 			questsLow >>= kQuestSwapForceElemental2Bits;
 	this->_swapforceQuests[8] = (questsLow & bitsToMask(kQuestSwapForceIndividualBits)) | ((uint16_t)(questsHigh & 3) << 14);
 }
+
+
+
+//=============================================================================
+// StoreQuestsSwapForce: Outut quest data from Swap Force into the original
+// data structure
+//=============================================================================
 void Runes::PortalTag::FillQuestsSwapForce()
 {
 	this->_tagData._ssfQuestsHigh = (this->_swapforceQuests[8] >> 14) & bitsToMask(2);
@@ -237,6 +331,13 @@ void Runes::PortalTag::FillQuestsSwapForce()
 	this->_tagData._ssfQuestsLow <<= kQuestSwapForceFruitFrontiersmanBits;  this->_tagData._ssfQuestsLow |= this->_swapforceQuests[1] & bitsToMask(kQuestSwapForceFruitFrontiersmanBits);
 	this->_tagData._ssfQuestsLow <<= kQuestSwapForceBadguyBasherBits;       this->_tagData._ssfQuestsLow |= this->_swapforceQuests[0] & bitsToMask(kQuestSwapForceBadguyBasherBits);
 }
+
+
+
+//=============================================================================
+// StoreQuestsSwapForce: Outut Magic moment and remaining data into the
+// original data structure
+//=============================================================================
 void Runes::PortalTag::FillOutputFromStoredData()
 {
 	Runes::PortalTagData* tagData = &this->_tagData;
@@ -288,14 +389,26 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	this->FillQuestsGiants();
 	this->FillQuestsSwapForce();
 }
+
+
+
+//=============================================================================
+// ComputeLevel: Determine which level this skylander is
+//=============================================================================
 uint8_t Runes::PortalTag::ComputeLevel()
 {
-	for(uint8_t l = kExperienceLevelCount - 1; l >= 0; l--)
+	for(int8_t l = kExperienceLevelCount - 1; l >= 0; l--)
 	{
-		if(_exp >= experienceForLevelMap[l]) return l+1;
+		if(_exp >= experienceForLevelMap[l]) return (uint8_t)(l+1);
 	}
 	return 1;
 }
+
+
+
+//=============================================================================
+// ReadFromFile: Read tag data from a figure dump file
+//=============================================================================
 void Runes::PortalTag::ReadFromFile(const char* fileName)
 {
 	this->_tagHeaderStored = false;
@@ -309,6 +422,12 @@ void Runes::PortalTag::ReadFromFile(const char* fileName)
 	this->StoreMagicMoment();
 	this->StoreRemainingData();
 }
+
+
+
+//=============================================================================
+// SaveToFile: Save tag data to a figure dump file
+//=============================================================================
 void Runes::PortalTag::SaveToFile(const char* fileName)
 {
 	this->_tagData._areaSequence0++;
@@ -321,6 +440,13 @@ void Runes::PortalTag::SaveToFile(const char* fileName)
 	//this->DebugSaveTagData();
 	_rfidTag->SaveToFile(fileName);
 }
+
+
+
+//=============================================================================
+// RecalculateTagDataChecksums: Recompute and assign the new checksums for
+// the data
+//=============================================================================
 void Runes::PortalTag::RecalculateTagDataChecksums()
 {
 	char checksumBuffer[0x110];
@@ -345,11 +471,22 @@ void Runes::PortalTag::RecalculateTagDataChecksums()
 	memcpy(checksumBuffer, ((uint8_t*)&this->_tagData), BLOCK_SIZE);
 	this->_tagData._crcType1 = crc16(checksumBuffer, 0x01 * BLOCK_SIZE);
 }
+
+
+
+//=============================================================================
+// getExperience: Gets the total experience this skylander has
+//=============================================================================
 uint32_t Runes::PortalTagData::getExperience()
 {
-	//printf("%d + %d + %d = %d\n", to24(this->_experience2011_low, this->_experience2011_high), this->_experience2012, this->_experience2013, to24(this->_experience2011_low, this->_experience2011_high) + (uint32_t)this->_experience2012 + this->_experience2013);
 	return to24(this->_experience2011_low, this->_experience2011_high) + (uint32_t)this->_experience2012 + this->_experience2013;
 }
+
+
+
+//=============================================================================
+// setExperience: Sets the experience of this skylander
+//=============================================================================
 void Runes::PortalTagData::setExperience(uint32_t experience)
 {
 	uint32_t currentExp = experience;
@@ -392,15 +529,31 @@ void Runes::PortalTagData::setExperience(uint32_t experience)
 	}
 }
 
+
+
+//=============================================================================
+// getMoney: Get the money this skylander has
+//=============================================================================
 uint16_t Runes::PortalTagData::getMoney()
 {
 	return this->_coinCount;
 }
+
+
+
+//=============================================================================
+// setMoney: Set the money this skylander has
+//=============================================================================
 void Runes::PortalTagData::setMoney(uint16_t money)
 {
 	this->_coinCount = money;
 }
 
+
+
+//=============================================================================
+// getHat: Get the hat this skylander has
+//=============================================================================
 kTfbSpyroTag_HatType Runes::PortalTagData::getHat()
 {
 	if(this->_hat2011 > 0) return (kTfbSpyroTag_HatType)this->_hat2011;
@@ -409,6 +562,12 @@ kTfbSpyroTag_HatType Runes::PortalTagData::getHat()
 	if(this->_hat2015 > 0) return (kTfbSpyroTag_HatType)(this->_hat2015 + kTfbSpyroTag_Hat_OFFSET_2015);
 	return kTfbSpyroTag_Hat_NONE;
 }
+
+
+
+//=============================================================================
+// setHat: Set the hat this skylander has
+//=============================================================================
 void Runes::PortalTagData::setHat(kTfbSpyroTag_HatType hat)
 {
 	this->_hat2011 = 0;
@@ -438,13 +597,19 @@ void Runes::PortalTagData::setHat(kTfbSpyroTag_HatType hat)
 	printf("Invalid Hat ID");
 }
 
-//This method is unused for the moment (I think?), but type identifiers for all tags could be added in future?
-//Just for example, added "isVehicle()", it also has exclusive mentions for the Template Vehicles (although maybe unwanted)
-//- Texthead
+//=============================================================================
+// isTrap: Determines whether this skylander is a trap or not
+//=============================================================================
 bool Runes::PortalTag::isTrap()
 {
 	return this->_toyType >= kTfbSpyroTag_ToyType_TRAP_2014 && this->_toyType <= kTfbSpyroTag_ToyType_TRAP_2014_MAX;
 }
+
+
+
+//=============================================================================
+// isVehicle: Determines whether this skylander is a vehicle or not
+//=============================================================================
 bool Runes::PortalTag::isVehicle()
 {
 	return (this->_toyType >= kTfbSpyroTag_ToyType_VEHICLE_2015 && this->_toyType <= kTfbSpyroTag_ToyType_VEHICLE_2015_MAX)

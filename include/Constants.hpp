@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 enum Constants
 {
 	kMagicMomentOwnerIdSize = 8,
@@ -65,4 +67,4 @@ enum Constants
 	kExperienceLevelCount = 20,
 };
 
-extern const int experienceForLevelMap[kExperienceLevelCount];
+extern const uint32_t experienceForLevelMap[kExperienceLevelCount];
