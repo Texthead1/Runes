@@ -94,7 +94,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0104  | 1D/39  |  0x04  | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
 |  0x0110  | 1E/3A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of sixth villain nickname
 |  0x0120  | 1F/3B  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of sixth villain nickname
-|  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | [Owner usage info](#owner-usage-info)
+|  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | [Usage info](#usage-info)
 
 ### Racing Pack
 
@@ -135,7 +135,7 @@ The full purpose of "Last platform identifier" bytes are quite unknown. When the
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Owner usage info](#owner-usage-info)
+|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Usage info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
@@ -179,7 +179,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Owner usage info](#owner-usage-info)
+|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Usage info](#usage-info)
 |  0x6C  | 10/2C  |  0x0C  | `uint32_t`             | "Challenge Level". Purpose unknown
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
@@ -596,11 +596,9 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 * Ability Slot Count: `((BGFlags << 0x0C) >> 0x1E) + 1`
 * Ability Level: `(BGFlags >> ((abilityIndex * 3) & 0xFF)) & 0x7`
 
-### Owner usage info
+### Usage info
 
-Still quite unknown, but seems to have a pattern. Although I've seen more than just the 9 bytes stated in this block to be changed, which could be irrelevant.
-
-How it is laid of as a whole doesn't seem clear, but somewhere it'd presumably store an identifier for a specific instance of a game that has used the toy (doesn't seem to be ownership however, just placed down). Following this is some sort of `uint16_t` (?) value to indicate how much times the figure's data regions have been modified - appearing to to increment whenever the [Area Sequence](#area-sequence) bytes are updated (which dictates that the region was written to/modified). If both data area sequences are updated in one write, it'll increment by two instead. As I said, the layout of this is quite unknown.
+Unknown. TODO in future
 
 ### Heroic Challenges
 
