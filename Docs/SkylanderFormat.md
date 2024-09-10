@@ -9,9 +9,9 @@ The header is 0x20 bytes long.
 |  0000  | `uint32_t`             | Non-Unique Identifier for this toy, internally referred to as the serial number
 |  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../include/kTfbSpyroTag_ToyType.hpp))
 |  0013  | `uint8_t`              | Full purpose unknown. If non-0, the game will refuse the toy completely, prompting that the tag cannot be used in this game (SG, TT, SSC tested)
-|  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is seperated into 2 `uint32_t`s, presumably to get around alignment issues
+|  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is separated into 2 `uint32_t`s, presumably to get around alignment issues
 |  001C  | `uint16_t`             | The Variant ID of this skylander (see [here](#sub-type) to understand how this works)
-|  001E  | `uint16_t`             | The crc16-ccit/false checksum for the first 0x1E bytes of the header
+|  001E  | `uint16_t`             | The crc16-ccitt/false checksum for the first 0x1E bytes of the header
 
 ### Variant ID
 
@@ -49,9 +49,9 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0001  | 08/24  |  0x01  | `uint8_t`                  | Number of unique villains captured/stored
 |  0x0007  | 08/24  |  0x07  | `kTfbSpyroTag_VillainType` | Which villain to load as its variant. In SSC, used if the primary villain is 0x00, and only in SSC must be element locked
 |  0x0009  | 08/24  |  0x09  | `uint8_t`                  | [Area Sequence](#area-sequence)
-|  0x000A  | 08/24  |  0x0C  | `uint16_t`                 | crc16-ccit/false checksum of 0x110 bytes from 0x40 (so blocks 0D/29 -> 23/3F excluding access control blocks)
-|  0x000C  | 08/24  |  0x0A  | `uint16_t`                 | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
-|  0x000E  | 08/24  |  0x0E  | `uint16_t`                 | crc16-ccit/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
+|  0x000A  | 08/24  |  0x0C  | `uint16_t`                 | crc16-ccitt/false checksum of 0x110 bytes from 0x40 (so blocks 0D/29 -> 23/3F excluding access control blocks)
+|  0x000C  | 08/24  |  0x0A  | `uint16_t`                 | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x000E  | 08/24  |  0x0E  | `uint16_t`                 | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x0010  | 09/25  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the currently trapped villain (See [kTfbSpyroTag_VillainType.hpp](../include//kTfbSpyroTag_VillainType.hpp)). Note that any villain can be put in any trap
 |  0x0011  | 09/25  |  0x01  | `uint8_t`                  | Whether or not the villain is evolved (set to 1 if so)
 |  0x0012  | 09/25  |  0x02  | `uint8_t`                  | Villain Hat value
@@ -94,7 +94,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0104  | 1D/39  |  0x04  | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
 |  0x0110  | 1E/3A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of sixth villain nickname
 |  0x0120  | 1F/3B  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of sixth villain nickname
-|  0x0130  | 21/3D  |  0x00  | `uint8_[9]`                | [Usage info](#usage-info)
+|  0x0130  | 21/3D  |  0x00  | `uint8_t[9]`               | [Usage info](#usage-info)
 
 ### Racing Pack
 
@@ -104,16 +104,16 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 
 ### Vehicle
 
-The full purpose of "Last platform identifier" bytes are quite unknown. When the figure is written to by Skylanders SuperChargers Racing, all of these are set to 00. When the figure is written to by Skylanders SuperChargers (mainline), all of these are set to 0F. I have occasionally seen them not be equal to 00 when used in SSCR.
+The full purpose of "Last platform identifier" bytes is quite unknown. When the figure is written to by Skylanders SuperChargers Racing, all of these are set to 00. When the figure is written to by Skylanders SuperChargers (mainline), all of these are set to 0F. I have occasionally seen them not be equal to 00 when used in SSCR.
 
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
 |  0x00  | 08/24  |  0x00  | `uint24_t`             | SSCR [Vehicle Experience](#experience)
 |  0x05  | 08/24  |  0x05  | `uint32_t`             | Cumulative time in seconds
 |  0x09  | 08/24  |  0x09  | `uint8_t`              | [Area Sequence](#area-sequence)
-|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
-|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
-|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccit/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
+|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
+|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | Last platform identifier
@@ -135,9 +135,9 @@ The full purpose of "Last platform identifier" bytes are quite unknown. When the
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Usage info](#usage-info)
-|  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
-|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
+|  0x60  | 10/2C  |  0x00  | `uint8_t[9]`           | [Usage info](#usage-info)
+|  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
+|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
 |  0x76  | 11/2D  |  0x06  | `uint8_t`              | Last platform identifer
 |  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits
@@ -152,13 +152,13 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
-|  0x00  | 08/24  |  0x00  | `uint24_t`             | 2011 [Experience](#experience) value (Max is 33000)
+|  0x00  | 08/24  |  0x00  | `uint24_t`             | 2011 [Experience](#experience) value (max is 33000)
 |  0x03  | 08/24  |  0x03  | `uint16_t`             | Money
 |  0x05  | 08/24  |  0x05  | `uint32_t`             | Cumulative time in seconds
 |  0x09  | 08/24  |  0x09  | `uint8_t`              | [Area Sequence](#area-sequence)
-|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
-|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccit/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
-|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccit/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
+|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
+|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Flags1](#flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | 2011 [Hat value](#hat-value)
@@ -171,33 +171,33 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed ssa heroic challenges
-|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (Max is 100)
+|  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
+|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 100)
 |  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | Owner count(?)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_[9]`            | [Usage info](#usage-info)
+|  0x60  | 10/2C  |  0x00  | `uint8_t[9]`           | [Usage info](#usage-info)
 |  0x6C  | 10/2C  |  0x0C  | `uint32_t`             | "Challenge Level". Purpose unknown
-|  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccit/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
-|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area sequence for this data area
-|  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (Max is 63500 for ssf characters onwards, for ssa and giants it's 65535)
+|  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
+|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
+|  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (max is 63500 for SSF characters onwards, for SSA and Giants it's 65535)
 |  0x75  | 11/2D  |  0x05  | `uint8_t`              | 2012 [Hat value](#hat-value)
 |  0x76  | 11/2D  |  0x06  | `uint16_t`             | [Flags2](#flags)
-|  0x78  | 11/2D  |  0x08  | `uint32_t`             | 2013 [Experience](#experience) value (Max is 101000)
+|  0x78  | 11/2D  |  0x08  | `uint32_t`             | 2013 [Experience](#experience) value (max is 101000)
 |  0x7C  | 11/2D  |  0x0C  | `uint8_t`              | 2013/2014 [Hat value](#hat-value)
 |  0x7D  | 11/2D  |  0x0D  | `uint8_t`              | [Trinket value](#trinket-value)
-|  0x7E  | 11/2D  |  0x0E  | `uint8_t`              | 2015 [Hat value](#hat-value) (add 256 to get the true hat id)
+|  0x7E  | 11/2D  |  0x0E  | `uint8_t`              | 2015 [Hat value](#hat-value) (add 256 to get the true hat ID)
 |  0x80  | 12/2E  |  0x00  | `uint32_t`             | [Battlegrounds Flags](#battlegrounds-flags)
-|  0x84  | 12/2E  |  0x04  | `uint24_t`             | Completed sg heroic challenges
-|  0x87  | 12/2E  |  0x07  | `uint72_t`             | Giants [quests](#quests)
-|  0x97  | 14/30  |  0x07  | `uint72_t`             | Swap Force [quests](#quests)
+|  0x84  | 12/2E  |  0x04  | `uint24_t`             | Completed SG Heroic Challenges
+|  0x87  | 12/2E  |  0x07  | `uint72_t`             | Giants [Quests](#quests)
+|  0x97  | 14/30  |  0x07  | `uint72_t`             | SWAP Force [Quests](#quests)
 
 ### Experience
 
-Sum of all experience values. In SSCR instead, the experience value for each year must be max to read the next year's experience.
+Sum of all experience values. In SSCR instead, the experience value for each year must be more than or equal to the max to then read the next year's experience.
 
 | Level | Experience |
 |-------|------------|
@@ -222,13 +222,14 @@ Sum of all experience values. In SSCR instead, the experience value for each yea
 | 19    | 174300     |
 | 20    | 197500     |
 
-Note that vehicle experience in SuperChargers Racing uses the exact same experience amounts for levels, but instead of having different bytes for the 2012/13 experience etc... it is all self contained within the initial "2011" `uint24_t` - so unlike regular figures, the maximum value is the level 20 experience amount, 197500, not the "2011" level 10 experience amount, 33000.
+Note that vehicle experience in SuperChargers Racing uses the exact same experience amounts for levels, but instead of having different bytes for the 2012/13 experience etc... it is all self contained within the initial "2011" `uint24_t`.
 
 ### Area sequence
 
 * The core skylanders at least store the tfbSpyroTagData struct twice, once from block 0x08/0x24 and again from block 0x11/0x2D, these are called data regions or data areas.
-* The recently written to area is the one with the area sequence value that is one higher than the other, remember to take overflows into accounts (e.g., an area sequence of 0 is considered higher than one of 255).
-* When writing to a figure, the game will switch to the lower area sequence value and increment it by 2 (so that it becomes higher than the other one).
+* The recently written to area is the one with the area sequence value that is one higher than the other, remember to take overflows into account (e.g., an area sequence of 0 is considered higher than one of 255).
+* When writing to a figure, the game will switch to the lower area sequence value and set it to be the higher value incremented by 1.
+* Certain games, like Trap Team, will throw an error if the two sequences become out of sync with another, whereas other games, like SSCR, do not mind.
 * Note that there are two area sequences, one for blocks 0x08/0x24->0x10/0x2C and another for blocks 0x11/0x2D->0x15/0x31 (inclusive).
 
 ### Hat value
@@ -236,7 +237,7 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 * Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
 * [hat enum](../include/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
-* The unused hat ids are unused.
+* The unused hat ids are not used.
 * The padding hat ids were never meant to be used in the first place.
 
 | Hat ID |  Hat Name
@@ -324,7 +325,7 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 |  0080  | Trucker Hat
 |  0081  | Umbrella Hat
 |  0082  | Showtime Hat
-|  0083  | Ceasar Hat
+|  0083  | Caesar Hat
 |  0084  | Flower Fairy Hat
 |  0085  | Funnel Hat
 |  0086  | Scrumshanks Hat
@@ -569,22 +570,22 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 * Bit 0: Wii
 * Bit 1: Xbox 360
 * Bit 2: PS3
-* Bit 3: PC (Maybe MacOS as well)
+* Bit 3: PC (maybe macOS as well)
 * Bit 4: Nintendo 3DS
 
 2013 value:
 
-* Bit 0: Android 32 (Maybe Android 64 as well)
+* Bit 0: Android 32-bit (maybe Android 64-bit as well)
 * Bit 1: Xbox One
 * Bit 2: PS4
-* Bit 3: iOS 64 (Maybe iOS 32 as well)
+* Bit 3: iOS 64-bit (maybe iOS 32-bit as well)
 * Bit 6: Nintendo Switch
 
 So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and therefore the figure has been used on Wii and Xbox 360.
 
 ### Flags
 
-* Upgrage flags: `((Flags2 & 0xF) << 10) | (Flags1 & 0x3FF)`
+* Upgrade flags: `((Flags2 & 0xF) << 10) | (Flags1 & 0x3FF)`
 * Element Collection Count 1: `(Flags1 >> 10) & 3`
 * Element Collection Count 2: `(Flags2 >> 6) & 7`
 * Element Collection: `((Flags1 >> 10) & 3) + ((Flags2 >> 6) & 7) + ((Flags2 >> 11) & 3)`
@@ -605,7 +606,7 @@ Unknown. TODO in future
 
 * Heroic Challenges are sprawled out over 2 different areas. One `uint32_t` at block 0x0d/0x29, offset 0x06, and another `uint24_t` at block 0x12/0x2e, offset 0x04.
 * The first one of these accords to the Heroic Challenges in Spyro's Adventure, and the second one the Heroic Challenges introduced in Giants.
-* Each bit corresponds to a boolean whether or not the heroic challenge has been complete by the Skylander.
+* Each bit corresponds to a boolean indicating whether or not the heroic challenge has been complete by the Skylander.
 * Their offset into the bit field is the same as their internally stored identifier. For Giants Heroics, add 32 to their offset to reveal the true heroic ID. This essentially means that if you append the Giants heroic bytes to the start of the SSA heroic bytes, then using their ID would give you the corresponding bit.
 * Assume `SSA` refers to the 4 bytes for SSA heroics, and `SG` for the other 3 bytes.
 
@@ -713,7 +714,7 @@ Swap Force Quests
 
 ### Captured Trophy Villains
 
-16 bit long bit field that represents which villains has been unlocked within the cup. Note that none of this exists for the Kaos Trophy; he is unlocked just by reading the figure on the Portal.
+16 bit long bit field that represents which villains have been unlocked within the cup. Note that none of this exists for the Kaos Trophy; he is unlocked just by reading the figure on the Portal.
 
 Road Racers (Land villains)
 * Bit 0: Glumshanks in Steam Roller
@@ -738,7 +739,7 @@ Sky Captains (Sky villains)
 
 ### Vehicle Flags
 
-Oddly, each level of the vehicle's shield and weapon occupies it's own bit, even though it's impossible normally to purchase a level and skip one. This spans over a `uint16_t`.
+Oddly, each level of the vehicle's shield and weapon occupies its own bit, even though it's impossible normally to purchase a level and skip one. This spans over a `uint16_t`.
 
 * Bit 0: Shield level 1 purchased
 * Bit 1: Shield level 2 purchased
@@ -953,7 +954,7 @@ The second byte is essentially the same thing, but just for the currently equipp
 Credits:
 * Brandon Wilson:
   * The encryption method
-  * Checkum types 0->3 and access specifier
+  * Checksum types 0->3 and access specifier
   * The Wii and Xbox 360 values for the platform usage
   * Hero points max value
 * Mandar1jn:
