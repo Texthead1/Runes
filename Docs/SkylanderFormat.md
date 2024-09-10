@@ -197,7 +197,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 
 ### Experience
 
-Sum of all experience values
+Sum of all experience values. In SSCR instead, the experience value for each year must be max to read the next year's experience.
 
 | Level | Experience |
 |-------|------------|
@@ -578,6 +578,7 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 * Bit 1: Xbox One
 * Bit 2: PS4
 * Bit 3: iOS 64 (Maybe iOS 32 as well)
+* Bit 6: Nintendo Switch
 
 So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and therefore the figure has been used on Wii and Xbox 360.
 
@@ -695,7 +696,7 @@ Giants Quests
 |   01   | Warp Womper (Magic)
 |   06   | Magic Isn't Might (Tech)
 |   05   | Cracker (Tech)
-|   10   | Individul Quest
+|   10   | Individual Quest
 
 Swap Force Quests
 | Shift  | Mask | Swap Force Name      
@@ -962,10 +963,10 @@ Credits:
   * Figured out what Accolade Ranks are
   * Corrections with crc checksums
   * Figured out trinkets
-  * The PC, Nintendo 3DS, Xbox One, and PS4 values for the platform usage
+  * The PC, Nintendo 3DS, Xbox One, PS4, and Nintendo Switch values for the platform usage
 * Texthead:
   * Variant ID additions/corrections
   * Additional Trap info
   * Figured out Vehicles
-  * Racing pack additions/corrections
-  * Heroic challenges
+  * Racing Pack additions/corrections
+  * Heroic Challenges
