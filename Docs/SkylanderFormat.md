@@ -94,7 +94,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0104  | 1D/39  |  0x04  | `wchar_t[6]`               | First 12 bytes of sixth villain nickname
 |  0x0110  | 1E/3A  |  0x00  | `wchar_t[8]`               | Next 16 bytes of sixth villain nickname
 |  0x0120  | 1F/3B  |  0x00  | `wchar_t[2]`               | Remaining 4 bytes of sixth villain nickname
-|  0x0130  | 21/3D  |  0x00  | `uint8_t[9]`               | [Usage info](#usage-info)
+|  0x0130  | 21/3D  |  0x00  | `uint8_t[15]`              | [Usage/owner info](#usage-info)
 
 ### Racing Pack
 
@@ -129,14 +129,14 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed to owner ID, but the no. times owner changed doesn't increment
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed manually
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed - whether or not the no. times changed gets incremented when this happens varies between games
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_t[9]`           | [Usage info](#usage-info)
+|  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
@@ -174,14 +174,14 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
 |  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 100)
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed to owner ID, but the no. times owner changed doesn't increment
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed manually
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed - whether or not the no. times changed gets incremented when this happens varies between games
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
-|  0x60  | 10/2C  |  0x00  | `uint8_t[9]`           | [Usage info](#usage-info)
+|  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (max is 63500 for SSF characters onwards, for SSA and Giants it's 65535)
@@ -576,7 +576,7 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 
 2013 value:
 
-* Bit 0: Android 32-bit (maybe Android 64-bit as well)
+* Bit 0: Android 32-bit (maybe Android 64-bit as well). Seems to also correspond to Wii U
 * Bit 1: Xbox One
 * Bit 2: PS4
 * Bit 3: iOS 64-bit (maybe iOS 32-bit as well)
