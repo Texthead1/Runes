@@ -129,7 +129,8 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | Owner count(?)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Doesnt increment for when the ID of the first owner is written (a.k.a Owner ID was full-0 beforehand)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -173,7 +174,8 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
 |  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 100)
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | Owner count(?)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Doesnt increment for when the ID of the first owner is written (a.k.a Owner ID was full-0 beforehand)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
