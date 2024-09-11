@@ -182,7 +182,6 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x60  | 10/2C  |  0x00  | `uint8_t[9]`           | [Usage info](#usage-info)
-|  0x6C  | 10/2C  |  0x0C  | `uint32_t`             | "Challenge Level". Purpose unknown
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (max is 63500 for SSF characters onwards, for SSA and Giants it's 65535)
