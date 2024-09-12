@@ -141,7 +141,7 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
 |  0x76  | 11/2D  |  0x06  | `uint8_t`              | Last platform identifer
-|  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits
+|  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits (max is 33000). SuperChargers will refuse to update the Gearbits if it exceeds 33000 in game, even though the counter can go beyond
 
 ### Not a Trap or Vehicle
 
