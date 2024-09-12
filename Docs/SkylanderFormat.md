@@ -116,7 +116,7 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
-|  0x14  | 09/25  |  0x04  | `uint16_t`             | Last platform identifier
+|  0x14  | 09/25  |  0x04  | `uint8_t`              | Last platform identifier
 |  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decorationneon)
@@ -138,12 +138,12 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
-|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
+|  0x72  | 11/2D  |  0x02  | `uint8_t`              | [Area Sequence](#area-sequence) for this data area
 |  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
 |  0x76  | 11/2D  |  0x06  | `uint8_t`              | Last platform identifer
 |  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits (max is 33000). SuperChargers will refuse to update the Gearbits if it exceeds 33000 in game, even though the counter can go beyond
 
-### Not a Trap or Vehicle
+### Not a Trap, Racing Pack, or Vehicle
 
 Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used by the game internally.
 * The 0x40 bytes from offset 0x00 are the first 0x40 bytes of tfbSpyroTag_MagicMomentAll.
@@ -183,7 +183,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
-|  0x72  | 11/2D  |  0x02  | `uint8_t`              | Area Sequence for this data area
+|  0x72  | 11/2D  |  0x02  | `uint8_t`              | [Area Sequence](#area-sequence) for this data area
 |  0x73  | 11/2D  |  0x03  | `uint16_t`             | 2012 [Experience](#experience) value (max is 63500 for SSF characters onwards, for SSA and Giants it's 65535)
 |  0x75  | 11/2D  |  0x05  | `uint8_t`              | 2012 [Hat value](#hat-value)
 |  0x76  | 11/2D  |  0x06  | `uint16_t`             | [Flags2](#flags)
@@ -605,7 +605,7 @@ Unknown. TODO in future
 
 ### Heroic Challenges
 
-* Heroic Challenges are sprawled out over 2 different areas. One `uint32_t` at block 0x0d/0x29, offset 0x06, and another `uint24_t` at block 0x12/0x2e, offset 0x04.
+* Heroic Challenges are sprawled out over 2 different areas. One `uint32_t` at block 0x0D/0x29, offset 0x06, and another `uint24_t` at block 0x12/0x2E, offset 0x04.
 * The first one of these accords to the Heroic Challenges in Spyro's Adventure, and the second one the Heroic Challenges introduced in Giants.
 * Each bit corresponds to a boolean indicating whether or not the heroic challenge has been complete by the Skylander.
 * Their offset into the bit field is the same as their internally stored identifier. For Giants Heroics, add 32 to their offset to reveal the true heroic ID. This essentially means that if you append the Giants heroic bytes to the start of the SSA heroic bytes, then using their ID would give you the corresponding bit.
