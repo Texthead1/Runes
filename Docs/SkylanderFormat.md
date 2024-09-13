@@ -586,7 +586,7 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 
 ### Flags
 
-* Upgrade flags: `((Flags2 & 0xF) << 10) | (Flags1 & 0x3FF)`
+* [Upgrade](#upgrades) flags: `((Flags2 & 0xF) << 10) | (Flags1 & 0x3FF)`
 * Element Collection Count 1: `(Flags1 >> 10) & 3`
 * Element Collection Count 2: `(Flags2 >> 6) & 7`
 * Element Collection: `((Flags1 >> 10) & 3) + ((Flags2 >> 6) & 7) + ((Flags2 >> 11) & 3)`
@@ -598,6 +598,23 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 * Portal Master Level: `(BGFlags << 0x06) >> 0x1A`
 * Ability Slot Count: `((BGFlags << 0x0C) >> 0x1E) + 1`
 * Ability Level: `(BGFlags >> ((abilityIndex * 3) & 0xFF)) & 0x7`
+
+### Upgrades
+
+* Bit 0: Whether or not the Skylander is on a path
+* Bit 1: Path (0 = top, 1 = bottom)
+* Bit 2: Upgrade 1 purchased
+* Bit 3: Upgrade 2 purchased
+* Bit 4: Upgrade 3 purchased
+* Bit 5: Upgrade 4 purchased
+* Bit 6: Path upgrade 1 purchased
+* Bit 7: Path upgrade 2 purchased
+* Bit 8: Path upgrade 3 purchased
+* Bit 9: Soul Gem purchased
+* Bit 10: Wow Pow purchased
+* Bit 11: Alternate path upgrade 1 purchased (used to retain details of upgrades on the other path when switching path as a repose or in SuperChargers)
+* Bit 12: Alternate path upgrade 2 purchased
+* Bit 13: Alternate path upgrade 3 purchased
 
 ### Usage info
 
