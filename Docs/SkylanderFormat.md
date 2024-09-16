@@ -104,8 +104,6 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 
 ### Vehicle
 
-The full purpose of "Last platform identifier" bytes is quite unknown. When the figure is written to by Skylanders SuperChargers Racing, all of these are set to 00. When the figure is written to by Skylanders SuperChargers (mainline), all of these are set to 0F. I have occasionally seen them not be equal to 00 when used in SSCR.
-
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
 |  0x00  | 08/24  |  0x00  | `uint24_t`             | SSCR [Vehicle Experience](#experience)
@@ -116,7 +114,6 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
-|  0x14  | 09/25  |  0x04  | `uint8_t`              | Last platform identifier
 |  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decorationneon)
@@ -129,8 +126,8 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed - whether or not the no. times changed gets incremented when this happens varies between games
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed (capped at 255)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game, commonly overriden when placed on Portal
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed? Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -139,8 +136,6 @@ The full purpose of "Last platform identifier" bytes is quite unknown. When the 
 |  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
 |  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | [Area Sequence](#area-sequence) for this data area
-|  0x73  | 11/2D  |  0x03  | `uint8_t`              | Last platform identifer
-|  0x76  | 11/2D  |  0x06  | `uint8_t`              | Last platform identifer
 |  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits (max is 33000). SuperChargers will refuse to update the Gearbits if it exceeds 33000 in game, even though the counter can go beyond
 
 ### Not a Trap, Racing Pack, or Vehicle
@@ -165,6 +160,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | 2011 [Hat value](#hat-value)
 |  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
+|  0x18  | 09/25  |  0x08  | `uint64_t`             | Owner ID (used by SSA/Giants. Future games store what figures they own, instead of the figure storing who their owner is)
 |  0x20  | 0A/26  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
 |  0x30  | 0C/28  |  0x00  | `wchar_t[8]`           | Last 16 bytes of nickname
 |  0x40  | 0D/29  |  0x00  | `uint8_t`              | Minute value of the last time this figure was placed on the portal
@@ -173,9 +169,9 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
-|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 100)
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Owner ID. If full-0 when read, automatically changed - whether or not the no. times changed gets incremented when this happens varies between games
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Increments by 1 when ownership is changed (capped at 255)
+|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 999)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game, commonly overriden when placed on Portal
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed? Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -960,10 +956,6 @@ Oddly, each level of the vehicle's shield and weapon occupies its own bit, even 
 | 65 | Jeer: Tessa
 
 ### Vehicle Mod Flags
-
-For the first byte, the lower nibble (bits 0-3) represent an integer of the currently equipped performance mod. The upper nibble (bits 4-7) represent an integer of the currently equipped specialty mod. For both, 0 is the default, 1 is the first mod, 2 is the second mod, and 3 is the SuperCharged mod.
-
-The second byte is essentially the same thing, but just for the currently equipped horn. 0 for default etc...
 
 * Performance Mod: `ModFlags & 0xF`
 * Specialty Mod: `(ModFlags >> 4) & 0xF`
