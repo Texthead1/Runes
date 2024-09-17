@@ -114,7 +114,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored (essentially turning even numbers odd by adding 1)
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decorationneon)
 |  0x19  | 09/25  |  0x09  | `uint8_t`              | [Vehicle Topper](#vehicle-topper)
@@ -158,7 +158,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Flags1](#flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | 2011 [Hat value](#hat-value)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored (essentially turning even numbers odd by adding 1)
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint64_t`             | Owner ID (used by SSA/Giants. Future games store what figures they own, instead of the figure storing who their owner is)
 |  0x20  | 0A/26  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
