@@ -8,7 +8,7 @@ The header is 0x20 bytes long.
 |--------|------------------------|---------------
 |  0000  | `uint32_t`             | Non-Unique Identifier for this toy, internally referred to as the serial number
 |  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../include/kTfbSpyroTag_ToyType.hpp))
-|  0013  | `uint8_t`              | Full purpose unknown. If non-0, the game will refuse the toy completely, prompting that the tag cannot be used in this game (SG, TT, SSC tested)
+|  0013  | `uint8_t`              | [Error byte](#error-byte)
 |  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is separated into 2 `uint32_t`s, presumably to get around alignment issues
 |  001C  | `uint16_t`             | The Variant ID of this skylander (see [here](#sub-type) to understand how this works)
 |  001E  | `uint16_t`             | The crc16-ccitt/false checksum for the first 0x1E bytes of the header
@@ -100,7 +100,11 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 
 | St_Off | Block  | Bl_Off | Type                   | Description
 |--------|--------|--------|------------------------|---------------
+|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x40, followed by 0xE0 bytes of 0 (so blocks 0D/29 -> 10/2C excluding access control blocks)
+|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x04  | `uint16_t`             | [Captured Trophy villains](#captured-trophy-villains)
+|  0x70  | 11/2D  |  0x00  | `uint16_t`             | crc16-ccitt/false checksum of the bytes "06 01" followed by 0x3E bytes from 0x72
 
 ### Vehicle
 
@@ -228,6 +232,13 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 * When writing to a figure, the game will switch to the lower area sequence value and set it to be the higher value incremented by 1.
 * Certain games, like Trap Team, will throw an error if the two sequences become out of sync with another, whereas other games, like SSCR, do not mind.
 * Note that there are two area sequences, one for blocks 0x08/0x24->0x10/0x2C and another for blocks 0x11/0x2D->0x15/0x31 (inclusive).
+
+### Error byte
+
+The full purpose for this byte is unknown, but it does have a direct influence on the games. By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
+In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be consider unsupported and cannot be used in the game.
+In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the Portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will load that character instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag. The tag will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not work
+In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress
 
 ### Hat value
 
