@@ -236,9 +236,9 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 ### Error byte
 
 The full purpose for this byte is unknown, but it does have a direct influence on the games. By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
-* In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be consider unsupported and cannot be used in the game.
-* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the Portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will load that character instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag. The tag will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not work
-* In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress
+* In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be considered unsupported and cannot be used in the game.
+* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the Portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will load that character instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
+* In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress.
 
 ### Hat value
 
