@@ -10,7 +10,7 @@ The header is 0x20 bytes long.
 |  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../include/kTfbSpyroTag_ToyType.hpp))
 |  0013  | `uint8_t`              | [Error byte](#error-byte)
 |  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is separated into 2 `uint32_t`s, presumably to get around alignment issues
-|  001C  | `uint16_t`             | The Variant ID of this skylander (see [here](#sub-type) to understand how this works)
+|  001C  | `uint16_t`             | The Variant ID of this skylander (see [here](#variant-id) to understand how this works)
 |  001E  | `uint16_t`             | The crc16-ccitt/false checksum for the first 0x1E bytes of the header
 
 ### Variant ID
@@ -243,7 +243,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 ### Hat value
 
 * Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
-* [hat enum](../include/kTfbSpyroTag_HatType.hpp).
+* [Hat enum](../include/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
 * The unused hat ids are not used.
 * The padding hat ids were never meant to be used in the first place.
@@ -574,7 +574,6 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 ### Platform bitfield
 
 2011 value:
-
 * Bit 0: Wii
 * Bit 1: Xbox 360
 * Bit 2: PS3
@@ -582,7 +581,6 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 * Bit 4: Nintendo 3DS
 
 2013 value:
-
 * Bit 0: Android 32-bit (maybe Android 64-bit as well). Seems to also correspond to Wii U
 * Bit 1: Xbox One
 * Bit 2: PS4
@@ -605,6 +603,27 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 * Portal Master Level: `(BGFlags << 0x06) >> 0x1A`
 * Ability Slot Count: `((BGFlags << 0x0C) >> 0x1E) + 1`
 * Ability Level: `(BGFlags >> ((abilityIndex * 3) & 0xFF)) & 0x7`
+
+### Vehicle Flags
+
+Oddly, each level of the vehicle's shield and weapon occupies its own bit, even though it's impossible normally to purchase a level and skip one. This spans over a `uint16_t`.
+
+* Bit 0: Shield level 1 purchased
+* Bit 1: Shield level 2 purchased
+* Bit 2: Shield level 3 purchased
+* Bit 3: Shield level 4 purchased
+* Bit 4: Shield level 5 purchased
+* Bit 5: Weapon level 1 purchased
+* Bit 6: Weapon level 2 purchased
+* Bit 7: Weapon level 3 purchased
+* Byte 1, Bit 0: Weapon level 4 purchased
+* Byte 1, Bit 1: Weapon level 5 purchased
+
+### Vehicle Mod Flags
+
+* Performance Mod: `ModFlags & 0xF`
+* Specialty Mod: `(ModFlags >> 4) & 0xF`
+* Horn: `(ModFlags >> 8) & 0xF`
 
 ### Upgrades
 
@@ -697,7 +716,7 @@ Unknown. TODO in future
 
 Think of it as a 72 bit int.
 
-Giants Quests
+#### Giants Quests
 |  Bits  | Giants Name      
 |--------|----------------------
 |   0A   | Monster Masher
@@ -724,8 +743,8 @@ Giants Quests
 |   05   | Cracker (Tech)
 |   10   | Individual Quest
 
-Swap Force Quests
-| Shift  | Mask | Swap Force Name      
+#### SWAP Force Quests
+| Shift  | Mask | SWAP Force Name      
 |--------|------|----------------------
 |   00   | 03FF | Badguy Basher
 |   0A   | 000F | Fruit Frontiersman
@@ -761,21 +780,6 @@ Sky Captains (Sky villains)
 * Bit 2: Cluck in Sky Scrambler
 * Bit 3: Wolfgang in Sub Woofer
 * Bit 4: Pain-Yatta in unnamed vehicle (SSCR only)
-
-### Vehicle Flags
-
-Oddly, each level of the vehicle's shield and weapon occupies its own bit, even though it's impossible normally to purchase a level and skip one. This spans over a `uint16_t`.
-
-* Bit 0: Shield level 1 purchased
-* Bit 1: Shield level 2 purchased
-* Bit 2: Shield level 3 purchased
-* Bit 3: Shield level 4 purchased
-* Bit 4: Shield level 5 purchased
-* Bit 5: Weapon level 1 purchased
-* Bit 6: Weapon level 2 purchased
-* Bit 7: Weapon level 3 purchased
-* Byte 1, Bit 0: Weapon level 4 purchased
-* Byte 1, Bit 1: Weapon level 5 purchased
 
 ### Vehicle Decoration/Neon
 
@@ -966,13 +970,7 @@ Oddly, each level of the vehicle's shield and weapon occupies its own bit, even 
 | 64 | Squeaky Toy
 | 65 | Jeer: Tessa
 
-### Vehicle Mod Flags
-
-* Performance Mod: `ModFlags & 0xF`
-* Specialty Mod: `(ModFlags >> 4) & 0xF`
-* Horn: `(ModFlags >> 8) & 0xF`
-
-Credits:
+### Credits:
 * Brandon Wilson:
   * The encryption method
   * Checksum types 0->3 and access specifier
