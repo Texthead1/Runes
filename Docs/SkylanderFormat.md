@@ -173,7 +173,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
-|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 999)
+|  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 999 in SSA, 100 in Universe)
 |  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game, commonly overriden when placed on Portal
 |  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed? Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -573,14 +573,14 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 
 ### Platform bitfield
 
-2011 value:
+#### 2011 value:
 * Bit 0: Wii
 * Bit 1: Xbox 360
 * Bit 2: PS3
 * Bit 3: PC (maybe macOS as well)
 * Bit 4: Nintendo 3DS
 
-2013 value:
+#### 2013 value:
 * Bit 0: Android 32-bit (maybe Android 64-bit as well). Seems to also correspond to Wii U
 * Bit 1: Xbox One
 * Bit 2: PS4
@@ -973,7 +973,7 @@ Sky Captains (Sky villains)
 ### Credits:
 * Brandon Wilson:
   * The encryption method
-  * Checksum types 0->3 and access specifier
+  * Checksum types 0->3 and area sequences
   * The Wii and Xbox 360 values for the platform usage
   * Hero points max value
 * Mandar1jn:
