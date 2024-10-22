@@ -10,7 +10,7 @@ The header is 0x20 bytes long.
 |  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../include/kTfbSpyroTag_ToyType.hpp))
 |  0013  | `uint8_t`              | [Error byte](#error-byte)
 |  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is separated into 2 `uint32_t`s, presumably to get around alignment issues
-|  001C  | `uint16_t`             | The Variant ID of this skylander (see [here](#variant-id) to understand how this works)
+|  001C  | `uint16_t`             | The Variant ID of this Skylander (see [here](#variant-id) to understand how this works)
 |  001E  | `uint16_t`             | The crc16-ccitt/false checksum for the first 0x1E bytes of the header
 
 ### Variant ID
@@ -118,7 +118,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored (essentially turning even numbers odd by adding 1)
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decorationneon)
 |  0x19  | 09/25  |  0x09  | `uint8_t`              | [Vehicle Topper](#vehicle-topper)
@@ -130,8 +130,8 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game, commonly overriden when placed on Portal
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed? Normally increments by 1 when ownership is changed (capped at 255)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -162,7 +162,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Flags1](#flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | 2011 [Hat value](#hat-value)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored (essentially turning even numbers odd by adding 1)
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint64_t`             | Owner ID (used by SSA/Giants. Future games store what figures they own, instead of the figure storing who their owner is)
 |  0x20  | 0A/26  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
@@ -174,8 +174,8 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
 |  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 999 in SSA, 100 in Universe)
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game, commonly overriden when placed on Portal
-|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed? Normally increments by 1 when ownership is changed (capped at 255)
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Something related to last used platform/game
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -237,7 +237,7 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 
 The full purpose for this byte is unknown, but it does have a direct influence on the games. By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
 * In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be considered unsupported and cannot be used in the game.
-* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the Portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will load that character instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
+* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will  remember that character info from that figure index on the portal. If this toy is then placed on the portal with the exact same figure index (which can be done by unplugging and plugging back in the portal, or loading the same slot on emulated portals) that character will incidently be loaded instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
 * In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress.
 
 ### Hat value
