@@ -90,10 +90,12 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	this->_lblLevel = new QLabel(tr("Level: N/A"), this);
 	this->_lblFirstTouched = new QLabel(tr("First Touched: N/A"), this);
 	this->_lblRecentlyTouched = new QLabel(tr("Last Touched: N/A"), this);
+	this->_lblWebcode = new QLabel(tr("Webcode: N/A"), this);
 	root->addWidget(_lblTimePlayed, basicRow + 0, 2);
 	root->addWidget(_lblLevel, basicRow + 1, 2);
 	root->addWidget(_lblFirstTouched, basicRow + 2, 2);
 	root->addWidget(_lblRecentlyTouched, basicRow + 3, 2);
+	root->addWidget(_lblWebcode, basicRow + 4, 2);
 
 	//Quests
 
@@ -205,6 +207,12 @@ void FigureTabWidget::updateFields()
 			QString::number(this->_tag->_recentlyUsed._day).rightJustified(2, '0'),
 			QString::number(this->_tag->_recentlyUsed._hour).rightJustified(2, '0'),
 			QString::number(this->_tag->_recentlyUsed._minute).rightJustified(2, '0')
+		));
+
+		// Update webcode
+
+		this->_lblWebcode->setText(QString("Webcode: %1").arg(
+			tr(this->_tag->_webCode)
 		));
 
 		// Update which elemental quest input to use

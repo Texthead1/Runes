@@ -38,6 +38,7 @@ private:
 	QLabel* _lblLevel;
 	QLabel* _lblFirstTouched;
 	QLabel* _lblRecentlyTouched;
+	QLabel* _lblWebcode;
 
 	QLabel* _sgInvalidElement1;
 	QLabel* _sgInvalidElement2;
