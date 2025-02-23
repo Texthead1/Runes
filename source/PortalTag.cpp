@@ -616,3 +616,56 @@ bool Runes::PortalTag::isVehicle()
 		|| this->_toyType == kTfbSpyroTag_ToyType_Vehicle_Template || this->_toyType == kTfbSpyroTag_ToyType_Vehicle_TemplateLand
 		|| this->_toyType == kTfbSpyroTag_ToyType_Vehicle_TemplateAir || this->_toyType == kTfbSpyroTag_ToyType_Vehicle_TemplateSea;
 }
+
+
+
+//=============================================================================
+// GetUpgrade: Gets a property of the upgrades, either 0 or 1
+//=============================================================================
+uint8_t Runes::PortalTag::GetUpgrade(Upgrade upgrade) const
+{
+	uint8_t bitIndex = DecodeUpgradeEnum(upgrade);
+	return (_upgrades >> bitIndex) & 1;
+}
+
+
+
+//=============================================================================
+// SetUpgrade: Sets a property of the upgrades, value must be 0 or 1
+//=============================================================================
+void Runes::PortalTag::SetUpgrade(Upgrade upgrade, uint8_t value)
+{
+	// Don't pass something other than 0 or 1 :P
+	value = value & 1;
+
+	uint8_t bitIndex = DecodeUpgradeEnum(upgrade);
+	_upgrades = (_upgrades & ~(1 << bitIndex)) | (value << bitIndex);
+}
+
+
+
+//=============================================================================
+// DecodeUpgradeEnum: Decodes the upgrade enum and gets the exact bit index for it
+//=============================================================================
+uint8_t Runes::PortalTag::DecodeUpgradeEnum(Upgrade upgrade) const
+{
+	uint8_t bitIndex = static_cast<uint8_t>(upgrade) & 0xF;
+
+	if (upgrade & kUpgradeSpecificPath)
+	{
+		// Yes it recurses, cry about it
+		UpgradePath selected  = static_cast<UpgradePath>(GetUpgrade(kUpgradeSelectedPath));
+		UpgradePath requested = static_cast<UpgradePath>((upgrade >> kUpgradeSpecificPathShift) & 1);
+
+		if (selected == requested)
+		{
+			bitIndex += kUpgradeActivePathStart;
+		}
+		else
+		{
+			bitIndex += kUpgradeAltPathStart;
+		}
+	}
+
+	return bitIndex;
+}

@@ -148,6 +148,49 @@ namespace Runes
 
 #pragma pack(pop)
 
+	enum Upgrade : uint8_t
+	{
+		// Numeric value is bit index
+		kUpgradePathChoiceMade        = 0,
+		kUpgradeSelectedPath          = 1,
+
+		kUpgradeBase1                 = 2,
+		kUpgradeBase2                 = 3,
+		kUpgradeBase3                 = 4,
+		kUpgradeBase4                 = 5,
+
+		kUpgradeActivePathStart       = 6,
+		kUpgradeActivePathUpgrade1    = 6,
+		kUpgradeActivePathUpgrade2    = 7,
+		kUpgradeActivePathUpgrade3    = 8,
+		kUpgradeSoulgem               = 9,
+		kUpgradeWowPow                = 10,
+
+		kUpgradeAltPathStart          = 11,
+		kUpgradeAltPathUpgrade1       = 11,
+		kUpgradeAltPathUpgrade2       = 12,
+		kUpgradeAltPathUpgrade3       = 13,
+
+		// alternate ways of grabing a path only upgrade
+		kUpgradeSpecificPath          = 0x80,
+		kUpgradeSpecificPathShift     = 6,
+		kUpgradeSpecificPathPrimary   = kUpgradeSpecificPath | (0 << kUpgradeSpecificPathShift),
+		kUpgradeSpecificPathSecondary = kUpgradeSpecificPath | (1 << kUpgradeSpecificPathShift),
+		kUpgradePath1Upgrade1         = kUpgradeSpecificPathPrimary   | 0,
+		kUpgradePath1Upgrade2         = kUpgradeSpecificPathPrimary   | 1,
+		kUpgradePath1Upgrade3         = kUpgradeSpecificPathPrimary   | 2,
+		kUpgradePath2Upgrade1         = kUpgradeSpecificPathSecondary | 0,
+		kUpgradePath2Upgrade2         = kUpgradeSpecificPathSecondary | 1,
+		kUpgradePath2Upgrade3         = kUpgradeSpecificPathSecondary | 2,
+	};
+
+	enum UpgradePath : uint8_t
+	{
+		// Numeric value is the path index
+		kUpgradePathPrimary           = 0,
+		kUpgradePathSecondary         = 1
+	};
+
 
 	// This class serves as an abstraction, allowing one to edit various parts of the figures
 	// without needing to deal without needing to deal with the way it was coded and such.
@@ -197,6 +240,8 @@ namespace Runes
 			void DebugSaveTagData();
 			bool isTrap();
 			bool isVehicle();
+			uint8_t GetUpgrade(Upgrade upgrade) const;
+			void SetUpgrade(Upgrade upgrade, uint8_t value);
 
 		private:
 			bool _tagHeaderStored;
@@ -208,6 +253,7 @@ namespace Runes
 			void FillQuestsSwapForce();
 			void FillQuestsGiants();
 			void getQuestsGiantsElementalBits(uint8_t* bits);
+			uint8_t DecodeUpgradeEnum(Upgrade upgrade) const;
 	};
 }
 
