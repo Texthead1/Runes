@@ -21,6 +21,7 @@
 #include <QTextEdit>
 
 #include "kTfbSpyroTag_HatType.hpp"
+#include "kTfbSpyroTag_TrinketType.hpp"
 #include "Constants.hpp"
 #include "toydata.hpp"
 
@@ -75,6 +76,18 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	root->addWidget(new QLabel(tr("Hat"), this), basicRow + 2, 0);
 	root->addWidget(this->_cmbHat, basicRow + 2, 1);
 
+	this->_cmbTrinket = new QComboBox(this);
+	for(int i = 0; i <= kTfbSpyroTag_Trinket_MAX; i++)
+	{
+		this->_cmbTrinket->addItem(tr(trinketNames_en[i]));
+	}
+	connect(this->_cmbTrinket, &QComboBox::currentIndexChanged, [=](int newIndex)
+	{
+		this->_tag->_trinketType = static_cast<kTfbSpyroTag_TrinketType>(newIndex);
+	});
+	root->addWidget(new QLabel(tr("Trinket"), this), basicRow + 3, 0);
+	root->addWidget(this->_cmbTrinket, basicRow + 3, 1);
+
 	this->_spinHeroPoints = new QSpinBox(this);
 	this->_spinHeroPoints->setRange(0, 100);
 	connect(this->_spinHeroPoints, &QSpinBox::valueChanged, [=](int newHeroPoints)
@@ -83,8 +96,8 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 
 		printf("%d, %d\n", this->size().width(), this->size().height());
 	});
-	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 3, 0);
-	root->addWidget(this->_spinHeroPoints, basicRow + 3, 1);
+	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 4, 0);
+	root->addWidget(this->_spinHeroPoints, basicRow + 4, 1);
 
 	this->_lblTimePlayed = new QLabel(tr("Time Played: N/A"), this);
 	this->_lblLevel = new QLabel(tr("Level: N/A"), this);
@@ -304,6 +317,7 @@ void FigureTabWidget::updateFields()
 	this->_spinMoney->setValue(this->_tag->_coins);
 	this->_spinHeroPoints->setValue(this->_tag->_heroPoints);
 	this->_cmbHat->setCurrentIndex(this->_tag->_hatType);
+	this->_cmbTrinket->setCurrentIndex(this->_tag->_trinketType);
 
 	// Update the quest fields for giants
 

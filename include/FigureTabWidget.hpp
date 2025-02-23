@@ -31,6 +31,7 @@ private:
 	QSpinBox* _spinMoney;
 	QSpinBox* _spinHeroPoints;
 	QComboBox* _cmbHat;
+	QComboBox* _cmbTrinket;
 	QTextEdit* _txtNickname;
 
 	QLabel* _lblToyName;
