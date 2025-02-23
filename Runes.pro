@@ -35,6 +35,7 @@ HEADERS += include/Constants.hpp \
 		   include/ESkylandersGame.hpp \
 		   include/kTfbSpyroTag_DecoID.hpp \
 		   include/kTfbSpyroTag_HatType.hpp \
+		   include/kTfbSpyroTag_TrinketType.hpp \
 		   include/kTfbSpyroTag_ToyType.hpp \
 		   include/kTfbSpyroTag_VillainType.hpp \
 		   include/PortalAlgos.hpp \
@@ -57,6 +58,7 @@ HEADERS += include/Constants.hpp \
 SOURCES += source/Constants.cpp \
 		   source/debug.cpp \
 		   source/kTfbSpyroTag_HatType.cpp \
+		   source/kTfbSpyroTag_TrinketType.cpp \
 		   source/main.cpp \
 		   source/PortalAlgos.cpp \
 		   source/PortalTag.cpp \

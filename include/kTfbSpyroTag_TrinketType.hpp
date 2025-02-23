@@ -41,3 +41,5 @@ enum kTfbSpyroTag_TrinketType : uint16_t
     kTfbSpyroTag_Trinket_SpyrosShield = 33,
     kTfbSpyroTag_Trinket_MAX = 33,
 };
+
+extern const char* trinketNames_en[kTfbSpyroTag_Trinket_MAX + 1];
