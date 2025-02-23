@@ -157,6 +157,8 @@ void Runes::PortalTag::StoreMagicMoment()
 	else if(this->_tagData._hat2015 > 0) this->_hatType = (kTfbSpyroTag_HatType)(this->_tagData._hat2015 + kTfbSpyroTag_Hat_OFFSET_2015);
 	else                                 this->_hatType = kTfbSpyroTag_Hat_NONE;
 
+	this->_trinketType = static_cast<kTfbSpyroTag_TrinketType>(this->_tagData._trinketType);
+
 	uint32_t flags1 = to24(this->_tagData._flags1_low, this->_tagData._flags1_high);
 	this->_upgrades = ((this->_tagData._flags2 & 0xF) << 10) | (flags1 & 0x3FF);
 	this->_elementCollectionCounts[0] = (flags1 >> 10) & 3;
@@ -385,6 +387,9 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2013)    this->_tagData._hat2013 = this->_hatType;
 	else if(this->_hatType >= kTfbSpyroTag_Hat_MIN_2012)    this->_tagData._hat2012 = this->_hatType;
 	else                                                    this->_tagData._hat2011 = this->_hatType;
+
+	// Set trinket type
+	this->_tagData._trinketType = this->_trinketType;
 
 	this->FillQuestsGiants();
 	this->FillQuestsSwapForce();

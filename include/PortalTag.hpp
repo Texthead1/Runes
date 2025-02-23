@@ -15,6 +15,7 @@
 #include "kTfbSpyroTag_DecoID.hpp"
 #include "kTfbSpyroTag_ToyType.hpp"
 #include "kTfbSpyroTag_HatType.hpp"
+#include "kTfbSpyroTag_TrinketType.hpp"
 #include "RfidTag.hpp"
 
 // Documentation about figures:
@@ -108,7 +109,7 @@ namespace Runes
 		/* 0x76 */ uint16_t _flags2;                 // See SkylanderFormat.md
 		/* 0x78 */ uint32_t _experience2013;         // Experience for ssf onwards, caps at 101000
 		/* 0x7C */ uint8_t _hat2013;                 // Current hat (only swap force or trap team hats)
-		/* 0x7D */ uint8_t unk7D;
+		/* 0x7D */ uint8_t _trinketType;             // Trinket type
 		/* 0x7E */ uint8_t _hat2015;                 // Current hat (superchargers hats)
 		/* 0x7F */ uint8_t unk7F;
 
@@ -211,6 +212,7 @@ namespace Runes
 			uint16_t _platformUse;
 			uint64_t _heroics;
 			kTfbSpyroTag_HatType _hatType;
+			kTfbSpyroTag_TrinketType _trinketType;
 			PortalTagTimeOfDay _firstUsed;
 			PortalTagTimeOfDay _recentlyUsed;
 			uint16_t _heroPoints;
