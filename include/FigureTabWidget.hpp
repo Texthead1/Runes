@@ -25,6 +25,7 @@ private:
 	void updateFields();
 	void initGiantsQuests();
 	void initSwapForceQuests();
+	void initUpgrades();
 
 	QSpinBox* _spinExp;
 	QSpinBox* _spinMoney;
@@ -64,4 +65,19 @@ private:
 	QWidget* _wdSwapForceElementalQuest1;
 	QWidget* _wdSwapForceElementalQuest2;
 	QSpinBox* _spinSwapForceIndividual;
+
+	QFormLayout* _subUpgrades;
+	QCheckBox*   _chkUG_B1;
+	QCheckBox*   _chkUG_B2;
+	QCheckBox*   _chkUG_B3;
+	QCheckBox*   _chkUG_B4;
+	QComboBox*   _cmbUG_Path;
+	QCheckBox*   _chkUG_P1U1;
+	QCheckBox*   _chkUG_P1U2;
+	QCheckBox*   _chkUG_P1U3;
+	QCheckBox*   _chkUG_P2U1;
+	QCheckBox*   _chkUG_P2U2;
+	QCheckBox*   _chkUG_P2U3;
+	QCheckBox*   _chkUG_Soulgem;
+	QCheckBox*   _chkUG_WowPow;
 };

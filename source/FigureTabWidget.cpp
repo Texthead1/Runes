@@ -108,6 +108,10 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	root->addWidget(new QLabel(tr("<h3>Giants Quests</h3>")), questStart, 0, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subGiantsQuests, questStart + 1, 0);
 
+	initUpgrades();
+	root->addWidget(new QLabel(tr("<h3>Upgrades</h3>")), questStart, 1, Qt::AlignLeft | Qt::AlignBottom);
+	root->addLayout(_subUpgrades, questStart + 1, 1);
+
 	initSwapForceQuests();
 	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subSwapForceQuests, questStart + 1, 2);
@@ -312,6 +316,27 @@ void FigureTabWidget::updateFields()
 	this->_chkSwapForceTotallyMaxedOut->setCheckState(intToChecked(this->_tag->_giantsQuests[4]));
 	this->_spinSwapForceElementalist->setValue(this->_tag->_swapforceQuests[5]);
 	this->_spinSwapForceIndividual->setValue(this->_tag->_swapforceQuests[8]);
+
+	// Update the upgrade fields
+
+	bool choiceMade = _tag->GetUpgrade(Runes::kUpgradePathChoiceMade);
+	Runes::UpgradePath selectedPath = static_cast<Runes::UpgradePath>(_tag->GetUpgrade(Runes::kUpgradeSelectedPath));
+	_cmbUG_Path->setCurrentIndex(choiceMade ? (selectedPath + 1) : 0);
+
+	_chkUG_B1->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeBase1)));
+	_chkUG_B2->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeBase2)));
+	_chkUG_B3->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeBase3)));
+	_chkUG_B4->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeBase4)));
+
+	_chkUG_P1U1->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath1Upgrade1)));
+	_chkUG_P1U2->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath1Upgrade2)));
+	_chkUG_P1U3->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath1Upgrade3)));
+	_chkUG_P2U1->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath2Upgrade1)));
+	_chkUG_P2U2->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath2Upgrade2)));
+	_chkUG_P2U3->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradePath2Upgrade3)));
+
+	_chkUG_Soulgem->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeSoulgem)));
+	 _chkUG_WowPow->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeWowPow)));
 }
 
 
@@ -382,4 +407,67 @@ void FigureTabWidget::initSwapForceQuests()
 	_subSwapForceQuests->addRow(tr("Elemental Quest 1"), this->_ssfInvalidElement1);
 	_subSwapForceQuests->addRow(tr("Elemental Quest 2"), this->_ssfInvalidElement2);
 	_subSwapForceQuests->addRow(tr("Individual Quest"), this->_spinSwapForceIndividual);
+}
+
+
+//=============================================================================
+// macros for defining upgrade checkboxes.
+//=============================================================================
+#define defineCheckUpgrade(field, upgrade) \
+	do \
+	{ \
+		this->field = new QCheckBox(); \
+		connect(this->field, &QCheckBox::stateChanged, [=](int newState) \
+		{ \
+			this->_tag->SetUpgrade(upgrade, newState == Qt::Checked); \
+		}); \
+	} while (false)
+
+
+//=============================================================================
+// initUpgrades: Initialize the ui widgets for upgrades.
+//=============================================================================
+void FigureTabWidget::initUpgrades()
+{
+	_subUpgrades = new QFormLayout();
+
+	defineCheckUpgrade(_chkUG_B1,      Runes::kUpgradeBase1);
+	defineCheckUpgrade(_chkUG_B2,      Runes::kUpgradeBase2);
+	defineCheckUpgrade(_chkUG_B3,      Runes::kUpgradeBase3);
+	defineCheckUpgrade(_chkUG_B4,      Runes::kUpgradeBase4);
+	defineCheckUpgrade(_chkUG_P1U1,    Runes::kUpgradePath1Upgrade1);
+	defineCheckUpgrade(_chkUG_P1U2,    Runes::kUpgradePath1Upgrade2);
+	defineCheckUpgrade(_chkUG_P1U3,    Runes::kUpgradePath1Upgrade3);
+	defineCheckUpgrade(_chkUG_P2U1,    Runes::kUpgradePath2Upgrade1);
+	defineCheckUpgrade(_chkUG_P2U2,    Runes::kUpgradePath2Upgrade2);
+	defineCheckUpgrade(_chkUG_P2U3,    Runes::kUpgradePath2Upgrade3);
+	defineCheckUpgrade(_chkUG_Soulgem, Runes::kUpgradeSoulgem);
+	defineCheckUpgrade(_chkUG_WowPow,  Runes::kUpgradeWowPow);
+
+	_cmbUG_Path = new QComboBox(this);
+	_cmbUG_Path->addItem(tr("None"));
+	_cmbUG_Path->addItem(tr("Primary"));
+	_cmbUG_Path->addItem(tr("Secondary"));
+	
+	connect(_cmbUG_Path, &QComboBox::currentIndexChanged, [=](int newIndex)
+	{
+		uint8_t choiceMade = newIndex != 0;
+		uint8_t pathChoice = newIndex > 0 ? newIndex - 1 : 0;
+		this->_tag->SetUpgrade(Runes::kUpgradePathChoiceMade, choiceMade);
+		this->_tag->SetUpgrade(Runes::kUpgradeSelectedPath,   pathChoice);
+	});
+
+	_subUpgrades->addRow(tr("Base 1"),           this->_chkUG_B1);
+	_subUpgrades->addRow(tr("Base 2"),           this->_chkUG_B2);
+	_subUpgrades->addRow(tr("Base 3"),           this->_chkUG_B3);
+	_subUpgrades->addRow(tr("Base 4"),           this->_chkUG_B4);
+	_subUpgrades->addRow(tr("Path"),             this->_cmbUG_Path);
+	_subUpgrades->addRow(tr("Path 1 Upgrade 1"), this->_chkUG_P1U1);
+	_subUpgrades->addRow(tr("Path 1 Upgrade 2"), this->_chkUG_P1U2);
+	_subUpgrades->addRow(tr("Path 1 Upgrade 3"), this->_chkUG_P1U3);
+	_subUpgrades->addRow(tr("Path 2 Upgrade 1"), this->_chkUG_P2U1);
+	_subUpgrades->addRow(tr("Path 2 Upgrade 2"), this->_chkUG_P2U2);
+	_subUpgrades->addRow(tr("Path 2 Upgrade 3"), this->_chkUG_P2U3);
+	_subUpgrades->addRow(tr("Soulgem"),          this->_chkUG_Soulgem);
+	_subUpgrades->addRow(tr("Wow Pow"),          this->_chkUG_WowPow);
 }
