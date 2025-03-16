@@ -95,8 +95,6 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	connect(this->_spinHeroPoints, &QSpinBox::valueChanged, [=](int newHeroPoints)
 	{
 		this->_tag->_heroPoints = newHeroPoints;
-
-		printf("%d, %d\n", this->size().width(), this->size().height());
 	});
 	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 4, 0);
 	root->addWidget(this->_spinHeroPoints, basicRow + 4, 1);
