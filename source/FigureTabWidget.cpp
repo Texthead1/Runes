@@ -505,9 +505,36 @@ void FigureTabWidget::initUpgrades()
 	connect(_cmbUG_Path, &QComboBox::currentIndexChanged, [=](int newIndex)
 	{
 		uint8_t choiceMade = newIndex != 0;
-		uint8_t pathChoice = newIndex > 0 ? newIndex - 1 : 0;
+		uint8_t oldPath = this->_tag->GetUpgrade(Runes::kUpgradeSelectedPath);
+		uint8_t newPath = newIndex > 0 ? newIndex - 1 : oldPath;
+
+		if (newPath != oldPath && choiceMade)
+		{
+			// Swap upgrades between paths
+			uint8_t active[3] =
+			{
+				this->_tag->GetUpgrade(Runes::kUpgradeActivePathUpgrade1),
+				this->_tag->GetUpgrade(Runes::kUpgradeActivePathUpgrade2),
+				this->_tag->GetUpgrade(Runes::kUpgradeActivePathUpgrade3)
+			};
+
+			uint8_t inactive[3] =
+			{
+				this->_tag->GetUpgrade(Runes::kUpgradeAltPathUpgrade1),
+				this->_tag->GetUpgrade(Runes::kUpgradeAltPathUpgrade2),
+				this->_tag->GetUpgrade(Runes::kUpgradeAltPathUpgrade3)
+			};
+
+			this->_tag->SetUpgrade(Runes::kUpgradeAltPathUpgrade1, active[0]);
+			this->_tag->SetUpgrade(Runes::kUpgradeAltPathUpgrade2, active[1]);
+			this->_tag->SetUpgrade(Runes::kUpgradeAltPathUpgrade3, active[2]);
+			this->_tag->SetUpgrade(Runes::kUpgradeActivePathUpgrade1, inactive[0]);
+			this->_tag->SetUpgrade(Runes::kUpgradeActivePathUpgrade2, inactive[1]);
+			this->_tag->SetUpgrade(Runes::kUpgradeActivePathUpgrade3, inactive[2]);
+		}
+
 		this->_tag->SetUpgrade(Runes::kUpgradePathChoiceMade, choiceMade);
-		this->_tag->SetUpgrade(Runes::kUpgradeSelectedPath,   pathChoice);
+		this->_tag->SetUpgrade(Runes::kUpgradeSelectedPath,   newPath);
 	});
 
 	_subUpgrades->addRow(tr("Base 1"),           this->_chkUG_B1);
