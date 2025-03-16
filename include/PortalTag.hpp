@@ -244,6 +244,8 @@ namespace Runes
 			bool isVehicle();
 			uint8_t GetUpgrade(Upgrade upgrade) const;
 			void SetUpgrade(Upgrade upgrade, uint8_t value);
+			bool GetHeroic(uint8_t heroic) const;
+			void SetHeroic(uint8_t heroic, bool value);
 
 		private:
 			bool _tagHeaderStored;

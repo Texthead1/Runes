@@ -13,6 +13,7 @@
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QLabel>
+#include <QListWidget>
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -23,6 +24,7 @@
 #include "kTfbSpyroTag_HatType.hpp"
 #include "kTfbSpyroTag_TrinketType.hpp"
 #include "Constants.hpp"
+#include "HeroicsNames.hpp"
 #include "toydata.hpp"
 
 #define intToChecked(value) ((value) == 1 ? Qt::Checked : Qt::Unchecked)
@@ -130,6 +132,23 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	initSwapForceQuests();
 	root->addWidget(new QLabel(tr("<h3>Swap Force Quests</h3>")), questStart, 2, Qt::AlignLeft | Qt::AlignBottom);
 	root->addLayout(_subSwapForceQuests, questStart + 1, 2);
+
+	this->_lstHeroics = new QListWidget(this);
+	for (uint i = 0; i < heroicsNames.size(); i++)
+	{
+		this->_lstHeroics->addItem(heroicsNames[i]);
+		QListWidgetItem* item = this->_lstHeroics->item(this->_lstHeroics->count() - 1);
+		item->setData(Qt::UserRole, i);
+		item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+		item->setCheckState(Qt::Unchecked);
+	}
+	connect(this->_lstHeroics, &QListWidget::itemChanged, [=](QListWidgetItem* item)
+	{
+		int32_t index = item->data(Qt::UserRole).toInt();
+		this->_tag->SetHeroic(index, item->checkState() == Qt::Checked);
+	});
+	root->addWidget(new QLabel(tr("<h3>Heroics</h3>"), this), questStart, 3);
+	root->addWidget(this->_lstHeroics, questStart + 1, 3, 1, std::max<int32_t>(std::max<int32_t>(this->_subUpgrades->count(), this->_subSwapForceQuests->count()), this->_subGiantsQuests->count()));
 
 	setLayout(root);
 	
@@ -359,6 +378,14 @@ void FigureTabWidget::updateFields()
 
 	_chkUG_Soulgem->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeSoulgem)));
 	 _chkUG_WowPow->setCheckState(intToChecked(_tag->GetUpgrade(Runes::kUpgradeWowPow)));
+
+	// Update heroic challenges
+
+	for (int32_t i = 0; i < _lstHeroics->count(); i++)
+	{
+		QListWidgetItem* item = _lstHeroics->item(i);
+		item->setCheckState(_tag->GetHeroic(i) ? Qt::Checked : Qt::Unchecked);
+	}
 }
 
 

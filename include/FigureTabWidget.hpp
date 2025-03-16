@@ -8,6 +8,7 @@ class QSpinBox;
 class QComboBox;
 class QCheckBox;
 class QLabel;
+class QListWidget;
 class QFormLayout;
 class QTextEdit;
 
@@ -82,4 +83,6 @@ private:
 	QCheckBox*   _chkUG_P2U3;
 	QCheckBox*   _chkUG_Soulgem;
 	QCheckBox*   _chkUG_WowPow;
+
+	QListWidget* _lstHeroics;
 };

@@ -180,7 +180,7 @@ void Runes::PortalTag::StoreRemainingData()
 {
 	this->_firstUsed = this->_tagData._firstUsed;
 	this->_recentlyUsed = this->_tagData._recentlyUsed;
-	this->_heroics = ((uint64_t)to24(this->_tagData._heroics2012_low, this->_tagData._heroics2012_high) << 32) | this->_tagData._heroics2011;
+	this->_heroics = (static_cast<uint64_t>(to24(this->_tagData._heroics2012_low, this->_tagData._heroics2012_high)) << 32) | this->_tagData._heroics2011;
 	this->_ownerCount = this->_tagData._ownerCount;
 	this->_heroPoints = this->_tagData._heroPoints;
 	StoreQuestsGiants();
@@ -376,7 +376,14 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	//Set hero points
 	tagData->_heroPoints = this->_heroPoints;
 	//Set owner count
-	tagData->_ownerCount = this->_ownerCount;
+	tagData->_ownerCount       = this->_ownerCount;
+	//Set heroics
+	tagData->_heroics2011      =  this->_heroics & 0xFFFFFFFF;
+	tagData->_heroics2012_low  = (this->_heroics >> 32) & 0xFFFF;
+	tagData->_heroics2012_high = (this->_heroics >> 40) & 0xFF;
+	//Set portal placed times
+	tagData->_recentlyUsed     = this->_recentlyUsed;
+	tagData->_firstUsed        = this->_firstUsed;
 
 	//Set hat type
 	this->_tagData._hat2011 = kTfbSpyroTag_Hat_NONE;
@@ -673,4 +680,24 @@ uint8_t Runes::PortalTag::DecodeUpgradeEnum(Upgrade upgrade) const
 	}
 
 	return bitIndex;
+}
+
+
+
+//=============================================================================
+// GetHeroic: Gets the heroic with the specified index
+//=============================================================================
+bool Runes::PortalTag::GetHeroic(uint8_t heroic) const
+{
+	return (_heroics >> heroic) & 1;
+}
+
+
+
+//=============================================================================
+// SetHeroic: Sets the heroic with the specified index
+//=============================================================================
+void Runes::PortalTag::SetHeroic(uint8_t heroic, bool value)
+{
+	_heroics = static_cast<uint64_t>(static_cast<uint64_t>(_heroics & ~static_cast<uint64_t>(1ul << heroic)) | (static_cast<uint64_t>(static_cast<uint64_t>(value ? 1ul : 0ul) << heroic)));
 }

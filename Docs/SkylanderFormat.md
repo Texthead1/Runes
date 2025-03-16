@@ -692,6 +692,7 @@ Unknown. TODO in future
 | `SG >> 0x01`    | 33 | Skylands Salute
 | `SG >> 0x02`    | 34 | S.A.B.R.I.N.A
 | `SG >> 0x03`    | 35 | The Sky is Falling
+| `SG >> 0x04`    | 36 | Nort's Winter Classic
 | `SG >> 0x05`    | 37 | Break the Fakes!
 | `SG >> 0x06`    | 38 | Baking with Batterson
 | `SG >> 0x07`    | 39 | Blobber's Folly

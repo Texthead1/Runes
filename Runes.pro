@@ -33,6 +33,7 @@ POST_TARGETDEPS += copyfiles
 HEADERS += include/Constants.hpp \
 		   include/debug.hpp \
 		   include/ESkylandersGame.hpp \
+		   include/HeroicsNames.hpp \
 		   include/kTfbSpyroTag_DecoID.hpp \
 		   include/kTfbSpyroTag_HatType.hpp \
 		   include/kTfbSpyroTag_TrinketType.hpp \
@@ -57,6 +58,7 @@ HEADERS += include/Constants.hpp \
 		   include/RunesMainWidget.hpp
 SOURCES += source/Constants.cpp \
 		   source/debug.cpp \
+		   source/HeroicsNames.cpp \
 		   source/kTfbSpyroTag_HatType.cpp \
 		   source/kTfbSpyroTag_TrinketType.cpp \
 		   source/main.cpp \
