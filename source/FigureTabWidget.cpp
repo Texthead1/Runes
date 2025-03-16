@@ -148,6 +148,12 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	root->addWidget(new QLabel(tr("<h3>Heroics</h3>"), this), questStart, 3);
 	root->addWidget(this->_lstHeroics, questStart + 1, 3, 1, std::max<int32_t>(std::max<int32_t>(this->_subUpgrades->count(), this->_subSwapForceQuests->count()), this->_subGiantsQuests->count()));
 
+	// Hardcoded cos cry
+	root->setColumnMinimumWidth(0, 224);
+	root->setColumnMinimumWidth(1, 224);
+	root->setColumnMinimumWidth(2, 224);
+	root->setColumnMinimumWidth(3, 128);
+
 	setLayout(root);
 	
 	setWindowTitle(tr("Runes"));
