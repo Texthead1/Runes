@@ -399,7 +399,7 @@ void Runes::PortalTag::FillOutputFromStoredData()
 	this->_tagData._trinketType = this->_trinketType;
 
 	// Upgrades
-	this->_tagData._flags1_low = (this->_tagData._flags1_low & ~0x3FF) | this->_upgrades & 0x3FF;
+	this->_tagData._flags1_low = (this->_tagData._flags1_low & ~0x3FF) | (this->_upgrades & 0x3FF);
 	this->_tagData._flags2 = (this->_tagData._flags2 & ~0xF) | ((this->_upgrades >> 10) & 0xF);
 
 	this->FillQuestsGiants();
