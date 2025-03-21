@@ -44,5 +44,5 @@ RunesMainWidget::RunesMainWidget(Runes::PortalTag* tag, const char* fileName, QW
 
 	setLayout(root);
 	layout()->setMenuBar(_menuBar);
-	setWindowTitle(tr("Runes Tabs"));
+	setWindowTitle(tr("Runes"));
 }
