@@ -20,6 +20,7 @@
 #include <QFileDialog>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QMessageBox>
 
 #include "kTfbSpyroTag_HatType.hpp"
 #include "kTfbSpyroTag_TrinketType.hpp"
@@ -38,6 +39,28 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 {
 	this->_tag = tag;
 	this->_sourceFile = QString(fileName);
+
+	ESkylandersGame game;
+	bool fullAltDeco;
+	bool repose;
+	bool lightcore;
+	kTfbSpyroTag_DecoID decoId;
+	tag->DecodeSubtype(&game, &fullAltDeco, &repose, &lightcore, &decoId);
+	if (game >= eSG_Skylanders2016)
+	{
+		// Throw a warning to let the user know that this may irreversably destroy their figure.
+
+		QMessageBox::warning(
+			this,
+			"Imaginators Figure Detected!",
+			"<h1>Warning!</h1>\n\n"
+			"Imaginators figures are digitally signed in such a way that we are not able to regenerate.\n"
+			"it's possible that Runes will overwrite this signature, <b>permanently</b> corrupting the figure if you don't have a backup.\n"
+			"<h1>Proceed with caution and keep plenty of backups!!!!</h1>\n"
+			"I, NefariousTechSupport, am not responsible for any figures that are broken",
+			QMessageBox::StandardButton::Ok,
+			QMessageBox::StandardButton::NoButton);
+	}
 
 	QGridLayout* root = new QGridLayout(this);
 
