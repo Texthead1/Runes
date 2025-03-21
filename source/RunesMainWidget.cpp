@@ -5,10 +5,13 @@
 #include <QVBoxLayout>
 #include <QMenuBar>
 #include <QFileDialog>
+#include <QMessageBox>
+#include <QApplication>
 
 #include "FigureTabWidget.hpp"
+#include "PortalAlgos.hpp"
 
-RunesMainWidget::RunesMainWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent) : QWidget(parent)
+RunesMainWidget::RunesMainWidget(QWidget* parent) : QWidget(parent)
 {
 	QVBoxLayout* root = new QVBoxLayout(this);
 
