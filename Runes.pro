@@ -30,32 +30,32 @@ POST_TARGETDEPS += copyfiles
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += include/Constants.hpp \
-		   include/debug.hpp \
-		   include/ESkylandersGame.hpp \
-		   include/HeroicsNames.hpp \
-		   include/kTfbSpyroTag_DecoID.hpp \
-		   include/kTfbSpyroTag_HatType.hpp \
-		   include/kTfbSpyroTag_TrinketType.hpp \
-		   include/kTfbSpyroTag_ToyType.hpp \
-		   include/kTfbSpyroTag_VillainType.hpp \
-		   include/PortalAlgos.hpp \
-		   include/PortalTag.hpp \
-		   include/RfidTag.hpp \
-		   include/toydata.hpp \
-		   include/3rd_party/crc.h \
-		   include/3rd_party/md5.h \
-		   include/3rd_party/rijndael.h \
-		   include/PortalAlgos.hpp \
-		   include/3rd_party/md5.h \
-		   include/3rd_party/rijndael.h \
-		   include/PortalTag.hpp \
-		   include/toydata.hpp \
-		   include/Constants.hpp \
-		   include/3rd_party/crc.h \
-		   include/RfidTag.hpp \
-		   include/FigureTabWidget.hpp \
-		   include/RunesMainWidget.hpp
+HEADERS += source/Constants.hpp \
+		   source/debug.hpp \
+		   source/ESkylandersGame.hpp \
+		   source/HeroicsNames.hpp \
+		   source/kTfbSpyroTag_DecoID.hpp \
+		   source/kTfbSpyroTag_HatType.hpp \
+		   source/kTfbSpyroTag_TrinketType.hpp \
+		   source/kTfbSpyroTag_ToyType.hpp \
+		   source/kTfbSpyroTag_VillainType.hpp \
+		   source/PortalAlgos.hpp \
+		   source/PortalTag.hpp \
+		   source/RfidTag.hpp \
+		   source/toydata.hpp \
+		   source/3rd_party/crc.h \
+		   source/3rd_party/md5.h \
+		   source/3rd_party/rijndael.h \
+		   source/PortalAlgos.hpp \
+		   source/3rd_party/md5.h \
+		   source/3rd_party/rijndael.h \
+		   source/PortalTag.hpp \
+		   source/toydata.hpp \
+		   source/Constants.hpp \
+		   source/3rd_party/crc.h \
+		   source/RfidTag.hpp \
+		   source/FigureTabWidget.hpp \
+		   source/RunesMainWidget.hpp
 SOURCES += source/Constants.cpp \
 		   source/debug.cpp \
 		   source/HeroicsNames.cpp \
