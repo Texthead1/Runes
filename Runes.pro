@@ -30,33 +30,29 @@ POST_TARGETDEPS += copyfiles
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += source/Constants.hpp \
+HEADERS += source/3rd_party/crc.h \
+		   source/3rd_party/md5.h \
+		   source/3rd_party/rijndael.h \
+		   source/Constants.hpp \
 		   source/debug.hpp \
 		   source/ESkylandersGame.hpp \
+		   source/FigureTabWidget.hpp \
 		   source/HeroicsNames.hpp \
 		   source/kTfbSpyroTag_DecoID.hpp \
 		   source/kTfbSpyroTag_HatType.hpp \
-		   source/kTfbSpyroTag_TrinketType.hpp \
 		   source/kTfbSpyroTag_ToyType.hpp \
+		   source/kTfbSpyroTag_TrinketType.hpp \
 		   source/kTfbSpyroTag_VillainType.hpp \
 		   source/PortalAlgos.hpp \
 		   source/PortalTag.hpp \
 		   source/RfidTag.hpp \
-		   source/toydata.hpp \
-		   source/3rd_party/crc.h \
-		   source/3rd_party/md5.h \
-		   source/3rd_party/rijndael.h \
-		   source/PortalAlgos.hpp \
-		   source/3rd_party/md5.h \
-		   source/3rd_party/rijndael.h \
-		   source/PortalTag.hpp \
-		   source/toydata.hpp \
-		   source/Constants.hpp \
-		   source/3rd_party/crc.h \
-		   source/RfidTag.hpp \
-		   source/FigureTabWidget.hpp \
-		   source/RunesMainWidget.hpp
-SOURCES += source/Constants.cpp \
+		   source/RunesMainWidget.hpp \
+		   source/toydata.hpp
+
+SOURCES += source/3rd_party/crc.cpp \
+		   source/3rd_party/md5.cpp \
+		   source/3rd_party/rijndael.cpp \
+		   source/Constants.cpp \
 		   source/debug.cpp \
 		   source/HeroicsNames.cpp \
 		   source/kTfbSpyroTag_HatType.cpp \
@@ -65,9 +61,6 @@ SOURCES += source/Constants.cpp \
 		   source/PortalAlgos.cpp \
 		   source/PortalTag.cpp \
 		   source/RfidTag.cpp \
+		   source/RunesMainWidget.cpp \
 		   source/toydata.cpp \
-		   source/3rd_party/crc.cpp \
-		   source/3rd_party/md5.cpp \
-		   source/3rd_party/rijndael.cpp \
-		   source/FigureTabWidget.cpp \
-		   source/RunesMainWidget.cpp
+		   source/FigureTabWidget.cpp
