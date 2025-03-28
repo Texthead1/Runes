@@ -136,7 +136,7 @@ bool Runes::RfidTag::CopyBlocks(void* dst, uint8_t blockId, uint8_t numBlocks)
 //=============================================================================
 bool Runes::RfidTag::AllZero(uint8_t* block)
 {
-	return (*(uint64_t*)block + *((uint64_t*)(block + 8))) == 0;
+	return (*reinterpret_cast<uint64_t*>(block) | *reinterpret_cast<uint64_t*>(block + 8)) == 0;
 }
 
 
