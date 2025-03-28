@@ -16,7 +16,7 @@ std::array<const char*, 56> heroicsNames =
 	"Where Art Thou, Paintings (Spyro)",
 	"Lair of the Giant Spiders (Prism Break)",
 	"Fight, Teleport, Fight! (Lightning Rod)",
-	"The Three Teleporters",
+	"The Three Teleporters (Hex)",
 	"Stop, Sheep Thieves! (Dino-Rang)",
 	"Mining for Charms (Bash)",
 	"Dungeoness Creeps (Cynder)",
