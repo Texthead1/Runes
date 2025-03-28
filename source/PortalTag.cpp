@@ -255,7 +255,12 @@ void Runes::PortalTag::FillQuestsGiants()
 void Runes::PortalTag::getQuestsGiantsElementalBits(uint8_t* bits)
 {
 	FigureToyData* figure = ToyDataManager::getInstance()->LookupCharacter(this->_toyType);
-	switch(figure->_element)
+	if (!figure)
+	{
+		return;
+	}
+
+	switch (figure->_element)
 	{
 		case eET_Earth:
 			bits[0] = kQuestGiantsEarthWreckerBits;

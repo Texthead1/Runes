@@ -354,6 +354,14 @@ void FigureTabWidget::updateFields()
 		this->_wdGiantsElementalQuest1->setVisible(true);
 		this->_wdGiantsElementalQuest2->setVisible(true);
 	}
+	else
+	{
+		this->_lblToyName->setText(
+			QString("<h2>Character ID %1, Var ID %2</h2>")
+			.arg(static_cast<uint16_t>(this->_tag->_toyType))
+			.arg(static_cast<uint16_t>(this->_tag->_subType))
+		);
+	}
 
 	// Basic inputs
 
