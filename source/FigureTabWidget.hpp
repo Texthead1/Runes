@@ -24,6 +24,7 @@ private:
 	QString _sourceFile;
 
 	void updateFields();
+	void updateLevelNumber();
 	void initGiantsQuests();
 	void initSwapForceQuests();
 	void initUpgrades();

@@ -84,7 +84,7 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	connect(this->_spinExp, &QSpinBox::valueChanged, [=](int newExp)
 	{
 		this->_tag->_exp = newExp;
-		//TODO: update level number
+		this->updateLevelNumber();
 	});
 	root->addWidget(new QLabel(tr("Experience"), this), basicRow + 1, 0);
 	root->addWidget(this->_spinExp, basicRow + 1, 1);
@@ -244,9 +244,7 @@ void FigureTabWidget::updateFields()
 
 		// Update the level number
 
-		this->_lblLevel->setText(QString("Level: %1").arg(
-			QString::number(this->_tag->ComputeLevel()).rightJustified(2, '0')
-		));
+		updateLevelNumber();
 
 		// Update the first used time
 
@@ -413,6 +411,17 @@ void FigureTabWidget::updateFields()
 		QListWidgetItem* item = _lstHeroics->item(i);
 		item->setCheckState(_tag->GetHeroic(i) ? Qt::Checked : Qt::Unchecked);
 	}
+}
+
+
+//=============================================================================
+// updateLevelNumber: Set level number on UI
+//=============================================================================
+void FigureTabWidget::updateLevelNumber()
+{
+	this->_lblLevel->setText(QString("Level: %1").arg(
+		QString::number(this->_tag->ComputeLevel()).rightJustified(2, '0')
+	));
 }
 
 
