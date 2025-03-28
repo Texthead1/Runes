@@ -16,6 +16,16 @@ RunesMainWidget::RunesMainWidget(QWidget* parent) : QWidget(parent)
 	QVBoxLayout* root = new QVBoxLayout(this);
 
 	_tabs = new QTabWidget(this);
+	_tabs->setTabsClosable(true);
+	connect(_tabs, &QTabWidget::tabCloseRequested, [this](int index)
+	{
+		QWidget* widget = _tabs->widget(index);
+		_tabs->removeTab(index);
+		if (widget)
+		{
+			delete widget;
+		}
+	});
 	root->addWidget(_tabs);
 
 	_menuBar = new QMenuBar(this);
@@ -32,7 +42,7 @@ RunesMainWidget::RunesMainWidget(QWidget* parent) : QWidget(parent)
 			Runes::PortalTag* tag = new Runes::PortalTag();
 			tag->_rfidTag = new Runes::RfidTag();
 			tag->ReadFromFile(sourceFile.toLocal8Bit());
-			int tabIndex = this->_tabs->addTab(new FigureTabWidget(tag, sourceFile.toLocal8Bit(), this), tr("Figure File"));
+			int tabIndex = this->_tabs->addTab(new FigureTabWidget(tag, sourceFile.toLocal8Bit(), _tabs), tr("Figure File"));
 			this->_tabs->setCurrentIndex(tabIndex);
 		}
 	});

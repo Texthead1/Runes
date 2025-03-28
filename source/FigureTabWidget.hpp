@@ -18,6 +18,7 @@ class FigureTabWidget : public QWidget
 
 public:
 	explicit FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QWidget* parent = nullptr);
+	virtual ~FigureTabWidget();
 	Runes::PortalTag* _tag;
 
 private:

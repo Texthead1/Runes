@@ -186,6 +186,18 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 
 
 //=============================================================================
+// ~FigureTabWidget: Destructor for the FigureTabWidget.
+//=============================================================================
+FigureTabWidget::~FigureTabWidget()
+{
+	if (_tag)
+	{
+		delete _tag;
+	}
+}
+
+
+//=============================================================================
 // macros for defining elemental quest inputs easier.
 //=============================================================================
 #define defineElementalSpinQuest(form, generic, questGame, field, index, max, name) \
