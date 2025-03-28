@@ -30,7 +30,8 @@ RunesMainWidget::RunesMainWidget(QWidget* parent) : QWidget(parent)
 		Runes::PortalTag* tag = new Runes::PortalTag();
 		tag->_rfidTag = new Runes::RfidTag();
 		tag->ReadFromFile(sourceFile.toLocal8Bit());
-		this->_tabs->addTab(new FigureTabWidget(tag, sourceFile.toLocal8Bit(), this), tr("Figure File"));
+		int tabIndex = this->_tabs->addTab(new FigureTabWidget(tag, sourceFile.toLocal8Bit(), this), tr("Figure File"));
+		this->_tabs->setCurrentIndex(tabIndex);
 	});
 	menuFile->addAction(actOpen);
 	QAction* actSave = new QAction(tr("&Save"), this);
