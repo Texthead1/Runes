@@ -7,7 +7,7 @@ The header is 0x20 bytes long.
 | Offset | Type                   | Description
 |--------|------------------------|---------------
 |  0000  | `uint32_t`             | Non-Unique Identifier for this toy, internally referred to as the serial number
-|  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../include/kTfbSpyroTag_ToyType.hpp))
+|  0010  | `kTfbSpyroTag_ToyType` | (24 bit int) The Character ID of this Skylander (see [kTfbSpyroTag_ToyType.hpp](../source/kTfbSpyroTag_ToyType.hpp))
 |  0013  | `uint8_t`              | [Error byte](#error-byte)
 |  0014  | `uint64_t`             | The Trading Card ID, [Web Code](#web-code) is derived from this, internally this is separated into 2 `uint32_t`s, presumably to get around alignment issues
 |  001C  | `uint16_t`             | The Variant ID of this Skylander (see [here](#variant-id) to understand how this works)
@@ -19,12 +19,12 @@ The Variant ID is a 16 bit long bit field. Note that with the way some tags were
 
 | Shift | Mask | Type                  | Description
 |-------|------|-----------------------|-------------
-| 0x00  | 00FF | `kTfbSpyroTag_DecoID` | The [Deco ID](../include/kTfbSpyroTag_DecoID.hpp)
+| 0x00  | 00FF | `kTfbSpyroTag_DecoID` | The [Deco ID](../source/kTfbSpyroTag_DecoID.hpp)
 | 0x08  | 0001 | `bool`                | Whether or not this Skylander is a SuperCharger
 | 0x09  | 0001 | `bool`                | Whether or not this Skylander possesses LightCore technology; includes LightCores, Giants, Battle Pieces, certain TT expansions, and Creation Crystals
 | 0x0A  | 0001 | `bool`                | Whether or not this Skylander is an in-game variant
 | 0x0B  | 0001 | `bool`                | Whether or not this Skylander is reposed, normally meaning it has a Wow Pow (decided from the year code)
-| 0x0C  | 000F | `ESkylandersGame`     | [Year code](../include/ESkylandersGame.hpp)
+| 0x0C  | 000F | `ESkylandersGame`     | [Year code](../source/ESkylandersGame.hpp)
 
 ### Web Code
 
@@ -52,7 +52,7 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x000A  | 08/24  |  0x0C  | `uint16_t`                 | crc16-ccitt/false checksum of 0x110 bytes from 0x40 (so blocks 0D/29 -> 23/3F excluding access control blocks)
 |  0x000C  | 08/24  |  0x0A  | `uint16_t`                 | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
 |  0x000E  | 08/24  |  0x0E  | `uint16_t`                 | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
-|  0x0010  | 09/25  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the currently trapped villain (See [kTfbSpyroTag_VillainType.hpp](../include//kTfbSpyroTag_VillainType.hpp)). Note that any villain can be put in any trap
+|  0x0010  | 09/25  |  0x00  | `kTfbSpyroTag_VillainType` | ID of the currently trapped villain (See [kTfbSpyroTag_VillainType.hpp](../source/kTfbSpyroTag_VillainType.hpp)). Note that any villain can be put in any trap
 |  0x0011  | 09/25  |  0x01  | `uint8_t`                  | Whether or not the villain is evolved (set to 1 if so)
 |  0x0012  | 09/25  |  0x02  | `uint8_t`                  | Villain Hat value
 |  0x0013  | 09/25  |  0x03  | `uint8_t`                  | [Villain Trinket value](#trinket-value)
@@ -243,7 +243,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 ### Hat value
 
 * Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
-* [Hat enum](../include/kTfbSpyroTag_HatType.hpp).
+* [Hat enum](../source/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
 * The unused hat ids are not used.
 * The padding hat ids were never meant to be used in the first place.
