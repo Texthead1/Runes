@@ -41,8 +41,6 @@ Moreover, you can look at `Runes::PortalTag::StoreHeader()` [here](../source/Por
 * The 0x40 bytes from offset 0x00 is the Magic Moment Data (encompasses the actual trapped villain).
 * The 0x110 bytes from 0x40 is the Remaining Data (contains caches of previously trapped villains).
 
-NOTE: Some of this information may be incorrect and is actively being worked on.
-
 |  St_Off  | Block  | Bl_Off | Type                       | Description
 |----------|--------|--------|----------------------------|---------------
 |  0x0000  | 08/24  |  0x00  | `uint8_t`                  | Set to 1 if this Trap contains a pre-trapped variant villain, but not required for it to load
@@ -142,7 +140,45 @@ NOTE: Some of this information may be incorrect and is actively being worked on.
 |  0x72  | 11/2D  |  0x02  | `uint8_t`              | [Area Sequence](#area-sequence) for this data area
 |  0x78  | 11/2D  |  0x08  | `uint16_t`             | Gearbits (max is 33000). SuperChargers will refuse to update the Gearbits if it exceeds 33000 in game, even though the counter can go beyond
 
-### Not a Trap, Racing Pack, or Vehicle
+### CYOS (Creation Crystals/Imaginators)
+
+CYOS stands for "Create Your Own Skylander", the internal name given to Imaginators, which are stored on Creation Crystals, 3D printed figures, and cards.
+
+NOTE: Some of this information may be incorrect and is actively being worked on.
+
+| St_Off | Block  | Bl_Off | Type                   | Description
+|--------|--------|--------|------------------------|---------------
+|  0x03  | 08/24  |  0x03  | `uint16_t`             | Money
+|  0x05  | 08/24  |  0x05  | `uint32_t`             | Cumulative time in seconds
+|  0x09  | 08/24  |  0x09  | `uint8_t`              | [Area Sequence](#area-sequence)
+|  0x0A  | 08/24  |  0x0A  | `uint16_t`             | crc16-ccitt/false checksum of 0x100 bytes starting from 0x40 (so blocks 0D/29 -> 22/3E excluding access control blocks)
+|  0x0C  | 08/24  |  0x0C  | `uint16_t`             | crc16-ccitt/false checksum of 0x30 bytes starting from 0x10 (so blocks 09/25 -> 0C/28 excluding access control blocks)
+|  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
+|  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
+|  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
+|  0x19  | 09/25  |  0x09  | `uint8_t`              | [Element](../source/EElementType.hpp) of the CYOS figure (non-Creation Crystal only)
+|  0x20  | 0A/26  |  0x00  | `uint8_t[16]`          | First 16 bytes of nickname
+|  0x30  | 0C/28  |  0x00  | `uint8_t[16]`          | Last 16 bytes of nickname
+|  0x40  | 0D/29  |  0x00  | `uint8_t`              | Minute value of the last time this figure was placed on the portal
+|  0x41  | 0D/29  |  0x01  | `uint8_t`              | Hour value of the last time this figure was placed on the portal
+|  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
+|  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
+|  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
+|  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Normally increments by 1 when ownership is changed (capped at 255)
+|  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
+|  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
+|  0x52  | 0E/2A  |  0x02  | `uint8_t`              | Day value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
+|  0x53  | 0E/2A  |  0x03  | `uint8_t`              | Month value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
+|  0x54  | 0E/2A  |  0x04  | `uint16_t`             | Year value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
+|  0x60  | 10/2C  |  0x00  | `uint8_t[15]`          | [Usage/owner info](#usage-info)
+|  0x7C  | 11/2D  |  0x0C  | `uint8_t[4]`           | First 4 bytes of [CYOS data](#cyos-data)
+|  0x80  | 12/2E  |  0x00  | `uint8_t[16]`          | Next 16 bytes of [CYOS data](#cyos-data)
+|  0x90  | 14/2E  |  0x00  | `uint8_t[16]`          | Next 16 bytes of [CYOS data](#cyos-data)
+|  0xA0  | 15/2E  |  0x00  | `uint8_t[16]`          | Next 16 bytes of [CYOS data](#cyos-data)
+|  0xB0  | 16/2E  |  0x00  | `uint8_t[16]`          | Next 16 bytes of [CYOS data](#cyos-data)
+|  0xC0  | 18/2E  |  0x00  | `uint8_t`              | Final byte of [CYOS data](#cyos-data)
+
+### None of the above data structures
 
 Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used by the game internally.
 * The 0x40 bytes from offset 0x00 are the first 0x40 bytes of tfbSpyroTag_MagicMomentAll.
@@ -162,7 +198,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Flags1](#flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
 |  0x14  | 09/25  |  0x04  | `uint16_t`             | 2011 [Hat value](#hat-value)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | [Region Count Identifier](#region-count-identifier)
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
 |  0x18  | 09/25  |  0x08  | `uint64_t`             | Owner ID (used by SSA/Giants. Future games store what figures they own, instead of the figure storing who their owner is)
 |  0x20  | 0A/26  |  0x00  | `wchar_t[8]`           | First 16 bytes of nickname
@@ -246,7 +282,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 * [Hat enum](../source/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
 * The unused hat ids are not used.
-* The padding hat ids were never meant to be used in the first place.
+* The padding hat ids were never intended to be used.
 
 | Hat ID |  Hat Name
 |--------|-------------------------------
@@ -589,6 +625,20 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 
 So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and therefore the figure has been used on Wii and Xbox 360.
 
+### Region Count Identifier
+
+Used to identify if the data present in the second data regions is valid. Much like the Variant ID, a backwards compatible approach is employed (starting in Skylanders Giants and present in all future games) to work around the info being unknown in SSA.
+
+In Skylanders Giants, additional struct information was appended to the data layout, 0x10 additional bytes of Magic Moment info, and 0x30 additional bytes of Remaining Data info. The addition of these two additional extention structs are known internally as a second data region (not to be confused with the redundant data stored on a figure for corruption purposes).
+
+This means that Skylanders Giants and future games have 2 of these data regions, whereas Spyro's Adventure only has a single data region. This amount is stored as the `dataRegionCount` (2 for SG, SSF, STT, SSC, and SI, and a theoretical 1 for SSA).
+
+The `dataRegionCount` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1`, and the value calculated is bitwised OR'd with what is stored at blocks 09/25, byte 0x06. The value 2 would return 1, and the value 1 would return 0, essentially allowing each bit index to correspond to if the correct amount of data regions are stored on the figure.
+
+For Skylanders Giants and future games, the value stored will always be 1, and so the bitwise OR check from before will succeed. This leads to the data in the second region being read correctly. As the second data region information is known in these games, the reset figure routine will also correctly wipe this information.
+
+For Spyro's Adventure, the byte is unused, and will be set to 0 when the figure is reset or has not been used in any other games. As SSA's reset routine doesn't wipe the second data region information from the figure, the data will still persist despite the figure being reset. As the region count identifier byte has been set unknowingly by SSA to 0, later games can verify that the data in the second data region is invalid by reading that the byte is 0, the aforementioned bitwise OR check fails, and the second data region info is promptly ignored. 
+
 ### Flags
 
 * [Upgrade](#upgrades) flags: `((Flags2 & 0xF) << 10) | (Flags1 & 0x3FF)`
@@ -782,7 +832,7 @@ Sky Captains (Sky villains)
 * Bit 3: Wolfgang in Sub Woofer
 * Bit 4: Pain-Yatta in unnamed vehicle (SSCR only)
 
-### Vehicle Decoration/Neon
+### Vehicle Decoration
 
 | ID | Deco/Neon Name
 |----|----------------
@@ -802,6 +852,27 @@ Sky Captains (Sky villains)
 | 0D | Ninja
 | 0E | Royal
 | 0F | Robot
+
+### Vehicle Neon
+
+| ID | Deco/Neon Name
+|----|----------------
+| 00 | None
+| 01 | Darkness
+| 02 | Eon
+| 03 | Ancient
+| 04 | Cap'N Cluck
+| 05 | Cartoon
+| 06 | Kaos
+| 07 | Police
+| 08 | Construction
+| 09 | Holiday
+| 0A | Ghost
+| 0B | Royal
+| 0C | Ninja
+| 0D | Thermal
+| 0E | Robot
+| 0F | Fire Truck
 
 ### Vehicle Topper
 
@@ -971,6 +1042,37 @@ Sky Captains (Sky villains)
 | 64 | Squeaky Toy
 | 65 | Jeer: Tessa
 
+### CYOS data
+
+0x45 byte long struct encompassing all of the CYOS data stored on the figure.
+
+The information stored by CYOS figures is not byte aligned, so each "part" has a given bit size in the struct; each "part" is stored sequentially.
+
+#### Battle Classes
+
+| ID | Battle Class
+|----|--------------
+| 1  | Knight
+| 2  | Bowslinger
+| 3  | Quickshot
+| 4  | Ninja
+| 5  | Brawler
+| 6  | Smasher
+| 7  | Sorcerer
+| 8  | Swashbuckler
+| 9  | Sentinel
+| 10 | Bazooker
+| 11 | Kaos
+
+Certain pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID +  ((battleClass - 1) * 100)`
+
+#### Storage Info
+
+| Bit Offset | Bit Size | CYOS part
+|------------|----------|---------------
+|     0      |    10    | Primary Weapon
+
+
 ### Credits:
 * Brandon Wilson:
   * The encryption method
@@ -991,3 +1093,7 @@ Sky Captains (Sky villains)
   * Figured out Vehicles
   * Racing Pack additions/corrections
   * Heroic Challenges
+  * Region Count ID shenanigans
+  * CYOS figures and info
+* Maff:
+  * Help with CYOS pieces
