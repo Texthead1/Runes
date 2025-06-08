@@ -625,11 +625,13 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 
 So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and therefore the figure has been used on Wii and Xbox 360.
 
+Note that SSA JP for the Wii U incidently sets the Wii platform usage flag instead of the Wii U one.
+
 ### Region Count Identifier
 
 Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
 
-This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games.
+This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games. Note that the Wii and Wii U versions of SSA JP act like all other games, not like normal SSA.
 
 The `dataRegionCount` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write
 
