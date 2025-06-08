@@ -1047,6 +1047,85 @@ Sky Captains (Sky villains)
 
 The information stored by CYOS figures is not byte aligned, so each "part" has a given bit size in the struct; each "part" is stored sequentially.
 
+#### Storage Info
+
+| Shift | Bits | CYOS part
+|-------|------|---------------
+| 0000  |  10  | Primary Weapon
+| 000A  |  10  | Secondary Weapon (unused?)
+| 0014  |  10  | Backpack
+| 001E  |  10  | Headgear
+| 0028  |  10  | Leg Guards
+| 0032  |  10  | Arm Guards
+| 003C  |  10  | Shoulder Guards
+| 0046  |  10  | Ears
+| 0050  |  4   | Lower Body Scale
+| 0054  |  4   | Upper Body Scale
+| 0058  |  4   | Height
+| 005C  |  4   | Muscle Scale
+| 0060  |  4   | Head Scale
+| 0064  |  4   | Tail Width
+| 0068  |  10  | Head
+| 0072  |  10  | Torso
+| 007C  |  10  | Arms
+| 0086  |  10  | Legs/Tasset
+| 0090  |  7   | Tail
+| 0097  |  7   | Head Color 1
+| 009E  |  7   | Head Color 2
+| 00A5  |  7   | Head Color 3
+| 00AC  |  7   | Head Color 4
+| 00B3  |  7   | Head Color 5
+| 00BA  |  7   | "Ear" Color (unused?)
+| 00C1  |  7   | Arms Color 1
+| 00C8  |  7   | Arms Color 2
+| 00CF  |  7   | Arms Color 3
+| 00D6  |  7   | Arms Color 4
+| 00DD  |  7   | Arms Color 5
+| 00E4  |  7   | Torso Color 1
+| 00EB  |  7   | Torso Color 2
+| 00F2  |  7   | Torso Color 3
+| 00F9  |  7   | Torso Color 4
+| 0100  |  7   | Torso Color 5
+| 0107  |  7   | Legs/Tasset Color 1
+| 010E  |  7   | Legs/Tasset Color 2
+| 0115  |  7   | Legs/Tasset Color 3
+| 011C  |  7   | Legs/Tasset Color 4
+| 0123  |  7   | Legs/Tasset Color 5
+| 012A  |  7   | Eye Color 1 (Pupil)
+| 0131  |  7   | Eye Color 2 (Sclera)
+| 0138  |  7   | Tail Color 1
+| 013F  |  7   | Tail Color 2
+| 0146  |  7   | Ears Color 1
+| 014D  |  7   | Ears Color 2
+| 0154  |  7   | Ears Color 3
+| 015B  |  7   | Headgear Color 1
+| 0162  |  7   | Headgear Color 2
+| 0169  |  7   | Headgear Color 3
+| 0170  |  7   | Arm Guards Color 1
+| 0177  |  7   | Arm Guards Color 2
+| 017E  |  7   | Arm Guards Color 3
+| 0185  |  7   | Shoulder Guards Color 1
+| 018C  |  7   | Shoulder Guards Color 2
+| 0193  |  7   | Shoulder Guards Color 3
+| 019A  |  7   | Backpack Color 1
+| 01A1  |  7   | Backpack Color 2
+| 01A8  |  7   | Backpack Color 3
+| 01AF  |  7   | Leg Guards Color 1
+| 01B6  |  7   | Leg Guards Color 2
+| 01BD  |  7   | Leg Guards Color 3
+| 01C4  |  10  | Second Power Flags
+| 01CE  |  10  | Tertiary Power Flags
+| 01D8  |  7   | [Battle Class](#battle-classes)
+| 01DF  |  6   | Aura
+| 01E5  |  8   | Sound Effects
+| 01ED  |  6   | Eyes
+| 01F3  |  8   | Catchphrase 1
+| 01FB  |  8   | Catchphrase 2
+| 0203  |  8   | Music
+| 020B  |  8   | Voice
+| 0213  |  7   | Voice Filter
+| 021A  |  9   | Primary Power Flags
+
 #### Battle Classes
 
 | ID | Battle Class
@@ -1064,85 +1143,6 @@ The information stored by CYOS figures is not byte aligned, so each "part" has a
 | 11 | Kaos
 
 Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID +  ((battleClass - 1) * 100)`. Note that blank/not set pieces will have the IDs above 1000.
-
-#### Storage Info
-
-| Shift | Bits | CYOS part
-|-------|------|---------------
-|  0    |  10  | Primary Weapon
-|  10   |  10  | Secondary Weapon (unused?)
-|  20   |  10  | Backpack
-|  30   |  10  | Headgear
-|  40   |  10  | Leg Guards
-|  50   |  10  | Arm Guards
-|  60   |  10  | Shoulder Guards
-|  70   |  10  | Ears
-|  80   |  4   | Lower Body Scale
-|  84   |  4   | Upper Body Scale
-|  88   |  4   | Height
-|  92   |  4   | Muscle Scale
-|  96   |  4   | Head Scale
-|  100  |  4   | Tail Width
-|  104  |  10  | Head
-|  114  |  10  | Torso
-|  124  |  10  | Arms
-|  134  |  10  | Legs/Tasset
-|  144  |  7   | Tail
-|  151  |  7   | Head Color 1
-|  158  |  7   | Head Color 2
-|  165  |  7   | Head Color 3
-|  172  |  7   | Head Color 4
-|  179  |  7   | Head Color 5
-|  186  |  7   | "Ear" Color (unused?)
-|  193  |  7   | Arms Color 1
-|  200  |  7   | Arms Color 2
-|  207  |  7   | Arms Color 3
-|  214  |  7   | Arms Color 4
-|  221  |  7   | Arms Color 5
-|  228  |  7   | Torso Color 1
-|  235  |  7   | Torso Color 2
-|  242  |  7   | Torso Color 3
-|  249  |  7   | Torso Color 4
-|  256  |  7   | Torso Color 5
-|  263  |  7   | Legs/Tasset Color 1
-|  270  |  7   | Legs/Tasset Color 2
-|  277  |  7   | Legs/Tasset Color 3
-|  284  |  7   | Legs/Tasset Color 4
-|  291  |  7   | Legs/Tasset Color 5
-|  298  |  7   | Eye Color 1 (Pupil)
-|  305  |  7   | Eye Color 2 (Sclera)
-|  312  |  7   | Tail Color 1
-|  319  |  7   | Tail Color 2
-|  326  |  7   | Ears Color 1
-|  333  |  7   | Ears Color 2
-|  340  |  7   | Ears Color 3
-|  347  |  7   | Headgear Color 1
-|  354  |  7   | Headgear Color 2
-|  361  |  7   | Headgear Color 3
-|  368  |  7   | Arm Guards Color 1
-|  375  |  7   | Arm Guards Color 2
-|  382  |  7   | Arm Guards Color 3
-|  389  |  7   | Shoulder Guards Color 1
-|  396  |  7   | Shoulder Guards Color 2
-|  403  |  7   | Shoulder Guards Color 3
-|  410  |  7   | Backpack Color 1
-|  417  |  7   | Backpack Color 2
-|  424  |  7   | Backpack Color 3
-|  431  |  7   | Leg Guards Color 1
-|  438  |  7   | Leg Guards Color 2
-|  445  |  7   | Leg Guards Color 3
-|  452  |  10  | Second Power Flags
-|  462  |  10  | Tertiary Power Flags
-|  472  |  7   | [Battle Class](#battle-classes)
-|  479  |  6   | Aura
-|  485  |  8   | Sound Effects
-|  493  |  6   | Eyes
-|  499  |  8   | Catchphrase 1
-|  507  |  8   | Catchphrase 2
-|  515  |  8   | Music
-|  523  |  8   | Voice
-|  531  |  7   | Voice Filter
-|  538  |  9   | Primary Power Flags
 
 ### Credits:
 * Brandon Wilson:
