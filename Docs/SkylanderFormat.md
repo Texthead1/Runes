@@ -627,17 +627,16 @@ So for example, if the 2011 value is set to 3, then bits 0 and 1 are set, and th
 
 ### Region Count Identifier
 
-Used to identify if the data present in the second data regions is valid. Much like the Variant ID, a backwards compatible approach is employed (starting in Skylanders Giants and present in all future games) to work around the info being unknown in SSA.
+Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
 
-In Skylanders Giants, additional struct information was appended to the data layout, 0x10 additional bytes of Magic Moment info, and 0x30 additional bytes of Remaining Data info. The addition of these two additional extention structs are known internally as a second data region (not to be confused with the redundant data stored on a figure for corruption purposes).
+This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games.
 
-This means that Skylanders Giants and future games have 2 of these data regions, whereas Spyro's Adventure only has a single data region. This amount is stored as the `dataRegionCount` (2 for SG, SSF, STT, SSC, and SI, and a theoretical 1 for SSA).
+The `dataRegionCount` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write
 
-The `dataRegionCount` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1`, and the value calculated is bitwised OR'd with what is stored at blocks 09/25, byte 0x06. The value 2 would return 1, and the value 1 would return 0, essentially allowing each bit index to correspond to if the correct amount of data regions are stored on the figure.
+The game does a comparision with a bitwise OR if the bit is set to determine if all data regions have valid data.
 
-For Skylanders Giants and future games, the value stored will always be 1, and so the bitwise OR check from before will succeed. This leads to the data in the second region being read correctly. As the second data region information is known in these games, the reset figure routine will also correctly wipe this information.
-
-For Spyro's Adventure, the byte is unused, and will be set to 0 when the figure is reset or has not been used in any other games. As SSA's reset routine doesn't wipe the second data region information from the figure, the data will still persist despite the figure being reset. As the region count identifier byte has been set unknowingly by SSA to 0, later games can verify that the data in the second data region is invalid by reading that the byte is 0, the aforementioned bitwise OR check fails, and the second data region info is promptly ignored. 
+* For Spyro's Adventure, the `regionCountID` is unused, and will be set to 0 when the figure is reset. As SSA's reset routine doesn't wipe the second data region information from the figure, the second data region info will still persist on reset. Later games can verify that the data in the second data region is invalid by reading that the byte is 0, the bitwise OR check fails, and the second data region info is treated as reset/empty.
+* For Skylanders Giants and future games, the check succeeds if ever written to by these games, and the second data region is read correctly. The reset figure routine from these games correctly wipe the second data region information and set the `regionCountID` to the correct value to have it succeed on future checks.
 
 ### Flags
 
@@ -1064,14 +1063,86 @@ The information stored by CYOS figures is not byte aligned, so each "part" has a
 | 10 | Bazooker
 | 11 | Kaos
 
-Certain pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID +  ((battleClass - 1) * 100)`
+Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID +  ((battleClass - 1) * 100)`. Note that blank/not set pieces will have the IDs above 1000.
 
 #### Storage Info
 
-| Bit Offset | Bit Size | CYOS part
-|------------|----------|---------------
-|     0      |    10    | Primary Weapon
-
+| Shift | Bits | CYOS part
+|-------|------|---------------
+|  0    |  10  | Primary Weapon
+|  10   |  10  | Secondary Weapon (unused?)
+|  20   |  10  | Backpack
+|  30   |  10  | Headgear
+|  40   |  10  | Leg Guards
+|  50   |  10  | Arm Guards
+|  60   |  10  | Shoulder Guards
+|  70   |  10  | Ears
+|  80   |  4   | Lower Body Scale
+|  84   |  4   | Upper Body Scale
+|  88   |  4   | Height
+|  92   |  4   | Muscle Scale
+|  96   |  4   | Head Scale
+|  100  |  4   | Tail Width
+|  104  |  10  | Head
+|  114  |  10  | Torso
+|  124  |  10  | Arms
+|  134  |  10  | Legs/Tasset
+|  144  |  7   | Tail
+|  151  |  7   | Head Color 1
+|  158  |  7   | Head Color 2
+|  165  |  7   | Head Color 3
+|  172  |  7   | Head Color 4
+|  179  |  7   | Head Color 5
+|  186  |  7   | "Ear" Color (unused?)
+|  193  |  7   | Arms Color 1
+|  200  |  7   | Arms Color 2
+|  207  |  7   | Arms Color 3
+|  214  |  7   | Arms Color 4
+|  221  |  7   | Arms Color 5
+|  228  |  7   | Torso Color 1
+|  235  |  7   | Torso Color 2
+|  242  |  7   | Torso Color 3
+|  249  |  7   | Torso Color 4
+|  256  |  7   | Torso Color 5
+|  263  |  7   | Legs/Tasset Color 1
+|  270  |  7   | Legs/Tasset Color 2
+|  277  |  7   | Legs/Tasset Color 3
+|  284  |  7   | Legs/Tasset Color 4
+|  291  |  7   | Legs/Tasset Color 5
+|  298  |  7   | Eye Color 1 (Pupil)
+|  305  |  7   | Eye Color 2 (Sclera)
+|  312  |  7   | Tail Color 1
+|  319  |  7   | Tail Color 2
+|  326  |  7   | Ears Color 1
+|  333  |  7   | Ears Color 2
+|  340  |  7   | Ears Color 3
+|  347  |  7   | Headgear Color 1
+|  354  |  7   | Headgear Color 2
+|  361  |  7   | Headgear Color 3
+|  368  |  7   | Arm Guards Color 1
+|  375  |  7   | Arm Guards Color 2
+|  382  |  7   | Arm Guards Color 3
+|  389  |  7   | Shoulder Guards Color 1
+|  396  |  7   | Shoulder Guards Color 2
+|  403  |  7   | Shoulder Guards Color 3
+|  410  |  7   | Backpack Color 1
+|  417  |  7   | Backpack Color 2
+|  424  |  7   | Backpack Color 3
+|  431  |  7   | Leg Guards Color 1
+|  438  |  7   | Leg Guards Color 2
+|  445  |  7   | Leg Guards Color 3
+|  452  |  10  | Second Power Flags
+|  462  |  10  | Tertiary Power Flags
+|  472  |  7   | [Battle Class](#battle-classes)
+|  479  |  6   | Aura
+|  485  |  8   | Sound Effects
+|  493  |  6   | Eyes
+|  499  |  8   | Catchphrase 1
+|  507  |  8   | Catchphrase 2
+|  515  |  8   | Music
+|  523  |  8   | Voice
+|  531  |  7   | Voice Filter
+|  538  |  9   | Primary Power Flags
 
 ### Credits:
 * Brandon Wilson:

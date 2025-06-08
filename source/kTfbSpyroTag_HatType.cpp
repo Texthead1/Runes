@@ -114,7 +114,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Roundlet Hat",			//Also called Roundlet
 	"Capuchon",
 	"Tricorn Hat",			//Hat 110: Tricorn
-	"Feathered Headdress",	//Also called Peacock Hat
+	"Feathered Headdress (Peacock Hat)",	//Also called Peacock Hat
 	"Bearskin Cap",
 	"Fishbone Hat",
 	"Ski Cap",
@@ -131,7 +131,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Deely Boppers",
 	"Beanie",
 	"Leprechaun Hat",
-	"Shark Hat",
+	"Shark Hat (Sharkfin Hat)",
 	"Life Preserver Hat",
 	"Glittering Tiara",		//Hat 130: GlitteringTiara
 	"Great Helm",
@@ -196,7 +196,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Crazy Light Bulb Hat",
 	"Rubber Glove Hat",		//Hat 190: RubberGlove
 	"Rugby Hat",
-	"Sharkfin Hat (Shark Hat)",	//Also called Metal Fin Hat
+	"Metal Fin Hat"
 	"Sleuth Hat",
 	"Shower Cap",
 	"Bobby",
