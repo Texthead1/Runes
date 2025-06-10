@@ -11,7 +11,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Propeller Cap",
 	"Coonskin Cap",			//Also called Coonskin Hat
 	"Straw Hat",
-	"Fancy Hat",			//Hat 10: Sunday
+	"Fancy Hat (Monday)",			//Hat 10: Sunday
 	"Top Hat",
 	"Viking Helmet",
 	"Spiked Hat",
@@ -114,7 +114,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Roundlet Hat",			//Also called Roundlet
 	"Capuchon",
 	"Tricorn Hat",			//Hat 110: Tricorn
-	"Feathered Headdress (Peacock Hat)",	//Also called Peacock Hat
+	"Feathered Headdress (Peacock Hat)",
 	"Bearskin Cap",
 	"Fishbone Hat",
 	"Ski Cap",
@@ -144,7 +144,7 @@ const char* hatNames_en[kTfbSpyroTag_Hat_MAX + 1] = {
 	"Runic Headband",
 	"Clockwork Hat",
 	"Cactus Hat",			//Hat 140: CactusHat
-	"Skullhelm",
+	"Skullhelm (Skyll)",
 	"Gloop Hat",
 	"Puma Hat",
 	"Elephant Hat",

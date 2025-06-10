@@ -116,11 +116,11 @@ Moreover, you can look at `Runes::PortalTag::StoreHeader()` [here](../source/Por
 |  0x0E  | 08/24  |  0x0E  | `uint16_t`             | crc16-ccitt/false checksum of the first 14 bytes of this struct + the bytes "05 00" at the end
 |  0x10  | 09/25  |  0x00  | `uint24_t`             | [Vehicle Flags](#vehicle-flags)
 |  0x13  | 09/25  |  0x03  | `uint8_t`              | 2011 [Platform bitfield](#platform-bitfield)
-|  0x16  | 09/25  |  0x06  | `uint8_t`              | `(1 << (dataRegionCount - 1)) - 1`. Since `dataRegionCount` is always set to 2 on core figures, this always evaluates to 1. When set, this value is bitwise OR'd with whatever was originally stored
+|  0x16  | 09/25  |  0x06  | `uint8_t`              | [Region Count Identifier](#region-count-identifier)
 |  0x17  | 09/25  |  0x07  | `uint8_t`              | 2013 [Platform bitfield](#platform-bitfield)
-|  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decorationneon)
+|  0x18  | 09/25  |  0x08  | `uint8_t`              | [Vehicle Decoration](#vehicle-decoration)
 |  0x19  | 09/25  |  0x09  | `uint8_t`              | [Vehicle Topper](#vehicle-topper)
-|  0x1A  | 09/25  |  0x0A  | `uint8_t`              | [Vehicle Neon](#vehicle-decorationneon)
+|  0x1A  | 09/25  |  0x0A  | `uint8_t`              | [Vehicle Neon](#vehicle-neon)
 |  0x1B  | 09/25  |  0x0B  | `uint8_t`              | [Vehicle Shout](#vehicle-shout)
 |  0x3E  | 0C/28  |  0x0E  | `uint16_t`             | [ModFlags](#vehicle-mod-flags)
 |  0x40  | 0D/29  |  0x00  | `uint8_t`              | Minute value of the last time this figure was placed on the portal
@@ -273,18 +273,22 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 
 The full purpose for this byte is unknown, but it does have a direct influence on the games. By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
 * In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be considered unsupported and cannot be used in the game.
-* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will  remember that character info from that figure index on the portal. If this toy is then placed on the portal with the exact same figure index (which can be done by unplugging and plugging back in the portal, or loading the same slot on emulated portals) that character will incidently be loaded instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
+* In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will remember that character info from that figure index on the portal. If this toy is then placed on the portal with the exact same figure index (which can be done by unplugging and plugging back in the portal, or loading the same slot on emulated portals) that character will incidently be loaded instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
 * In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress.
 
 ### Hat value
 
-* Check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
 * [Hat enum](../source/kTfbSpyroTag_HatType.hpp).
 * Note that the following ids are identical to the ids used in the file names of Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team minus 1. For example, The straw hat has id 9 on figures but has id 8 in the files. 
 * The unused hat ids are not used.
 * The padding hat ids were never intended to be used.
 
-| Hat ID |  Hat Name
+#### Lookup Algorithm
+* In Skylanders Giants and Trap Team, check the oldest hat value, if it's not 0, return that, otherwise check the next newest hat value and repeat.
+* In Skylanders SWAP Force, SuperChargers, and Imaginators, the order is reversed: check the most newest hat value, if it's not 0, return that, otherwise check the next oldest hat value and repeat.
+* Note that SWAP Force, SuperChargers, and Imaginators also attempt to wipe all hat areas if they're populated with data that wasn't read on every write.
+
+| Hat ID | Hat Name
 |--------|-------------------------------
 |  0000  | None
 |  0001  | Combat Hat
@@ -296,7 +300,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0007  | Propeller Cap
 |  0008  | Coonskin Cap
 |  0009  | Straw Hat
-|  0010  | Fancy Hat
+|  0010  | Fancy Hat (Monday)
 |  0011  | Top Hat
 |  0012  | Viking Helmet
 |  0013  | Spiked Hat
@@ -311,7 +315,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0022  | Cowboy Hat
 |  0023  | Rocker Hair
 |  0024  | Royal Crown
-|  0025  | Lil Devil
+|  0025  | Lil' Devil
 |  0026  | Eye Hat
 |  0027  | Fez
 |  0028  | Crown of Light
@@ -397,7 +401,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0108  | Roundlet Hat
 |  0109  | Capuchon
 |  0110  | Tricorn Hat
-|  0111  | Feathered Headdress
+|  0111  | Feathered Headdress (Peacock Hat)
 |  0112  | Bearskin Cap
 |  0113  | Fishbone Hat
 |  0114  | Ski Cap
@@ -414,7 +418,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0125  | Deely Boppers
 |  0126  | Beanie
 |  0127  | Leprechaun Hat
-|  0128  | Shark Hat
+|  0128  | Shark Hat (Sharkfin Hat)
 |  0129  | Life Preserver Hat
 |  0130  | Glittering Tiara
 |  0131  | Great Helm
@@ -427,7 +431,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0138  | Runic Headband
 |  0139  | Clockwork Hat
 |  0140  | Cactus Hat
-|  0141  | Skullhelm
+|  0141  | Skullhelm (Skyll)
 |  0142  | Gloop Hat
 |  0143  | Puma Hat
 |  0144  | Elephant Hat
@@ -478,7 +482,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 |  0189  | Crazy Light Bulb Hat
 |  0190  | Rubber Glove Hat
 |  0191  | Rugby Hat
-|  0192  | Sharkfin Hat (Shark Hat)
+|  0192  | Metal Fin Hat
 |  0193  | Sleuth Hat
 |  0194  | Shower Cap
 |  0195  | Bobby
@@ -633,7 +637,7 @@ Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remain
 
 This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games. Note that the Wii and Wii U versions of SSA JP act like all other games, not like normal SSA.
 
-The `dataRegionCount` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write
+The `regionCountID` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write
 
 The game does a comparision with a bitwise OR if the bit is set to determine if all data regions have valid data.
 
@@ -769,7 +773,7 @@ Unknown. TODO in future
 Think of it as a 72 bit int.
 
 #### Giants Quests
-|  Bits  | Giants Name      
+|  Bits  | Giants Name
 |--------|----------------------
 |   0A   | Monster Masher
 |   04   | Battle Champ
@@ -796,7 +800,7 @@ Think of it as a 72 bit int.
 |   10   | Individual Quest
 
 #### SWAP Force Quests
-| Shift  | Mask | SWAP Force Name      
+| Shift  | Mask | SWAP Force Name
 |--------|------|----------------------
 |   00   | 03FF | Badguy Basher
 |   0A   | 000F | Fruit Frontiersman
@@ -1144,7 +1148,7 @@ The information stored by CYOS figures is not byte aligned, so each "part" has a
 | 10 | Bazooker
 | 11 | Kaos
 
-Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID +  ((battleClass - 1) * 100)`. Note that blank/not set pieces will have the IDs above 1000.
+Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID + ((battleClass - 1) * 100)`. Note that blank/not set pieces will have the IDs above 1000.
 
 ### Credits:
 * Brandon Wilson:
@@ -1168,5 +1172,6 @@ Certain CYOS pieces on the figure have IDs respective to the Battle Class; this 
   * Heroic Challenges
   * Region Count ID shenanigans
   * CYOS figures and info
+  * Hat fixes and info
 * Maff:
   * Help with CYOS pieces
