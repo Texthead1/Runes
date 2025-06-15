@@ -286,7 +286,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 #### Lookup Algorithm
 * In Skylanders Giants and Trap Team, check the oldest hat value, if it's not 0, return that, otherwise check the second oldest hat value, repeat, and so on.
 * In Skylanders SWAP Force, SuperChargers, and Imaginators, the order is reversed: check the newest hat value, if it's not 0, return that, otherwise check the second newest hat value, repeat, and so on.
-* Note that SWAP Force, SuperChargers, and Imaginators also attempt to wipe all hat areas if they're populated with data that wasn't read on every write.
+* Note that SWAP Force, SuperChargers, and Imaginators also attempt to wipe all unread hat areas on every write.
 
 | Hat ID | Hat Name
 |--------|-------------------------------
