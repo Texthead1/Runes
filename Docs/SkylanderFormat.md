@@ -278,7 +278,9 @@ Note that vehicle experience in SuperChargers Racing uses the exact same experie
 
 ### Error byte
 
-The full purpose for this byte is unknown, but it does have a direct influence on the games. By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
+Used to reject tags for whatever reason; seems mostly tied to other franchises using the same RFID protocol to make sure they don't get interpreted as Skylander data.
+
+By default, for all Skylander figures, this byte is set to 0. If a toy is read and this byte is not equal to zero, the game will in some way refuse the toy, however the way the game behaves upon doing so varies and can sometimes act in an unintended manner.
 * In Skylanders Spyro's Adventure, Skylanders Giants, and Skylanders Trap Team, the toy will be considered unsupported and cannot be used in the game.
 * In Skylanders SWAP Force, Skylanders SuperChargers, and Skylanders Imaginators, if no other Skylanders have been placed on the portal prior, the game will consider the toy unsupported. If a Skylander has been placed prior, the game will remember that character info from that figure index on the portal. If this toy is then placed on the portal with the exact same figure index (which can be done by unplugging and plugging back in the portal, or loading the same slot on emulated portals) that character will incidently be loaded instead - including halves of SWAP Force Skylanders and Senseis - regardless of the actual character on the tag or data on the previous tag. The new character will then act somewhat similar to Template Template, where changing Ownership and writing to the tag does not function.
 * In Skylanders SuperChargers Racing, the game will constantly bring up the corrupted toy prompt before immediately closing the prompt, and then reopening, halting any further progress.
@@ -293,6 +295,7 @@ The full purpose for this byte is unknown, but it does have a direct influence o
 #### Lookup Algorithm
 * In Skylanders Giants and Trap Team, check the oldest hat value, if it's not 0, return that, otherwise check the second oldest hat value, repeat, and so on.
 * In Skylanders SWAP Force, SuperChargers, and Imaginators, the order is reversed: check the newest hat value, if it's not 0, return that, otherwise check the second newest hat value, repeat, and so on.
+* When returning the SuperChargers hat value, add 256 to get the true hat ID.
 * Note that SWAP Force, SuperChargers, and Imaginators also attempt to wipe all unread hat areas on every write.
 
 | Hat ID | Hat Name
@@ -1173,13 +1176,14 @@ Certain CYOS pieces on the figure have IDs respective to the Battle Class; this 
   * The PC, Nintendo 3DS, Xbox One, PS4, and Nintendo Switch values for the platform usage
 * Texthead:
   * Variant ID additions/corrections
-  * Additional Trap info
-  * Figured out Vehicles
   * Racing Pack additions/corrections
+  * Figured out Vehicles
+  * Figured out CYOS figures
+  * Additional Trap info
   * Heroic Challenges
-  * Region Count ID shenanigans
-  * CYOS figures and info
   * Hat fixes and info
+  * Region Count ID info
 * Maff:
   * Help with CYOS pieces
   * Discovered PR event, "Wii", and "Xbox 360" miscellaneous data
+  * Help with build diagnostic data
