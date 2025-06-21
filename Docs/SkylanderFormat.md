@@ -236,6 +236,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x80  | 12/2E  |  0x00  | `uint32_t`             | [Battlegrounds Flags](#battlegrounds-flags)
 |  0x84  | 12/2E  |  0x04  | `uint24_t`             | Completed SG Heroic Challenges
 |  0x87  | 12/2E  |  0x07  | `uint72_t`             | Giants [Quests](#quests)
+|  0x90  | 14/30  |  0x07  | `uint48_t`             | Next 6 bytes of Giants [Quests](#quests). Note that no data ever gets populated to these bytes, so are effectively unused
 |  0x97  | 14/30  |  0x07  | `uint72_t`             | SWAP Force [Quests](#quests)
 
 ### Experience
