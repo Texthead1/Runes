@@ -128,7 +128,7 @@ Moreover, you can look at `Runes::PortalTag::StoreHeader()` [here](../source/Por
 |  0x42  | 0D/29  |  0x02  | `uint8_t`              | Day value of the last time this figure was placed on the portal
 |  0x43  | 0D/29  |  0x03  | `uint8_t`              | Month value of the last time this figure was placed on the portal
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
-|  0x4C  | 0D/29  |  0x0C  | `uint8_t[3]`           | Last game build diagnostics. First byte is the build year (from 200); second byte is build month; third byte is build year
+|  0x4C  | 0D/29  |  0x0C  | `uint8_t[3]`           | Last game build diagnostics. First byte is the build year (from 2000); second byte is build month; third byte is build year
 |  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
@@ -213,7 +213,7 @@ Note that tfbSpyroTag_MagicMomentAll and tfbSpyroTag_RemainingDataAll are used b
 |  0x44  | 0D/29  |  0x04  | `uint16_t`             | Year value of the last time this figure was placed on the portal
 |  0x46  | 0D/29  |  0x06  | `uint32_t`             | Completed SSA Heroic Challenges
 |  0x4A  | 0D/29  |  0x0A  | `uint16_t`             | Hero points (max is 999 in SSA, 100 in Universe)
-|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Last game build diagnostics. First byte is the build year (from 200); second byte is build month; third byte is build year
+|  0x4C  | 0D/29  |  0x0C  | `uint24_t`             | Last game build diagnostics. First byte is the build year (from 2000); second byte is build month; third byte is build year
 |  0x4F  | 0D/29  |  0x0F  | `uint8_t`              | No. times owner changed. Normally increments by 1 when ownership is changed (capped at 255)
 |  0x50  | 0E/2A  |  0x00  | `uint8_t`              | Minute value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
 |  0x51  | 0E/2A  |  0x01  | `uint8_t`              | Hour value of the last time this figure was reset (if never reset then the first time they were placed on a portal)
