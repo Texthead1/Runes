@@ -643,7 +643,7 @@ Note that SSA JP for the Wii U incidently sets the Wii platform usage flag inste
 
 ### Region Count Identifier
 
-Used as a reset indicator to mske sure all data regions are correctly wiped. Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
+Used as a reset indicator to make sure all data regions are correctly wiped. Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
 
 This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games. Note that the Wii and Wii U versions of SSA JP act like all games after SSA, with 2 data regions.
 
