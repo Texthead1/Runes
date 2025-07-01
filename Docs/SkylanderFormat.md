@@ -643,16 +643,16 @@ Note that SSA JP for the Wii U incidently sets the Wii platform usage flag inste
 
 ### Region Count Identifier
 
-Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
+Used as a reset indicator to mske sure all data regions are correctly wiped. Skylanders Giants added 0x10 bytes of Magic Moment info and 0x30 bytes of Remaining Data info, these 2 extension structs form the "second data region", with the original info from SSA being considered the "first data region".
 
-This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games. Note that the Wii and Wii U versions of SSA JP act like all other games, not like normal SSA.
+This amount is known as the `dataRegionCount`; 1 for SSA, 2 for all other games. Note that the Wii and Wii U versions of SSA JP act like all games after SSA, with 2 data regions.
 
-The `regionCountID` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write
+The `regionCountID` is encoded with the formula `(1 << (dataRegionCount - 1)) - 1` which returns a bit index for `dataRegionCount`s above 1 - this is stored at blocks 09/25, byte 0x06. All games after SSA will set this value every write.
 
 The game does a comparision with a bitwise OR if the bit is set to determine if all data regions have valid data.
 
 * For Spyro's Adventure, the `regionCountID` is unused, and will be set to 0 when the figure is reset. As SSA's reset routine doesn't wipe the second data region information from the figure, the second data region info will still persist on reset. Later games can verify that the data in the second data region is invalid by reading that the byte is 0, the bitwise OR check fails, and the second data region info is treated as reset/empty.
-* For Skylanders Giants and future games, the check succeeds if ever written to by these games, and the second data region is read correctly. The reset figure routine from these games correctly wipe the second data region information and set the `regionCountID` to the correct value to have it succeed on future checks.
+* For Skylanders Giants and future games, the reset figure routine from these games correctly wipe the second data region information and set the `regionCountID` to the correct value to have it succeed on future checks. The check succeeds if ever written to by these games, and the second data region is always read correctly.
 
 ### Flags
 
@@ -702,7 +702,7 @@ Oddly, each level of the vehicle's shield and weapon occupies its own bit, even 
 * Bit 7: Path upgrade 2 purchased
 * Bit 8: Path upgrade 3 purchased
 * Bit 9: Soul Gem purchased
-* Bit 10: Wow Pow purchased
+* Bit 10: Wow Pow purchased (or Sky-Chi for Senseis)
 * Bit 11: Alternate path upgrade 1 purchased (used to retain details of upgrades on the other path when switching path as a repose or in SuperChargers)
 * Bit 12: Alternate path upgrade 2 purchased
 * Bit 13: Alternate path upgrade 3 purchased
@@ -1146,6 +1146,7 @@ The information stored by CYOS figures is not byte aligned, so each "part" has a
 
 | ID | Battle Class
 |----|--------------
+| 0  | None
 | 1  | Knight
 | 2  | Bowslinger
 | 3  | Quickshot
@@ -1158,7 +1159,7 @@ The information stored by CYOS figures is not byte aligned, so each "part" has a
 | 10 | Bazooker
 | 11 | Kaos
 
-Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID + ((battleClass - 1) * 100)`. Note that blank/not set pieces will have the IDs above 1000.
+Certain CYOS pieces on the figure have IDs respective to the Battle Class; this is done using the formula `ID + ((battleClass - 1) * 100)`. Note that blank/not set pieces that abide by this will have the IDs above 1000.
 
 ### Credits:
 * Brandon Wilson:
