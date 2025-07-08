@@ -25,7 +25,7 @@ enum kTfbSpyroTag_TrinketType : uint16_t
 	kTfbSpyroTag_Trinket_MedalOfValiance = 17,
 	kTfbSpyroTag_Trinket_MedalOfGallantry = 18,
 	kTfbSpyroTag_Trinket_MedalOfMettle = 19,
-	kTfbSpyroTag_Trinket_WingedMedalOfBavery = 20,
+	kTfbSpyroTag_Trinket_WingedMedalOfBravery = 20,
 	kTfbSpyroTag_Trinket_SeadogSeashell = 21,
 	kTfbSpyroTag_Trinket_Sunflower = 22,
 	kTfbSpyroTag_Trinket_TeddyCyclops = 23,

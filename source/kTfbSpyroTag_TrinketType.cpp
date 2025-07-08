@@ -17,7 +17,7 @@ const char* trinketNames_en[kTfbSpyroTag_Trinket_MAX + 1] = {
 	"Pirate Pinwheel",
 	"Bubble Blower",
 	"Medal of Heroism",
-	"Blobber's Medal of Courage",
+	"Blobbers' Medal of Courage",
 	"Medal of Valiance",
 	"Medal of Gallantry",
 	"Medal of Mettle",
