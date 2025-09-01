@@ -122,13 +122,26 @@ FigureTabWidget::FigureTabWidget(Runes::PortalTag* tag, const char* fileName, QW
 	root->addWidget(new QLabel(tr("Hero Points"), this), basicRow + 4, 0);
 	root->addWidget(this->_spinHeroPoints, basicRow + 4, 1);
 
+	this->_cmbLevelNumber = new QComboBox(this);
+	for (int i = 0; i < kExperienceLevelCount; i++)
+	{
+		this->_cmbLevelNumber->addItem(QString("Level %1").arg(i+1));
+	}
+	connect(this->_cmbLevelNumber, &QComboBox::currentIndexChanged, [=](int newIndex)
+	{
+		this->_tag->_exp = experienceForLevelMap[newIndex];
+		this->_spinExp->blockSignals(true);
+		this->_spinExp->setValue(this->_tag->_exp);
+		this->_spinExp->blockSignals(false);
+	});
+	root->addWidget(new QLabel(tr("Level"), this), basicRow + 3, 0);
+
 	this->_lblTimePlayed = new QLabel(tr("Time Played: N/A"), this);
-	this->_lblLevel = new QLabel(tr("Level: N/A"), this);
 	this->_lblFirstTouched = new QLabel(tr("First Touched: N/A"), this);
 	this->_lblRecentlyTouched = new QLabel(tr("Last Touched: N/A"), this);
 	this->_lblWebcode = new QLabel(tr("Webcode: N/A"), this);
 	root->addWidget(_lblTimePlayed, basicRow + 0, 2);
-	root->addWidget(_lblLevel, basicRow + 1, 2);
+	root->addWidget(_cmbLevelNumber, basicRow + 1, 2);
 	root->addWidget(_lblFirstTouched, basicRow + 2, 2);
 	root->addWidget(_lblRecentlyTouched, basicRow + 3, 2);
 	root->addWidget(_lblWebcode, basicRow + 4, 2);
@@ -443,9 +456,9 @@ void FigureTabWidget::updateFields()
 //=============================================================================
 void FigureTabWidget::updateLevelNumber()
 {
-	this->_lblLevel->setText(QString("Level: %1").arg(
-		QString::number(this->_tag->ComputeLevel()).rightJustified(2, '0')
-	));
+	this->_cmbLevelNumber->blockSignals(true);
+	this->_cmbLevelNumber->setCurrentIndex(this->_tag->ComputeLevel()-1);
+	this->_cmbLevelNumber->blockSignals(false);
 }
 
 
