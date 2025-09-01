@@ -237,8 +237,9 @@ uint8_t Runes::RfidTag::DetermineActiveDataRegionInternal(uint8_t block0, uint8_
 	}
 	else if (!areaPopulated[0] && !areaPopulated[1])
 	{
-		// If neither area is populated
-		activeRegion = 0;
+		// If neither area is populated, set it to 1 so that
+		// we write region 0
+		activeRegion = 1;
 	}
 
 
