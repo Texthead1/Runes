@@ -359,8 +359,12 @@ void FigureTabWidget::updateFields()
 			default:
 				this->_wdGiantsElementalQuest1 = new QLabel(tr("N/A"));
 				this->_wdGiantsElementalQuest2 = new QLabel(tr("N/A"));
-				this->_subGiantsQuests->insertRow(6, tr("Elemental 1"), this->_sgInvalidElement1);
-				this->_subGiantsQuests->insertRow(7, tr("Elemental 2"), this->_sgInvalidElement2);
+				this->_wdSwapForceElementalQuest1 = new QLabel(tr("N/A"));
+				this->_wdSwapForceElementalQuest2 = new QLabel(tr("N/A"));
+				this->_subGiantsQuests->insertRow(6, tr("Elemental 1"), this->_wdGiantsElementalQuest1);
+				this->_subGiantsQuests->insertRow(7, tr("Elemental 2"), this->_wdGiantsElementalQuest2);
+				this->_subSwapForceQuests->insertRow(6, tr("Elemental 1"), this->_wdSwapForceElementalQuest1);
+				this->_subSwapForceQuests->insertRow(7, tr("Elemental 2"), this->_wdSwapForceElementalQuest2);
 				break;
 		}
 		this->_wdGiantsElementalQuest1->setVisible(true);
