@@ -8,15 +8,17 @@ It is not yet ready for public use.
 
 ## Windows
 
-Requires MSYS2, use MINGW64 and not UCRT64.
-
-Dependencies:
-* Qt 6.7.0
-* yaml-cpp, can be installed with `pacman -S mingw-w64-x86_64-yaml-cpp`
+Requires:
+* Visual Studio 2022 Developer Console
+* Qt 6.9.0
 
 Compiling:
-* Run `qmake "CONFIG+=debug"` (`qmake` for release) and `make` to compile
-* Run `windeployqt debug` (`windeployqt release` for release) to include the Qt binaries
+* In the Visual Studio 2022 Developer Console
+* cd into the Runes folder
+* run `mkdir build`
+* cd into the build folder
+* run `cmake -S .. -B . -DCMAKE_PREFIX_PATH=%QT_DIR%\6.9.0\msvc2022_64`
+* run `msbuild Runes.sln /p:Configuration=Debug /p:Platform=x64`
 
 ## Usage
 
